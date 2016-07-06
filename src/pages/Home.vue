@@ -1,0 +1,38 @@
+<template>
+  <div class="container">
+    <card title="BEGIN" subtitle="Choose a Bible text to study">
+      <div class="row clearfix">
+        <a class="col-xs-6 text-center border-right" v-link="'choosepassage?t=ot'">Old Testament</a>
+        <a class="col-xs-6 text-center" v-link="'choosepassage?t=nt'">New Testament</a>
+      </div>
+    </card>
+
+    <card title="CONTINUE" subtitle="Choose a study">
+      Ephesians 1:1-7
+    </card>
+  </div>
+</template>
+
+<script>
+import store from '../../vuex/store'
+import Card from '../components/Card'
+
+export default {
+  data () {
+    return {
+    }
+  },
+  components: {
+    Card
+  },
+  store,
+  vuex: {
+    actions: {
+    }
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../static/less/colors.less';
+</style>

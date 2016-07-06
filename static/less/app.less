@@ -1,0 +1,41 @@
+@import "colors";
+@import "common";
+@import "bootstrap-overrides";
+@import "titlebar";
+
+@font-face {
+  font-family: 'Alegreya';
+  src: url('../fonts/AlegreyaSans-Regular.ttf'); /* IE9 Compat Modes */
+  src: url('../fonts/AlegreyaSans-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
+      //  url('webfont.woff2') format('woff2'), /* Super Modern Browsers */
+      //  url('webfont.woff') format('woff'), /* Pretty Modern Browsers */
+      //  url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
+}
+
+body {
+  color: white;
+  font-family: 'Alegreya', serif;
+  font-size: 16px;
+  background-color: @color-back;
+  padding-top: 10px;
+  padding-bottom: 55px;
+}
+h2 {
+  color: #eee;
+}
+a {
+  color: #fff;
+}
+
+.actionbar {
+  position: fixed;
+  bottom: 0;
+  z-index: 100;
+  width: 100%;
+  padding: 5px;
+  box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.9);;
+  background-color: @color-back-raised;
+  button {
+    letter-spacing: 1px;
+  }
+}
