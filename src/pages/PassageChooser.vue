@@ -68,7 +68,6 @@ export default {
       this.selectedChapter = -1
       this.selectedChapter = $(element).closest('.chapter-label-container').data('chapter')
       this.$router.go('viewpassage?book=' + this.selectedBook + '&chapter=' + this.selectedChapter)
-      // $('.nav-pills > a[href="#passage-viewer"]').tab('show')
     }
   },
   vuex: {

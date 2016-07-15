@@ -84,8 +84,11 @@ export default {
   buildReference (bookIdentifier, chapter, verse) {
     return {book: bookIdentifier, chapter: chapter, verse: verse}
   },
+  buildPassage (reference1, reference2) {
+    return {start: reference1, end: reference2}
+  },
   compareReferences (reference1, reference2) {
-    if (reference1.book !== reference2.book) {
+    if (!reference1 || !reference2 || (reference1.book !== reference2.book)) {
       return NaN
     }
     if (reference2.chapter > reference1.chapter) {

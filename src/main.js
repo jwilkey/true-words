@@ -5,6 +5,7 @@ import App from './App'
 import Home from './pages/Home'
 import PassageChooser from './pages/PassageChooser'
 import PassageViewer from './components/PassageViewer'
+import Activities from './pages/Activities'
 import Activity from './pages/Activity'
 
 import VueRouter from 'vue-router'
@@ -24,6 +25,9 @@ router.map({
   },
   '/viewpassage': {
     component: PassageViewer
+  },
+  '/activities': {
+    component: Activities
   },
   '/activity': {
     component: Activity

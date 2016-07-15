@@ -1,30 +1,24 @@
 <template>
-  <div class="titlebar">
-    <div class="titlebar-item-group">
-      <a class="titlebar-item pull-left" v-link="'choosepassage'"><span class="glyphicon glyphicon-menu-left"></span></a>
+  <titlebar :left-items="['back']" :on-back="goBack">
+    <div slot="center" class="btn-group" role="group" aria-label="chapter-nav">
+      <button type="button" @click="chapterBack()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
+      <button type="button" v-link="'choosepassage'" class="btn btn-default off">{{ bible.bookName(bookIdentifier) }} {{ chapter }}</button>
+      <button type="button" @click="chapterForward()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
     </div>
-    <div class="text-center">
-      <div class="btn-group" role="group" aria-label="chapter-nav">
-        <button type="button" @click="chapterBack()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
-        <button type="button" v-link="'choosepassage'" class="btn btn-default off">{{ bible.bookName(bookIdentifier) }} {{ chapter }}</button>
-        <button type="button" @click="chapterForward()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
-      </div>
-    </div>
-    <div class="titlebar-item-group right">
-      <div class="titlebar-item pull-right" onclick="window.alert('help dialog coming soon!')"><span class="glyphicon glyphicon-question-sign"></span></div>
-    </div>
-  </div>
+  </titlebar>
 
   <div class="container">
     <ul class="list-group">
       <li v-for="verse in verses" class="list-group-item verse" v-bind:class="{ 'selected': isSelected(verse) }" data-verse="{{ verse.number }}" @click="verseSelected($event.target)">
-        <span class="verse-number">{{ verse.number }}</span> {{ verse.text }}
+        <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
       </li>
     </ul>
   </div>
 
   <div class="actionbar">
-    <button class="btn btn-primary btn-block disabled" v-bind:class="{'disabled': !isPassageSelected}">{{ actionText }}</button>
+    <button @click="actionPressed()" class="btn btn-lg btn-primary btn-block disabled" v-bind:class="{'disabled': !isPassageSelected}">
+      {{ actionText }}
+    </button>
   </div>
 </template>
 
@@ -32,7 +26,9 @@
 import store from '../../vuex/store'
 import bible from '../js/bible.js'
 import bibleLoader from '../js/bibleloader.js'
+import { setCurrentWords, createNewStudy } from '../../vuex/actions'
 import $ from 'jquery'
+import Titlebar from './Titlebar'
 
 export default {
   data () {
@@ -53,14 +49,24 @@ export default {
       if (this.isPassageSelected) {
         return 'BEGIN'
       } else if (this.startingVerse !== undefined) {
-        return 'SELECT AN ENDING VERSE...'
+        return 'SELECT AN ENDING VERSE'
       } else {
         return 'SELECT A STARTING VERSE...'
+      }
+    },
+    selectedVerses: function () {
+      if (this.startingVerse && this.endingVerse) {
+        var a = []
+        $('.verse.selected').each(function () {
+          a.push(parseInt($(this).data('verse')))
+        })
+        return a
       }
     }
   },
   props: [],
   components: {
+    Titlebar
   },
   ready () {
     this.bookIdentifier = this.$route.query.book || 'MATTHEW'
@@ -74,20 +80,27 @@ export default {
         $('html, body').animate({ scrollTop: 0 }, 'slow')
       })
     },
-    isSelected (verse) {
-      var bibleReference = bible.buildReference(this.bookIdentifier, this.chapter, verse.number)
-      var startingVerseComparison = bible.compareReferences(this.startingVerse, bibleReference)
-      if (startingVerseComparison === 0) {
-        return true
-      } else if (this.endingVerse !== undefined) {
-        var endingVerseComparison = bible.compareReferences(bibleReference, this.endingVerse)
-        if (endingVerseComparison === 0 || (startingVerseComparison === 1 && endingVerseComparison === 1)) {
-          return true
-        }
-        return false
-      }
+    goBack () {
+      this.$router.go('choosepassage')
     },
-    verseSelected (verseElement) {
+    isSelected (verse) {
+      if (this.bookIdentifier && this.chapter) {
+        var bibleReference = bible.buildReference(this.bookIdentifier, this.chapter, verse.number)
+        var startingVerseComparison = bible.compareReferences(this.startingVerse, bibleReference)
+        if (startingVerseComparison === 0) {
+          return true
+        } else if (this.endingVerse !== undefined) {
+          var endingVerseComparison = bible.compareReferences(bibleReference, this.endingVerse)
+          if (endingVerseComparison === 0 || (startingVerseComparison === 1 && endingVerseComparison === 1)) {
+            return true
+          }
+          return false
+        }
+      }
+      return false
+    },
+    verseSelected (element) {
+      var verseElement = element.closest('.verse')
       var selectedVerse = $(verseElement).data('verse')
       var bibleReference = bible.buildReference(this.bookIdentifier, this.chapter, selectedVerse)
       if (this.startingVerse === undefined) {
@@ -106,6 +119,16 @@ export default {
     },
     chapterForward () {
       this.chapter = this.chapter === bible.chapters(this.bookIdentifier) ? this.chapter : this.chapter + 1
+    },
+    actionPressed () {
+      var selected = this.selectedVerses
+      var versesArray = this.verses.slice(selected[0] - 1, selected[0] + selected.length - 1)
+      this.createNewStudy(bible.buildPassage(this.startingVerse, this.endingVerse), versesArray)
+      var text = $(versesArray).map(function () {
+        return this.text
+      }).get().join(' ')
+      this.setWords(text)
+      this.$router.go('activities')
     }
   },
   watch: {
@@ -123,6 +146,8 @@ export default {
   store,
   vuex: {
     actions: {
+      createNewStudy,
+      setWords: setCurrentWords
     }
   }
 }
@@ -131,13 +156,6 @@ export default {
 <style lang="less" scoped>
 @import '../../static/less/app.less';
 @import '../../static/less/colors.less';
-.fade-transition {
-  transition: opacity .3s ease;
-}
-.fade-enter, .fade-leave {
-  opacity: 0;
-}
-
 .center-wrapper {
   height: 100%;
   text-align: center;

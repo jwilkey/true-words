@@ -34,7 +34,7 @@ export default {
   font-family: serif;
   border-bottom: solid 1px @color-border;
   .card-title {
-    color: #ffeacc;
+    color: @color-text-accent;
     border-right: solid 1px @color-border;
     padding: 10px;
     font-family: 'Alegreya', serif;

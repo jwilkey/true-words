@@ -18,52 +18,53 @@ export default {
       $(element).toggleClass('selected')
     }
   },
+  ready () {
+    var selectedWordIndex
+    var initialSelection
+    $('#content').on('touchstart mousedown', function (e) {
+      var point = getPoint(e)
+      var element = document.elementFromPoint(point.x, point.y)
+      if ($(element).hasClass('word') && !$(element).hasClass('multi')) {
+        // e.preventDefault()
+        initialSelection = element
+      }
+    })
+    $('#content').on('touchmove mousemove', function (e) {
+      if (initialSelection !== undefined) {
+        var point = getPoint(e)
+        var element = document.elementFromPoint(point.x, point.y)
+        if ($(element).hasClass('word')) {
+          e.preventDefault()
+          var elementIndex = parseInt(element.id.substring(5))
+          if (selectedWordIndex === undefined) {
+            $(element).before(createMultitool(true))
+            selectedWordIndex = elementIndex
+            $(element).addClass('multi')
+            $(element).removeClass('selected')
+          } else if (elementIndex === selectedWordIndex + 1) {
+            selectedWordIndex = elementIndex
+            $(element).addClass('multi')
+            $(element).removeClass('selected')
+          }
+        }
+      }
+    })
+    $('#content').on('touchend touchleave mouseup mouseleave', function (e) {
+      if (selectedWordIndex !== undefined) {
+        $('#word-' + selectedWordIndex).after(createMultitool(false))
+      }
+      selectedWordIndex = undefined
+      initialSelection = undefined
+    })
+  },
   vuex: {
     getters: {
-      // note that you're passing the function itself, and not the value 'getCount()'
       words: getCurrentWords
     }
   }
 }
 
 $(document).ready(function () {
-  var selectedWordIndex
-  var initialSelection
-  $('#content').on('touchstart mousedown', function (e) {
-    var point = getPoint(e)
-    var element = document.elementFromPoint(point.x, point.y)
-    if ($(element).hasClass('word') && !$(element).hasClass('multi')) {
-      // e.preventDefault()
-      initialSelection = element
-    }
-  })
-  $('#content').on('touchmove mousemove', function (e) {
-    if (initialSelection !== undefined) {
-      var point = getPoint(e)
-      var element = document.elementFromPoint(point.x, point.y)
-      if ($(element).hasClass('word')) {
-        e.preventDefault()
-        var elementIndex = parseInt(element.id.substring(5))
-        if (selectedWordIndex === undefined) {
-          $(element).before(createMultitool(true))
-          selectedWordIndex = elementIndex
-          $(element).addClass('multi')
-          $(element).removeClass('selected')
-        } else if (elementIndex === selectedWordIndex + 1) {
-          selectedWordIndex = elementIndex
-          $(element).addClass('multi')
-          $(element).removeClass('selected')
-        }
-      }
-    }
-  })
-  $('#content').on('touchend touchleave mouseup mouseleave', function (e) {
-    if (selectedWordIndex !== undefined) {
-      $('#word-' + selectedWordIndex).after(createMultitool(false))
-    }
-    selectedWordIndex = undefined
-    initialSelection = undefined
-  })
 })
 
 function getPoint (e) {
@@ -83,7 +84,7 @@ function createMultitool (isStart) {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style lang="less">
+<style lang="less" scoped>
 @import '../../static/less/colors.less';
 @import '../../static/less/selectable-text.less';
 </style>
