@@ -44,3 +44,4 @@ router.start(App, '#app')
 var $ = require('jquery')
 window.jQuery = window.$ = $
 require('bootstrap')
+require('./js/polyfill')

@@ -1,5 +1,5 @@
 <template>
-  <titlebar title="ACTIVITIES"></titlebar>
+  <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
   <div class="container">
     <p class="text-center accent">Choose an Activity to begin</p>

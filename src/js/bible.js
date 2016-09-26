@@ -67,7 +67,7 @@ var books = [
   {'identifier': 'REVELATION', 'name': 'Revelation', 'chapters': 22, 'verses': [20, 29, 22, 11, 14, 17, 17, 13, 21, 11, 19, 17, 18, 20, 8, 21, 18, 24, 21, 15, 27, 21]}
 ]
 
-export default {
+var Bible = {
   otBooks: books.slice(0, 39),
   ntBooks: books.slice(39, 66),
   book (bookIdentifier) {
@@ -81,22 +81,19 @@ export default {
     var b = this.book(bookIdentifier)
     return b ? b.chapters : undefined
   },
-  buildReference (bookIdentifier, chapter, verse) {
-    return {book: bookIdentifier, chapter: chapter, verse: verse}
-  },
   buildPassage (reference1, reference2) {
     return {start: reference1, end: reference2}
   },
-  compareReferences (reference1, reference2) {
-    if (!reference1 || !reference2 || (reference1.book !== reference2.book)) {
+  compareReferences (verse1, verse2) {
+    if (!verse1 || !verse2 || (verse1.book !== verse2.book)) {
       return NaN
     }
-    if (reference2.chapter > reference1.chapter) {
+    if (verse2.chapter > verse1.chapter) {
       return 1
-    } else if (reference2.chapter === reference1.chapter) {
-      if (reference2.verse > reference1.verse) {
+    } else if (verse2.chapter === verse1.chapter) {
+      if (verse2.number > verse1.number) {
         return 1
-      } else if (reference2.verse === reference1.verse) {
+      } else if (verse2.number === verse1.number) {
         return 0
       } else {
         return -1
@@ -104,5 +101,29 @@ export default {
     } else {
       return -1
     }
+  },
+  passageContains (startVerse, endVerse, verseInQuestion) {
+    var startingVerseComparison = this.compareReferences(startVerse, verseInQuestion)
+    if (startingVerseComparison === 0) {
+      return true
+    } else if (endVerse !== undefined) {
+      var endingVerseComparison = this.compareReferences(verseInQuestion, endVerse)
+      if (endingVerseComparison === 0 || (startingVerseComparison === 1 && endingVerseComparison === 1)) {
+        return true
+      }
+      return false
+    }
   }
 }
+
+function Verse (bookIdentifier, chapter, number) {
+  this.book = bookIdentifier
+  this.chapter = chapter
+  this.number = number
+}
+
+Verse.prototype.isAfter = function (verse) {
+  return true
+}
+
+export { Bible, Verse }

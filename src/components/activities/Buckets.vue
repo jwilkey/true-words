@@ -3,9 +3,9 @@
     <table class="buckets vthird">
       <tbody>
         <tr>
-          <td data-index="0" class="bucket back-orange hthird dropzone">{{ bucketNames[0] }}</td>
-          <td data-index="1" class="bucket back-purple hthird dropzone">{{ bucketNames[1] }}</td>
-          <td data-index="2" class="bucket back-red hthird dropzone">{{ bucketNames[2] }}</td>
+          <td data-index="0" class="bucket back-orange hthird dropzone">{{ data[0] }}</td>
+          <td data-index="1" class="bucket back-purple hthird dropzone">{{ data[1] }}</td>
+          <td data-index="2" class="bucket back-red hthird dropzone">{{ data[2] }}</td>
         </tr>
       </tbody>
     </table>
@@ -61,7 +61,7 @@ export default {
       return 'more words'
     }
   },
-  props: ['finish', 'bucketNames'],
+  props: ['finish', 'data'],
   methods: {
     incrementCurrentWord () {
       this.currentWordIndex++
@@ -78,9 +78,9 @@ export default {
     },
     initializeBucketValues () {
       this.values = [
-        new buckets.Bucket(this.bucketNames[0]),
-        new buckets.Bucket(this.bucketNames[1]),
-        new buckets.Bucket(this.bucketNames[2]),
+        new buckets.Bucket(this.data[0]),
+        new buckets.Bucket(this.data[1]),
+        new buckets.Bucket(this.data[2]),
         new buckets.Bucket('OTHER')
       ]
     }

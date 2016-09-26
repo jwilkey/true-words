@@ -1,4 +1,5 @@
 <template>
+  <titlebar title="TRUE WORDS"></titlebar>
   <div class="container">
     <card title="BEGIN" subtitle="Choose a Bible text to study">
       <div class="row clearfix">
@@ -14,6 +15,7 @@
 </template>
 
 <script>
+import Titlebar from '../components/Titlebar'
 import store from '../../vuex/store'
 import Card from '../components/Card'
 
@@ -23,7 +25,7 @@ export default {
     }
   },
   components: {
-    Card
+    Card, Titlebar
   },
   store,
   vuex: {

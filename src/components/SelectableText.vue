@@ -2,7 +2,7 @@
   <div id="content" class="container">
     <div class="row">
       <div id="text" class="col-sm-12">
-        <span track-by="$index" v-for="word in words" id='word-{{ $index }}' @click='setSelected($event.target)' class='word'>{{ word }}</span>
+        <span track-by="$index" v-for="word in words" id="word-{{ $index }}" data-index="{{$index}}" @click="selected($event.target)" class="word">{{ word }}</span>
       </div>
     </div>
   </div>
@@ -13,49 +13,67 @@ import { getCurrentWords } from '../../vuex/getters'
 import $ from 'jquery'
 
 export default {
-  methods: {
-    setSelected (element) {
-      $(element).toggleClass('selected')
+  data () {
+    return {
+      selectedWordIndex: undefined,
+      initialSelection: undefined
     }
   },
-  ready () {
-    var selectedWordIndex
-    var initialSelection
-    $('#content').on('touchstart mousedown', function (e) {
+  props: ['delegate'],
+  methods: {
+    selected (element) {
+      $(element).toggleClass('selected')
+      if (this.delegate && this.delegate.onSelect) {
+        this.delegate.onSelect($(element).text(), $(element).data('index'))
+      }
+    },
+    onTouchStart (e) {
       var point = getPoint(e)
       var element = document.elementFromPoint(point.x, point.y)
+      var v = this
       if ($(element).hasClass('word') && !$(element).hasClass('multi')) {
-        // e.preventDefault()
-        initialSelection = element
+        v.initialSelection = element
       }
-    })
-    $('#content').on('touchmove mousemove', function (e) {
-      if (initialSelection !== undefined) {
+    },
+    onTouchMove (e) {
+      if (this.initialSelection !== undefined) {
         var point = getPoint(e)
         var element = document.elementFromPoint(point.x, point.y)
         if ($(element).hasClass('word')) {
           e.preventDefault()
           var elementIndex = parseInt(element.id.substring(5))
-          if (selectedWordIndex === undefined) {
-            $(element).before(createMultitool(true))
-            selectedWordIndex = elementIndex
+          if (this.selectedWordIndex === undefined) {
+            $(element).addClass('start')
+            this.selectedWordIndex = elementIndex
             $(element).addClass('multi')
             $(element).removeClass('selected')
-          } else if (elementIndex === selectedWordIndex + 1) {
-            selectedWordIndex = elementIndex
+          } else if (elementIndex === this.selectedWordIndex + 1) {
+            this.selectedWordIndex = elementIndex
             $(element).addClass('multi')
             $(element).removeClass('selected')
           }
         }
       }
-    })
-    $('#content').on('touchend touchleave mouseup mouseleave', function (e) {
-      if (selectedWordIndex !== undefined) {
-        $('#word-' + selectedWordIndex).after(createMultitool(false))
+    },
+    onTouchEnd (e) {
+      if (this.selectedWordIndex !== undefined) {
+        $('#word-' + this.selectedWordIndex).addClass('end')
+        if (this.delegate && this.delegate.onMultiSelect) {
+          var startIndex = $(this.initialSelection).data('index')
+          var selectedWords = $('.word').slice(startIndex, this.selectedWordIndex + 1).map(function () {
+            return $(this).text()
+          }).get()
+          this.delegate.onMultiSelect(selectedWords, [startIndex, this.selectedWordIndex])
+        }
       }
-      selectedWordIndex = undefined
-      initialSelection = undefined
-    })
+      this.selectedWordIndex = undefined
+      this.initialSelection = undefined
+    }
+  },
+  ready () {
+    $('#content').on('touchstart mousedown', this.onTouchStart)
+    $('#content').on('touchmove mousemove', this.onTouchMove)
+    $('#content').on('touchend touchleave mouseup mouseleave', this.onTouchEnd)
   },
   vuex: {
     getters: {
@@ -64,27 +82,60 @@ export default {
   }
 }
 
-$(document).ready(function () {
-})
-
 function getPoint (e) {
   return {
     x: e.pageX ? e.pageX : e.originalEvent.pageX,
     y: e.pageY ? e.pageY : e.originalEvent.pageY
   }
 }
-
-function createMultitool (isStart) {
-  var multitool = $('<p class="multitool ' + (isStart ? 'start' : 'end') + ' pull-left"><span class="glyphicon glyphicon-menu-' + (isStart ? 'left' : 'right') + '" /></p>')
-  multitool.on('touchmove mousemove', function (event) {
-
-  })
-  return multitool
-}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
-@import '../../static/less/selectable-text.less';
+.word {
+  float: left;
+  color: white;
+  background-color: @color-back-raised;
+  margin: 3px;
+  border-radius: 1px;
+  border: solid 1px transparent;
+  padding: 5px;
+  box-shadow: -1px 0px 2px rgba(0, 0, 0, 0.5);
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.word.selected {
+  background-color: @color-selection1;
+  color: @color-back;
+}
+.word:hover {
+  border: solid 1px #38f;
+}
+
+.word.multi {
+  background-color: @color-selection1;
+  color: @color-back;
+  word-wrap: normal;
+  margin-left: 0px;
+  margin-right: 0px;
+  box-shadow: none;
+  border-radius: 0px;
+  border-right: solid 1px #9b1;
+  border-left: solid 1px #9b1;
+  border-top: solid 1px #000;
+  border-bottom: solid 1px #000;
+  &.start {
+    margin-left: 3px;
+    border-left: double 15px #7777dd;
+  }
+  &.end {
+    margin-right: 3px;
+    border-right: double 15px #7777dd;
+  }
+}
 </style>

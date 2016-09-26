@@ -38,17 +38,17 @@
 
 <script>
 import $ from 'jquery'
-import bible from '../js/bible.js'
+import { Bible } from '../js/bible.js'
 import PassageViewer from '../components/PassageViewer'
 export default {
   data () {
     return {
-      otBooks: bible.otBooks,
+      otBooks: Bible.otBooks,
       selectedBook: 'MATTHEW',
-      selectedBookName: bible.bookName(this.selectedBook),
+      selectedBookName: Bible.bookName(this.selectedBook),
       selectedChapter: 1,
       chapterCount: 0,
-      ntBooks: bible.ntBooks
+      ntBooks: Bible.ntBooks
     }
   },
   components: {
@@ -60,8 +60,8 @@ export default {
   methods: {
     bookSelected (element) {
       this.selectedBook = $(element).data('book')
-      this.selectedBookName = bible.bookName(this.selectedBook)
-      this.chapterCount = bible.chapters(this.selectedBook)
+      this.selectedBookName = Bible.bookName(this.selectedBook)
+      this.chapterCount = Bible.chapters(this.selectedBook)
       $('.nav-pills > a[href="#chapter-chooser"]').tab('show')
     },
     chapterSelected (element) {

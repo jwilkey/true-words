@@ -1,6 +1,19 @@
+var ActivityType = {
+  PeoplePlacesThings: 'PPT',
+  Actions: 'ACTIONS',
+  CauseEffect: 'CAUSEEFFECT',
+
+  Keywords: 'KEYWORDS',
+  TopicTagging: 'TOPICS',
+  Christianese: 'CHRISTIANESE',
+  Paraphrase: 'PARAPHRASE',
+
+  SPACE: 'SPACE'
+}
+
 export default {
   TYPE: {
-    PeoplePlacesThings: 'PPT',
+    PeoplePlacesThings: ActivityType.PeoplePlacesThings,
     Actions: 'ACTIONS',
     CauseEffect: 'CAUSEEFFECT',
 
@@ -10,6 +23,18 @@ export default {
     Paraphrase: 'PARAPHRASE',
 
     SPACE: 'SPACE'
+  },
+  types: {
+    'PPT': { id: 'PPT', category: 'observation', title: 'People, Places & Things', subtitle: 'Nouns' },
+    'ACTIONS': { id: 'ACTIONS', category: 'observation', title: 'Actions', subtitle: 'Actions' },
+    'CAUSEEFFECT': { id: 'CAUSEEFFECT', category: 'observation', title: 'Cause & Effect', subtitle: 'Cause & Effect' },
+
+    'KEYWORDS': { id: 'KEYWORDS', category: 'interpretation', title: 'Key Words', subtitle: 'Key Words' },
+    'TOPICS': { id: 'TOPICS', category: 'interpretation', title: 'Topics', subtitle: 'Topics' },
+    'CHRISTIANESE': { id: 'CHRISTIANESE', category: 'interpretation', title: 'Christianese', subtitle: 'Christianese' },
+    'PARAPHRASE': { id: 'PARAPHRASE', category: 'interpretation', title: 'Paraphrase', subtitle: 'Paraphrase' },
+
+    'SPACE': { id: 'SPACE', category: 'application', title: 'SPACE', subtitle: 'SPACE' }
   },
   observationActivities () {
     return [this.TYPE.PeoplePlacesThings, this.TYPE.Actions, this.TYPE.CauseEffect]
@@ -21,27 +46,9 @@ export default {
     return [this.TYPE.SPACE]
   },
   titleForType (type) {
-    var titles = {}
-    titles[this.TYPE.PeoplePlacesThings] = 'People, Places & Things'
-    titles[this.TYPE.Actions] = 'Actions'
-    titles[this.TYPE.CauseEffect] = 'Cause & Effect'
-
-    titles[this.TYPE.Keywords] = 'Key Words'
-    titles[this.TYPE.TopicTagging] = 'Topics'
-    titles[this.TYPE.Christianese] = 'Christianese'
-    titles[this.TYPE.Paraphrase] = 'Paraphrase'
-
-    titles[this.TYPE.SPACE] = 'SPACE'
-
-    return titles[type]
+    return this.types[type].title
   },
   subtitleForType (type) {
-    var subtitles = {}
-    subtitles[this.TYPE.PeoplePlacesThings] = 'Nouns'
-    subtitles[this.TYPE.Paraphrase] = 'Paraphrase'
-    subtitles[this.TYPE.CauseEffect] = 'Cause & Effect'
-    subtitles[this.TYPE.SPACE] = 'SPACE'
-
-    return subtitles[type]
+    return this.types[type].subtitle
   }
 }

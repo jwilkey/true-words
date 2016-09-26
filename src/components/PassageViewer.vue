@@ -24,7 +24,7 @@
 
 <script>
 import store from '../../vuex/store'
-import bible from '../js/bible.js'
+import { Bible, Verse } from '../js/bible.js'
 import bibleLoader from '../js/bibleloader.js'
 import { setCurrentWords, createNewStudy } from '../../vuex/actions'
 import $ from 'jquery'
@@ -33,7 +33,7 @@ import Titlebar from './Titlebar'
 export default {
   data () {
     return {
-      bible: bible,
+      bible: Bible,
       bookIdentifier: undefined,
       chapter: undefined,
       verses: undefined,
@@ -85,30 +85,20 @@ export default {
     },
     isSelected (verse) {
       if (this.bookIdentifier && this.chapter) {
-        var bibleReference = bible.buildReference(this.bookIdentifier, this.chapter, verse.number)
-        var startingVerseComparison = bible.compareReferences(this.startingVerse, bibleReference)
-        if (startingVerseComparison === 0) {
-          return true
-        } else if (this.endingVerse !== undefined) {
-          var endingVerseComparison = bible.compareReferences(bibleReference, this.endingVerse)
-          if (endingVerseComparison === 0 || (startingVerseComparison === 1 && endingVerseComparison === 1)) {
-            return true
-          }
-          return false
-        }
+        var bibleVerse = new Verse(this.bookIdentifier, this.chapter, verse.number)
+        return Bible.passageContains(this.startingVerse, this.endingVerse, bibleVerse)
       }
       return false
     },
     verseSelected (element) {
       var verseElement = element.closest('.verse')
-      var selectedVerse = $(verseElement).data('verse')
-      var bibleReference = bible.buildReference(this.bookIdentifier, this.chapter, selectedVerse)
+      var selectedVerseNumber = $(verseElement).data('verse')
+      var bibleVerse = new Verse(this.bookIdentifier, this.chapter, selectedVerseNumber)
       if (this.startingVerse === undefined) {
-        this.startingVerse = bibleReference
-        $(verseElement).addClass('selected')
+        this.startingVerse = bibleVerse
       } else if (this.endingVerse === undefined) {
-        if (bible.compareReferences(this.startingVerse, bibleReference) === 1) {
-          this.endingVerse = bibleReference
+        if (Bible.compareReferences(this.startingVerse, bibleVerse) === 1) {
+          this.endingVerse = bibleVerse
           this.verses.$set(0, this.verses[0])
           $('.actionbar button').removeClass('disabled')
         }
@@ -118,12 +108,12 @@ export default {
       this.chapter = this.chapter === 1 ? 1 : this.chapter - 1
     },
     chapterForward () {
-      this.chapter = this.chapter === bible.chapters(this.bookIdentifier) ? this.chapter : this.chapter + 1
+      this.chapter = this.chapter === Bible.chapters(this.bookIdentifier) ? this.chapter : this.chapter + 1
     },
     actionPressed () {
       var selected = this.selectedVerses
       var versesArray = this.verses.slice(selected[0] - 1, selected[0] + selected.length - 1)
-      this.createNewStudy(bible.buildPassage(this.startingVerse, this.endingVerse), versesArray)
+      this.createNewStudy(Bible.buildPassage(this.startingVerse, this.endingVerse), versesArray)
       var text = $(versesArray).map(function () {
         return this.text
       }).get().join(' ')

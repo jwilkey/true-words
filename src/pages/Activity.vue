@@ -3,7 +3,7 @@
   <menubar></menubar>
 
   <div id="activity">
-    <component :is="currentActivity" :finish="onFinish" :bucket-names="['PEOPLE', 'PLACES', 'THINGS']"></component>
+    <component :is="currentActivity" :finish="onFinish" :data="['PEOPLE', 'PLACES', 'THINGS']"></component>
   </div>
 
   <div id="review">
@@ -18,8 +18,8 @@ import { getCurrentActivity } from '../../vuex/getters'
 import activity from '../js/activity'
 import Titlebar from '../components/Titlebar'
 import Menubar from '../components/Menubar'
-import SelectableText from '../components/SelectableText'
 import Buckets from '../components/activities/Buckets'
+import Actions from '../components/activities/Actions'
 import BucketsReviewer from '../components/reviewers/BucketsReviewer'
 
 export default {
@@ -32,7 +32,7 @@ export default {
     }
   },
   components: {
-    Titlebar, Menubar, SelectableText, Buckets, BucketsReviewer
+    Titlebar, Menubar, Actions, Buckets, BucketsReviewer
   },
   methods: {
     closePressed () {
@@ -50,13 +50,14 @@ export default {
     activityForType (activityType) {
       switch (activityType) {
         case activity.TYPE.PeoplePlacesThings: return 'buckets'
+        case activity.TYPE.Actions: return 'actions'
         default: return 'buckets'
       }
     },
     reviewerForType (activityType) {
       switch (activityType) {
         case activity.TYPE.PeoplePlacesThings: return 'buckets-reviewer'
-        default: return 'buckets-reviewer'
+        default: return undefined
       }
     }
   },
