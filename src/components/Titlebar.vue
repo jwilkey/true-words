@@ -9,6 +9,9 @@
     </div>
     <div class="titlebar-item-group right">
       <div v-for="item in rightItems" :is="item"></div>
+      <p class="titlebar-item">
+        <slot name="right"></slot>
+      </p>
     </div>
   </div>
 </template>

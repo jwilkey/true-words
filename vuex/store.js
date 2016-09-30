@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import activity from '../src/js/activity'
+import activities from '../src/js/activity'
 
 // Make vue aware of Vuex
 Vue.use(Vuex)
@@ -10,7 +10,7 @@ const state = {
   page: 'home',
   studies: [],
   currentStudy: undefined,
-  currentActivity: activity.TYPE.PeoplePlacesThings,
+  currentActivity: activities.types.PeoplePlacesThings,
   currentWords: [],
   currentPassage: undefined,
   activities: []

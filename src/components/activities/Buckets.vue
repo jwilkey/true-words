@@ -40,14 +40,14 @@ import store from '../../../vuex/store'
 import { getCurrentWords } from '../../../vuex/getters'
 import { saveActivity } from '../../../vuex/actions'
 import $ from 'jquery'
-import activity from '../../js/activity'
+import activities from '../../js/activity'
 
 export default {
   data () {
     return {
       currentWordIndex: 0,
       wordCount: this.words.length,
-      activityType: activity.TYPE.PeoplePlacesThings
+      activityType: activities.types.PeoplePlacesThings
     }
   },
   computed: {

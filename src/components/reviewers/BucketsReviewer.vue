@@ -14,12 +14,12 @@
 
 <script>
 import { getCurrentActivity, getCurrentWords } from '../../../vuex/getters'
-import activity from '../../js/activity'
+import activities from '../../js/activity'
 
 export default {
   data () {
     return {
-      title: activity.titleForType(this.getCurrentActivity)
+      title: activities.manager.titleForType(this.getCurrentActivity)
     }
   },
   components: {

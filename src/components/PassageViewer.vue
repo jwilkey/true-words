@@ -16,9 +16,8 @@
   </div>
 
   <div class="actionbar">
-    <button @click="actionPressed()" class="btn btn-lg btn-primary btn-block disabled" v-bind:class="{'disabled': !isPassageSelected}">
-      {{ actionText }}
-    </button>
+    <p class="text-center accent">{{ actionText }}</p>
+    <button @click="actionPressed()" class="btn btn-lg btn-primary btn-block" v-if="isPassageSelected">BEGIN</button>
   </div>
 </template>
 
@@ -43,19 +42,19 @@ export default {
   },
   computed: {
     isPassageSelected: function () {
-      return this.startingVerse !== undefined && this.endingVerse !== undefined
+      return this.startingVerse !== undefined
     },
     actionText: function () {
-      if (this.isPassageSelected) {
-        return 'BEGIN'
+      if (this.startingVerse !== undefined && this.endingVerse !== undefined) {
+        return 'Begin, or tap verses to edit selection'
       } else if (this.startingVerse !== undefined) {
-        return 'SELECT AN ENDING VERSE'
+        return 'Select an ending verse, or begin'
       } else {
-        return 'SELECT A STARTING VERSE...'
+        return 'Select a starting verse'
       }
     },
     selectedVerses: function () {
-      if (this.startingVerse && this.endingVerse) {
+      if (this.startingVerse !== undefined) {
         var a = []
         $('.verse.selected').each(function () {
           a.push(parseInt($(this).data('verse')))
@@ -96,11 +95,13 @@ export default {
       var bibleVerse = new Verse(this.bookIdentifier, this.chapter, selectedVerseNumber)
       if (this.startingVerse === undefined) {
         this.startingVerse = bibleVerse
-      } else if (this.endingVerse === undefined) {
-        if (Bible.compareReferences(this.startingVerse, bibleVerse) === 1) {
+      } else if (this.startingVerse.equals(bibleVerse)) {
+        this.startingVerse = undefined
+        this.endingVerse = undefined
+      } else {
+        if (bibleVerse.isAfter(this.startingVerse)) {
           this.endingVerse = bibleVerse
           this.verses.$set(0, this.verses[0])
-          $('.actionbar button').removeClass('disabled')
         }
       }
     },

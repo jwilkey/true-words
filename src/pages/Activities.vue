@@ -10,9 +10,9 @@
         <th class="text-right accent">What does it say?</th>
       </tr></thead>
       <tbody>
-        <tr v-for="type in activity.observationActivities()" @click="activitySelected(type)">
-          <td>{{ activity.titleForType(type) }}</td>
-          <td class="text-right">{{ activity.subtitleForType(type) }}</td>
+        <tr v-for="type in activities.manager.observationActivities" @click="activitySelected(type)">
+          <td>{{ activities.manager.titleForType(type) }}</td>
+          <td class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
         </tr>
       </tbody>
     </table>
@@ -23,9 +23,9 @@
         <th class="text-right accent">What does it mean?</th>
       </tr></thead>
       <tbody>
-        <tr v-for="type in activity.interpretationActivities()" @click="activitySelected(type)">
-          <td>{{ activity.titleForType(type) }}</td>
-          <td class="text-right">{{ activity.subtitleForType(type) }}</td>
+        <tr v-for="type in activities.manager.interpretationActivities" @click="activitySelected(type)">
+          <td>{{ activities.manager.titleForType(type) }}</td>
+          <td class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
         </tr>
       </tbody>
     </table>
@@ -36,9 +36,9 @@
         <th class="text-right accent">What should I do?</th>
       </tr></thead>
       <tbody>
-        <tr v-for="type in activity.applicationActivities()" @click="activitySelected(type)">
-          <td>{{ activity.titleForType(type) }}</td>
-          <td class="text-right">{{ activity.subtitleForType(type) }}</td>
+        <tr v-for="type in activities.manager.applicationActivities" @click="activitySelected(type)">
+          <td>{{ activities.manager.titleForType(type) }}</td>
+          <td class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
         </tr>
       </tbody>
     </table>
@@ -46,14 +46,14 @@
 </template>
 
 <script>
-import activity from '../js/activity'
+import activities from '../js/activity'
 import Titlebar from '../components/Titlebar'
 import { setCurrentActivity } from '../../vuex/actions.js'
 
 export default {
   data () {
     return {
-      activity
+      activities
     }
   },
   components: {

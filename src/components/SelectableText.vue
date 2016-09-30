@@ -68,6 +68,14 @@ export default {
       }
       this.selectedWordIndex = undefined
       this.initialSelection = undefined
+    },
+    reset () {
+      $('.word').removeClass('selected multi start end')
+    }
+  },
+  events: {
+    'selectable-text-reset': function () {
+      this.reset()
     }
   },
   ready () {

@@ -1,4 +1,8 @@
 <template>
+  <titlebar title="BIBLE" :left-items="['home']">
+    <span class="muted" slot="right">NASB</span>
+  </titlebar>
+
   <div class="container">
     <ul class="nav nav-pills" role="tablist">
       <li role="presentation">
@@ -38,6 +42,7 @@
 
 <script>
 import $ from 'jquery'
+import Titlebar from '../components/Titlebar'
 import { Bible } from '../js/bible.js'
 import PassageViewer from '../components/PassageViewer'
 export default {
@@ -52,7 +57,7 @@ export default {
     }
   },
   components: {
-    PassageViewer
+    Titlebar, PassageViewer
   },
   ready () {
     this.$route.query.t === 'ot' ? $('#ot-tab').tab('show') : $('#nt-tab').tab('show')

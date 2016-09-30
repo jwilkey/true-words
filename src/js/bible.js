@@ -81,8 +81,8 @@ var Bible = {
     var b = this.book(bookIdentifier)
     return b ? b.chapters : undefined
   },
-  buildPassage (reference1, reference2) {
-    return {start: reference1, end: reference2}
+  buildPassage (startVerse, endVerse) {
+    return new Passage(startVerse, endVerse)
   },
   compareReferences (verse1, verse2) {
     if (!verse1 || !verse2 || (verse1.book !== verse2.book)) {
@@ -122,8 +122,27 @@ function Verse (bookIdentifier, chapter, number) {
   this.number = number
 }
 
+Verse.prototype.equals = function (verse) {
+  return Bible.compareReferences(verse, this) === 0
+}
 Verse.prototype.isAfter = function (verse) {
-  return true
+  return Bible.compareReferences(verse, this) === 1
+}
+Verse.prototype.isBefore = function (verse) {
+  return Bible.compareReferences(this, verse) === 1
+}
+
+function Passage (startVerse, endVerse) {
+  this.start = startVerse
+  this.end = endVerse
+}
+
+Passage.prototype.description = function () {
+  var text = Bible.bookName(this.start.book) + ' ' + this.start.chapter + ':' + this.start.number
+  if (this.end !== undefined) {
+    text = text + '-' + this.end.number
+  }
+  return text
 }
 
 export { Bible, Verse }

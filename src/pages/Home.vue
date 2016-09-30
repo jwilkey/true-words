@@ -9,6 +9,7 @@
     </card>
 
     <card title="CONTINUE" subtitle="Choose a study">
+      <p v-for="study in studies">{{ study.passage.description() }}</p>
       Ephesians 1:1-7
     </card>
   </div>
@@ -18,10 +19,12 @@
 import Titlebar from '../components/Titlebar'
 import store from '../../vuex/store'
 import Card from '../components/Card'
+import { getStudies } from '../../vuex/getters'
 
 export default {
   data () {
     return {
+      studies: this.getStudies
     }
   },
   components: {
@@ -29,7 +32,8 @@ export default {
   },
   store,
   vuex: {
-    actions: {
+    getters: {
+      getStudies
     }
   }
 }

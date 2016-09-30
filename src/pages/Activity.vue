@@ -15,7 +15,7 @@
 import $ from 'jquery'
 import store from '../../vuex/store'
 import { getCurrentActivity } from '../../vuex/getters'
-import activity from '../js/activity'
+import activities from '../js/activity'
 import Titlebar from '../components/Titlebar'
 import Menubar from '../components/Menubar'
 import Buckets from '../components/activities/Buckets'
@@ -25,7 +25,7 @@ import BucketsReviewer from '../components/reviewers/BucketsReviewer'
 export default {
   data () {
     return {
-      title: activity.subtitleForType(this.getCurrentActivity),
+      title: activities.manager.subtitleForType(this.getCurrentActivity),
       currentActivity: this.activityForType(this.getCurrentActivity),
       currentReviewer: this.reviewerForType(this.getCurrentActivity),
       reviewerData: undefined
@@ -49,14 +49,14 @@ export default {
     },
     activityForType (activityType) {
       switch (activityType) {
-        case activity.TYPE.PeoplePlacesThings: return 'buckets'
-        case activity.TYPE.Actions: return 'actions'
+        case activities.types.PeoplePlacesThings: return 'buckets'
+        case activities.types.Actions: return 'actions'
         default: return 'buckets'
       }
     },
     reviewerForType (activityType) {
       switch (activityType) {
-        case activity.TYPE.PeoplePlacesThings: return 'buckets-reviewer'
+        case activities.types.PeoplePlacesThings: return 'buckets-reviewer'
         default: return undefined
       }
     }

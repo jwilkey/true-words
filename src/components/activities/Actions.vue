@@ -10,6 +10,11 @@
 
   <selectable-text :delegate="selectionDelegate"></selectable-text>
 
+  <br />
+  <div class="container action-items">
+    <p v-for="action in actions">{{{ actionText(action) }}}</p>
+  </div>
+
   <div class="actionbar">
     <div v-if="currentStep === 'tense'" id="tense-selector" class="container-fluid">
       <div class="row">
@@ -52,6 +57,7 @@ import { getCurrentWords } from '../../../vuex/getters'
 export default {
   data () {
     return {
+      actions: [],
       pastTenseQualifiers: ['would have', 'had been', 'had', 'did', 'was', 'were'],
       presentTenseQualifiers: ['is', 'am', 'do', 'does', 'are'],
       futureTenseQualifiers: ['will have', 'will'],
@@ -95,6 +101,8 @@ export default {
       } else if (this.currentStep === 'result') {
         this.result = word
         this.currentStep = 'review'
+        this.$broadcast('selectable-text-reset')
+        this.actions.push(new Action(this.action, this.actor, this.target, this.result))
       }
     },
     onMultiSelect (words, range) {
@@ -124,10 +132,9 @@ export default {
           : ((this.tense) === 'present' ? 'Is this' : 'Will this be')
         return targetTense + ' done to something or someone? (select)'
       } else if (this.currentStep === 'result') {
-        return 'What is the result of this action?'
+        return 'What is the result/purpose of this action?'
       } else if (this.currentStep === 'review') {
-        var arrow = ' <span class="glyphicon glyphicon-menu-right flow"></span> '
-        return this.actor + arrow + this.action + arrow + this.target + arrow + this.result
+        return this.actionText(new Action(this.action, this.actor, this.target, this.result))
       }
     },
     getCurrentTenseHint () {
@@ -144,6 +151,10 @@ export default {
       this.tense = undefined
       this.result = undefined
       this.currentStep = 'action'
+    },
+    actionText (action) {
+      var arrow = ' <span class="glyphicon glyphicon-menu-right flow"></span> '
+      return action.actor + arrow + action.action + arrow + action.target + arrow + action.result
     }
   },
   ready () {
@@ -153,6 +164,13 @@ export default {
       words: getCurrentWords
     }
   }
+}
+
+function Action (action, actor, target, result) {
+  this.action = action
+  this.actor = actor
+  this.target = target
+  this.result = result
 }
 
 function endsWithAny (text, suffixes) {
@@ -188,6 +206,9 @@ function endsWithAny (text, suffixes) {
     color: @color-highlight-orange;
     top: 4px;
   }
+}
+.action-items {
+  color: @color-deemphasize;
 }
 #tense-selector {
   button strong {
