@@ -142,7 +142,7 @@ export default {
 }
 .text-preview {
   color: @color-deemphasize;
-  overflow-x: scroll;
+  overflow-x: hidden;
   white-space: nowrap;
   text-align: center;
   transition: margin-left 1.5s ease;

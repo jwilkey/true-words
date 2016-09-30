@@ -11,8 +11,8 @@
       </tr></thead>
       <tbody>
         <tr v-for="type in activities.manager.observationActivities" @click="activitySelected(type)">
-          <td>{{ activities.manager.titleForType(type) }}</td>
-          <td class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+          <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
+          <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
         </tr>
       </tbody>
     </table>
@@ -24,8 +24,8 @@
       </tr></thead>
       <tbody>
         <tr v-for="type in activities.manager.interpretationActivities" @click="activitySelected(type)">
-          <td>{{ activities.manager.titleForType(type) }}</td>
-          <td class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+          <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
+          <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
         </tr>
       </tbody>
     </table>
@@ -37,8 +37,8 @@
       </tr></thead>
       <tbody>
         <tr v-for="type in activities.manager.applicationActivities" @click="activitySelected(type)">
-          <td>{{ activities.manager.titleForType(type) }}</td>
-          <td class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+          <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
+          <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
         </tr>
       </tbody>
     </table>
@@ -62,8 +62,18 @@ export default {
   props: ['data'],
   methods: {
     activitySelected: function (type) {
-      this.setCurrentActivity(type)
-      this.$router.go('activity')
+      if (this.isEnabled(type)) {
+        this.setCurrentActivity(type)
+        this.$router.go('activity')
+      } else {
+        window.alert(this.activities.manager.titleForType(type) + ' activity coming soon!')
+      }
+    },
+    isDisabled: function (type) {
+      return !this.activities.manager.find(type).enabled
+    },
+    isEnabled: function (type) {
+      return this.activities.manager.find(type).enabled
     }
   },
   ready () {
