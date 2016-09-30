@@ -3,9 +3,9 @@
     <table class="buckets vthird">
       <tbody>
         <tr>
-          <td data-index="0" class="bucket back-orange hthird dropzone">{{ data[0] }}</td>
-          <td data-index="1" class="bucket back-purple hthird dropzone">{{ data[1] }}</td>
-          <td data-index="2" class="bucket back-red hthird dropzone">{{ data[2] }}</td>
+          <td data-index="0" class="bucket back-orange hthird dropzone" @click="assignToBucket(0)">{{ data[0] }}</td>
+          <td data-index="1" class="bucket back-purple hthird dropzone" @click="assignToBucket(1)">{{ data[1] }}</td>
+          <td data-index="2" class="bucket back-red hthird dropzone" @click="assignToBucket(2)">{{ data[2] }}</td>
         </tr>
       </tbody>
     </table>
@@ -27,7 +27,7 @@
     <table class="bucket vthird">
       <tbody>
         <tr>
-          <td data-index="3" colspan=2 class="bucket dropzone">OTHER</td>
+          <td data-index="3" colspan=2 class="bucket dropzone" @click="assignToBucket(3)">OTHER</td>
         </tr>
       </tbody>
     </table>
@@ -83,6 +83,18 @@ export default {
         new buckets.Bucket(this.data[2]),
         new buckets.Bucket('OTHER')
       ]
+    },
+    assignToBucket (bucketIndex) {
+      var word = this.words[this.currentWordIndex]
+      this.values[bucketIndex].add(word, this.currentWordIndex)
+      if (this.currentWordIndex + 1 === this.words.length) {
+        this.saveActivity(this.activityType, this.values)
+        this.finish(this.activityType, this.values)
+      } else {
+        this.incrementCurrentWord()
+        buckets.positionWord()
+        this.lineViewerFocusWord(this.currentWordIndex)
+      }
     }
   },
   components: {
@@ -94,15 +106,8 @@ export default {
     var v = this
     this.lineViewerFocusWord(this.currentWordIndex)
     buckets.setOnWordDrop(function (e) {
-      v.values[$(e.target).data('index')].add($(e.relatedTarget).text(), v.currentWordIndex)
-      if (v.currentWordIndex + 1 === v.words.length) {
-        v.saveActivity(v.activityType, v.values)
-        v.finish(v.activityType, v.values)
-      } else {
-        v.incrementCurrentWord()
-        buckets.positionWord()
-        v.lineViewerFocusWord(v.currentWordIndex)
-      }
+      var bucketIndex = $(e.target).data('index')
+      v.assignToBucket(bucketIndex)
     })
   },
   vuex: {
