@@ -1,0 +1,64 @@
+.btn-primary {
+  background-color: #317995;
+  border-color: #317995;
+}
+.btn-primary.disabled, .btn-primary.disabled:hover {
+  background-color: @color-disabled-button;
+  color: @color-disabled-button-text;
+  border-color: transparent;
+}
+.btn-primary:hover {
+  background-color: #216995;
+  border-color: #216995;
+}
+
+.list-group {
+  border-radius: 0px;
+  a {
+    color: white;
+    &:hover {
+      color: white;
+      background-color: @color-back-highlight;
+    }
+  }
+  .list-group-item {
+    color: white;
+    background-color: @color-back-raised;
+    box-shadow: @shadow;
+    border: none;
+    border-radius: 0;
+    margin-bottom: 5px;
+  }
+}
+
+.col-xs-5c,
+.col-sm-5c,
+.col-md-5c,
+.col-lg-5c {
+  position: relative;
+  min-height: 1px;
+  padding-right: 10px;
+  padding-left: 10px;
+}
+.col-xs-5c {
+  width: 20%;
+  float: left;
+}
+@media (min-width: 768px) {
+  .col-sm-5c {
+    width: 20%;
+    float: left;
+  }
+}
+@media (min-width: 992px) {
+  .col-md-5c {
+    width: 20%;
+    float: left;
+  }
+}
+@media (min-width: 1200px) {
+  .col-lg-5c {
+    width: 20%;
+    float: left;
+  }
+}
