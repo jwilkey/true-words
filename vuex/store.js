@@ -1,12 +1,14 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import activities from '../src/js/activity'
+import getters from './getters'
+import actions from './actions'
 
 // Make vue aware of Vuex
 Vue.use(Vuex)
 
 // Create an object to hold the initial state when the app starts up
-const state = {
+export const state = {
   page: 'home',
   studies: [],
   currentStudy: undefined,
@@ -17,7 +19,7 @@ const state = {
 }
 
 // Create an object storing various mutations. We will write the mutation
-const mutations = {
+export const mutations = {
   CREATE_STUDY (state, passage, versesArray) {
     state.studies.push({id: uuid(), date: new Date(), passage: passage, verses: versesArray})
     state.currentStudy = passage
@@ -45,7 +47,9 @@ const mutations = {
 // This store can be linked to our app.
 export default new Vuex.Store({
   state,
-  mutations
+  getters,
+  mutations,
+  actions
 })
 
 function uuid () {

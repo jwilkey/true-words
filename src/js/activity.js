@@ -5,7 +5,7 @@ var ActivityType = {
 
   Keywords: 'KEYWORDS',
   TopicTagging: 'TOPICS',
-  Christianese: 'CHRISTIANESE',
+  Idioms: 'IDIOMS',
   Paraphrase: 'PARAPHRASE',
 
   SPACE: 'SPACE'
@@ -21,7 +21,7 @@ function Activity (id, category, title, subtitle, enabled) {
 
 function ActivityManager () {
   this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions, ActivityType.CauseEffect]
-  this.interpretationActivities = [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Christianese, ActivityType.Paraphrase]
+  this.interpretationActivities = [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms, ActivityType.Paraphrase]
   this.applicationActivities = [ActivityType.SPACE]
   this.activities = [
     new Activity('PPT', 'observation', 'People, Places & Things', 'Nouns', true),
@@ -30,7 +30,7 @@ function ActivityManager () {
 
     new Activity('KEYWORDS', 'interpretation', 'Key Words', 'Key Words', false),
     new Activity('TOPICS', 'interpretation', 'Topics', 'Topics', false),
-    new Activity('CHRISTIANESE', 'interpretation', 'Christianese', 'Christianese', false),
+    new Activity('IDIOMS', 'interpretation', 'Idioms', 'Words not used in everyday talk', false),
     new Activity('PARAPHRASE', 'interpretation', 'Paraphrase', 'Paraphrase', false),
 
     new Activity('SPACE', 'application', 'SPACE', 'SPACE', false)
@@ -48,7 +48,8 @@ ActivityManager.prototype.titleForType = function (type) {
   return this.find(type).title
 }
 ActivityManager.prototype.subtitleForType = function (type) {
-  return this.find(type).subtitle
+  var activity = this.find(type)
+  return activity ? activity.subtitle : null
 }
 
 export default {

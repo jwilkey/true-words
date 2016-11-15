@@ -1,54 +1,56 @@
 <template>
-  <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
+  <div>
+    <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
-  <div class="container">
-    <p class="text-center accent">Choose an Activity to begin</p>
+    <div class="container">
+      <p class="text-center accent">Choose an Activity to begin</p>
 
-    <table>
-      <thead><tr>
-        <th>Observe</th>
-        <th class="text-right accent">What does it say?</th>
-      </tr></thead>
-      <tbody>
-        <tr v-for="type in activities.manager.observationActivities" @click="activitySelected(type)">
-          <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
-          <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <table>
+        <thead><tr>
+          <th>Observe</th>
+          <th class="text-right accent">What does it say?</th>
+        </tr></thead>
+        <tbody>
+          <tr v-for="type in activities.manager.observationActivities" @click="activitySelected(type)">
+            <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
+            <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table>
-      <thead><tr>
-        <th>Interpret</th>
-        <th class="text-right accent">What does it mean?</th>
-      </tr></thead>
-      <tbody>
-        <tr v-for="type in activities.manager.interpretationActivities" @click="activitySelected(type)">
-          <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
-          <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <table>
+        <thead><tr>
+          <th>Interpret</th>
+          <th class="text-right accent">What does it mean?</th>
+        </tr></thead>
+        <tbody>
+          <tr v-for="type in activities.manager.interpretationActivities" @click="activitySelected(type)">
+            <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
+            <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+          </tr>
+        </tbody>
+      </table>
 
-    <table>
-      <thead><tr>
-        <th>Apply</th>
-        <th class="text-right accent">What should I do?</th>
-      </tr></thead>
-      <tbody>
-        <tr v-for="type in activities.manager.applicationActivities" @click="activitySelected(type)">
-          <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
-          <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
-        </tr>
-      </tbody>
-    </table>
+      <table>
+        <thead><tr>
+          <th>Apply</th>
+          <th class="text-right accent">What should I do?</th>
+        </tr></thead>
+        <tbody>
+          <tr v-for="type in activities.manager.applicationActivities" @click="activitySelected(type)">
+            <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
+            <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
 import activities from '../js/activity'
 import Titlebar from '../components/Titlebar'
-import { setCurrentActivity } from '../../vuex/actions.js'
+import { mapActions } from 'vuex'
 
 export default {
   data () {
@@ -64,7 +66,7 @@ export default {
     activitySelected: function (type) {
       if (this.isEnabled(type)) {
         this.setCurrentActivity(type)
-        this.$router.go('activity')
+        this.$router.push('/activity')
       } else {
         window.alert(this.activities.manager.titleForType(type) + ' activity coming soon!')
       }
@@ -74,14 +76,8 @@ export default {
     },
     isEnabled: function (type) {
       return this.activities.manager.find(type).enabled
-    }
-  },
-  ready () {
-  },
-  vuex: {
-    actions: {
-      setCurrentActivity
-    }
+    },
+    ...mapActions(['setCurrentActivity'])
   }
 }
 </script>

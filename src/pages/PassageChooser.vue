@@ -1,38 +1,40 @@
 <template>
-  <titlebar title="BIBLE" :left-items="['home']">
-    <span class="muted" slot="right">NASB</span>
-  </titlebar>
+  <div>
+    <titlebar title="BIBLE" :left-items="['home']">
+      <span class="muted" slot="right">NASB</span>
+    </titlebar>
 
-  <div class="container">
-    <ul class="nav nav-pills" role="tablist">
-      <li role="presentation">
-        <a id="ot-tab" href="#ot-chooser" aria-controls="ot-chooser" role="tab" data-toggle="tab">Old Testament</a>
-      </li>
-      <li role="presentation">
-        <a id="nt-tab" href="#nt-chooser" aria-controls="nt-chooser" role="tab" data-toggle="tab">New Testament</a>
-      </li>
-      <a href="#chapter-chooser" aria-controls="chapter-chooser" role="tab" data-toggle="tab"></a>
-    </ul>
+    <div class="container">
+      <ul class="nav nav-pills" role="tablist">
+        <li role="presentation">
+          <a id="ot-tab" href="#ot-chooser" aria-controls="ot-chooser" role="tab" data-toggle="tab">Old Testament</a>
+        </li>
+        <li role="presentation">
+          <a id="nt-tab" href="#nt-chooser" aria-controls="nt-chooser" role="tab" data-toggle="tab">New Testament</a>
+        </li>
+        <a href="#chapter-chooser" aria-controls="chapter-chooser" role="tab" data-toggle="tab"></a>
+      </ul>
 
-    <div id="passageChooser" class="tab-content">
-      <div id="ot-chooser" role="tabpanel" class="tab-pane fade clearfix">
-        <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="book in otBooks">
-          <div track-by="$index" @click='bookSelected($event.target)' class='book-name' data-book="{{book.identifier}}">{{ book.name }}</div>
+      <div id="passageChooser" class="tab-content">
+        <div id="ot-chooser" role="tabpanel" class="tab-pane fade clearfix">
+          <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="(book, index) in otBooks">
+            <div :key="index" @click='bookSelected($event.target)' class='book-name' :data-book="book.identifier">{{ book.name }}</div>
+          </div>
         </div>
-      </div>
 
-      <div id="nt-chooser" role="tabpanel" class="tab-pane fade clearfix">
-        <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="book in ntBooks">
-          <div track-by="$index" @click='bookSelected($event.target)' class='book-name' data-book="{{book.identifier}}">{{ book.name }}</div>
+        <div id="nt-chooser" role="tabpanel" class="tab-pane fade clearfix">
+          <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="(book, index) in ntBooks">
+            <div :key="index" @click='bookSelected($event.target)' class='book-name' :data-book="book.identifier">{{ book.name }}</div>
+          </div>
         </div>
-      </div>
 
-      <div id="chapter-chooser" role="tabpanel" class="tab-pane fade clearfix">
-        <p class="selected-book text-center">{{ selectedBookName }}</p>
-        <div class="col-xs-2 col-md-1 chapter" v-for="n in chapterCount">
-          <div class="chapter-sizer"></div>
-          <div track-by="$index" @click='chapterSelected($event.target)' class='chapter-label-container' data-chapter="{{ n + 1 }}">
-            <p class="chapter-label">{{ n + 1 }}</p>
+        <div id="chapter-chooser" role="tabpanel" class="tab-pane fade clearfix">
+          <p class="selected-book text-center">{{ selectedBookName }}</p>
+          <div class="col-xs-2 col-md-1 chapter" v-for="(n, index) in chapterCount">
+            <div class="chapter-sizer"></div>
+            <div :key="index" @click='chapterSelected($event.target)' class='chapter-label-container' :data-chapter="n">
+              <p class="chapter-label">{{ n }}</p>
+            </div>
           </div>
         </div>
       </div>
@@ -59,8 +61,12 @@ export default {
   components: {
     Titlebar, PassageViewer
   },
-  ready () {
-    this.$route.query.t === 'ot' ? $('#ot-tab').tab('show') : $('#nt-tab').tab('show')
+  mounted () {
+    this.$nextTick(function () {
+      this.$route.query.t === 'ot'
+        ? $('#ot-tab').tab('show')
+        : $('#nt-tab').tab('show')
+    })
   },
   methods: {
     bookSelected (element) {
@@ -72,11 +78,7 @@ export default {
     chapterSelected (element) {
       this.selectedChapter = -1
       this.selectedChapter = $(element).closest('.chapter-label-container').data('chapter')
-      this.$router.go('viewpassage?book=' + this.selectedBook + '&chapter=' + this.selectedChapter)
-    }
-  },
-  vuex: {
-    actions: {
+      this.$router.push('viewpassage?book=' + this.selectedBook + '&chapter=' + this.selectedChapter)
     }
   }
 }

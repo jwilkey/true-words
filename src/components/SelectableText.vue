@@ -2,14 +2,14 @@
   <div id="content" class="container">
     <div class="row">
       <div id="text" class="col-sm-12">
-        <span track-by="$index" v-for="word in words" id="word-{{ $index }}" data-index="{{$index}}" @click="selected($event.target)" class="word">{{ word }}</span>
+        <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" @click="selected($event.target)" class="word">{{ word }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { getCurrentWords } from '../../vuex/getters'
+import { mapGetters } from 'vuex'
 import $ from 'jquery'
 
 export default {
@@ -18,6 +18,9 @@ export default {
       selectedWordIndex: undefined,
       initialSelection: undefined
     }
+  },
+  computed: {
+    ...mapGetters({words: 'getCurrentWords'})
   },
   props: ['delegate'],
   methods: {
@@ -78,15 +81,10 @@ export default {
       this.reset()
     }
   },
-  ready () {
+  mounted () {
     $('#content').on('touchstart mousedown', this.onTouchStart)
     $('#content').on('touchmove mousemove', this.onTouchMove)
     $('#content').on('touchend touchleave mouseup mouseleave', this.onTouchEnd)
-  },
-  vuex: {
-    getters: {
-      words: getCurrentWords
-    }
   }
 }
 

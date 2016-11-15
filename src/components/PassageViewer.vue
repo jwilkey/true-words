@@ -1,31 +1,33 @@
 <template>
-  <titlebar :left-items="['back']" :on-back="goBack">
-    <div slot="center" class="btn-group" role="group" aria-label="chapter-nav">
-      <button type="button" @click="chapterBack()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
-      <button type="button" v-link="'choosepassage'" class="btn btn-default off">{{ bible.bookName(bookIdentifier) }} {{ chapter }}</button>
-      <button type="button" @click="chapterForward()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
+  <div>
+    <titlebar :left-items="['back']" :on-back="goBack">
+      <div slot="center" class="btn-group" role="group" aria-label="chapter-nav">
+        <button type="button" @click="chapterBack()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
+        <button type="button" @click="bookNavSelected()" class="btn btn-default off">{{ bible.bookName(bookIdentifier) }} {{ chapter }}</button>
+        <button type="button" @click="chapterForward()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
+      </div>
+    </titlebar>
+
+    <div class="container">
+      <ul class="list-group">
+        <li v-for="verse in verses" class="list-group-item verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
+          <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+        </li>
+      </ul>
     </div>
-  </titlebar>
 
-  <div class="container">
-    <ul class="list-group">
-      <li v-for="verse in verses" class="list-group-item verse" v-bind:class="{ 'selected': isSelected(verse) }" data-verse="{{ verse.number }}" @click="verseSelected($event.target)">
-        <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
-      </li>
-    </ul>
-  </div>
-
-  <div class="actionbar">
-    <p class="text-center accent">{{ actionText }}</p>
-    <button @click="actionPressed()" class="btn btn-lg btn-primary btn-block" v-if="isPassageSelected">BEGIN</button>
+    <div class="actionbar">
+      <p class="text-center accent">{{ actionText }}</p>
+      <button @click="actionPressed()" class="btn btn-lg btn-primary btn-block" v-if="isPassageSelected">BEGIN</button>
+    </div>
   </div>
 </template>
 
 <script>
-import store from '../../vuex/store'
+import Vue from 'vue'
 import { Bible, Verse } from '../js/bible.js'
 import bibleLoader from '../js/bibleloader.js'
-import { setCurrentWords, createNewStudy } from '../../vuex/actions'
+import { mapActions } from 'vuex'
 import $ from 'jquery'
 import Titlebar from './Titlebar'
 
@@ -67,7 +69,7 @@ export default {
   components: {
     Titlebar
   },
-  ready () {
+  mounted () {
     this.bookIdentifier = this.$route.query.book || 'MATTHEW'
     this.chapter = parseInt(this.$route.query.chapter) || 1
   },
@@ -80,7 +82,7 @@ export default {
       })
     },
     goBack () {
-      this.$router.go('choosepassage')
+      this.$router.back()
     },
     isSelected (verse) {
       if (this.bookIdentifier && this.chapter) {
@@ -101,7 +103,7 @@ export default {
       } else {
         if (bibleVerse.isAfter(this.startingVerse)) {
           this.endingVerse = bibleVerse
-          this.verses.$set(0, this.verses[0])
+          Vue.set(this.verses, 0, this.verses[0])
         }
       }
     },
@@ -111,6 +113,9 @@ export default {
     chapterForward () {
       this.chapter = this.chapter === Bible.chapters(this.bookIdentifier) ? this.chapter : this.chapter + 1
     },
+    bookNavSelected () {
+      this.$router.push('/choosepassage')
+    },
     actionPressed () {
       var selected = this.selectedVerses
       var versesArray = this.verses.slice(selected[0] - 1, selected[0] + selected.length - 1)
@@ -118,9 +123,10 @@ export default {
       var text = $(versesArray).map(function () {
         return this.text
       }).get().join(' ')
-      this.setWords(text)
-      this.$router.go('activities')
-    }
+      this.setCurrentWords(text)
+      this.$router.push('/activities')
+    },
+    ...mapActions(['createNewStudy', 'setCurrentWords'])
   },
   watch: {
     chapter: function (value) {
@@ -132,13 +138,6 @@ export default {
       if (this.chapter !== undefined) {
         this.loadVerses()
       }
-    }
-  },
-  store,
-  vuex: {
-    actions: {
-      createNewStudy,
-      setWords: setCurrentWords
     }
   }
 }

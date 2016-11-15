@@ -1,28 +1,33 @@
 <template>
-  <div class="bucket-label hthird back-orange">{{ data[0].name }}</div>
-  <div class="bucket-label hthird back-purple">{{ data[1].name }}</div>
-  <div class="bucket-label hthird back-red">{{ data[2].name }}</div>
+  <div v-if="data !== undefined">
+    <div class="bucket-label hthird back-orange">{{ data[0].name }}</div>
+    <div class="bucket-label hthird back-purple">{{ data[1].name }}</div>
+    <div class="bucket-label hthird back-red">{{ data[2].name }}</div>
 
-  <div class="container">
-    <span track-by="$index" v-for="word in words" v-bind:class="wordClass($index)">{{ word }} </span>
-  </div>
+    <div class="container">
+      <span :key="word.index" v-for="(word, index) in words" :class="wordClass(index)">{{ word }} </span>
+    </div>
 
-  <div class="actionbar">
-    <button @click="donePressed()" class="btn btn-lg btn-primary btn-block">DONE</button>
+    <div class="actionbar">
+      <button @click="donePressed()" class="btn btn-lg btn-primary btn-block">DONE</button>
+    </div>
   </div>
 </template>
 
 <script>
-import { getCurrentActivity, getCurrentWords } from '../../../vuex/getters'
+import { mapGetters } from 'vuex'
 import activities from '../../js/activity'
 
 export default {
-  data () {
-    return {
-      title: activities.manager.titleForType(this.getCurrentActivity)
+  data () { return { } },
+  computed: {
+    ...mapGetters({
+      words: 'getCurrentWords',
+      getCurrentActivity: 'getCurrentActivity'
+    }),
+    title: function () {
+      return activities.manager.titleForType(this.getCurrentActivity)
     }
-  },
-  components: {
   },
   props: ['data'],
   methods: {
@@ -38,15 +43,7 @@ export default {
       }
     },
     donePressed: function () {
-      this.$router.go('/')
-    }
-  },
-  ready () {
-  },
-  vuex: {
-    getters: {
-      getCurrentActivity,
-      words: getCurrentWords
+      this.$router.replace('/')
     }
   }
 }

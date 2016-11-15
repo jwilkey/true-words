@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css'
 import Vue from 'vue'
 
+import store from '../vuex/store'
 import App from './App'
 import Home from './pages/Home'
 import PassageChooser from './pages/PassageChooser'
@@ -11,35 +12,29 @@ import Activity from './pages/Activity'
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
-export var router = new VueRouter()
 
-router.map({
-  '/': {
-    component: Home
-  },
-  '/passage': {
-    component: PassageViewer
-  },
-  '/choosepassage': {
-    component: PassageChooser
-  },
-  '/viewpassage': {
-    component: PassageViewer
-  },
-  '/activities': {
-    component: Activities
-  },
-  '/activity': {
-    component: Activity
-  }
+const routes = [
+  { path: '/', component: Home },
+  { path: '/passage', component: PassageViewer },
+  { path: '/choosepassage', component: PassageChooser },
+  { path: '/viewpassage', component: PassageViewer },
+  { path: '/activities', component: Activities },
+  { path: '/activity', component: Activity },
+  { path: '*', redirect: '/' }
+]
+
+const router = new VueRouter({
+  routes
 })
 
-// Redirect to the home route if any routes are unmatched
-router.redirect({
-  '*': '/'
+// router.start(App, '#app')
+var v = new Vue({
+  el: '#app',
+  store,
+  router,
+  render: h => h(App)
 })
-
-router.start(App, '#app')
+v
 
 var $ = require('jquery')
 window.jQuery = window.$ = $

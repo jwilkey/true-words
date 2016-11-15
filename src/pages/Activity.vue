@@ -1,20 +1,22 @@
 <template>
-  <titlebar :title="title.toUpperCase()" :left-items="['close']" :right-items="['help']" :on-close="closePressed" :on-help="helpPressed"></titlebar>
-  <menubar></menubar>
+  <div>
+    <titlebar :title="title.toUpperCase()" :left-items="['close']" :right-items="['help']" :on-close="closePressed" :on-help="helpPressed"></titlebar>
+    <menubar></menubar>
 
-  <div id="activity">
-    <component :is="currentActivity" :finish="onFinish" :data="['PEOPLE', 'PLACES', 'THINGS']"></component>
-  </div>
+    <div id="activity">
+      <component :is="currentActivity" :finish="onFinish" :data="['PEOPLE', 'PLACES', 'THINGS']"></component>
+    </div>
 
-  <div id="review">
-    <component v-if="currentReviewer" :is="currentReviewer" :data="reviewerData"></component>
+    <div id="review">
+      <component v-if="currentReviewer" :is="currentReviewer" :data="reviewerData"></component>
+    </div>
   </div>
 </template>
 
 <script>
 import $ from 'jquery'
 import store from '../../vuex/store'
-import { getCurrentActivity } from '../../vuex/getters'
+import { mapGetters } from 'vuex'
 import activities from '../js/activity'
 import Titlebar from '../components/Titlebar'
 import Menubar from '../components/Menubar'
@@ -25,10 +27,17 @@ import BucketsReviewer from '../components/reviewers/BucketsReviewer'
 export default {
   data () {
     return {
-      title: activities.manager.subtitleForType(this.getCurrentActivity),
-      currentActivity: this.activityForType(this.getCurrentActivity),
-      currentReviewer: this.reviewerForType(this.getCurrentActivity),
       reviewerData: undefined
+    }
+  },
+  computed: {
+    ...mapGetters(['getCurrentActivity']),
+    title: function () {
+      return activities.manager.subtitleForType(this.getCurrentActivity)
+    },
+    currentActivity: function () { return this.activityForType(this.getCurrentActivity) },
+    currentReviewer: function () {
+      return this.reviewerForType(this.getCurrentActivity)
     }
   },
   components: {
@@ -36,7 +45,7 @@ export default {
   },
   methods: {
     closePressed () {
-      this.$router.go('activities')
+      this.$router.back()
     },
     helpPressed () {
       window.alert('help from the activity')
@@ -62,14 +71,9 @@ export default {
     }
   },
   store,
-  ready () {
+  mounted () {
     $('#activity,#review').css('padding-top', $('.titlebar').css('height'))
     $('#activity,#review').css('padding-bottom', $('.actionbar').css('height'))
-  },
-  vuex: {
-    getters: {
-      getCurrentActivity
-    }
   }
 }
 </script>

@@ -18,7 +18,7 @@
         </td></tr>
         <tr><td>
           <div class="text-preview">
-            <span track-by="$index" v-for="word in words" id="text-preview-{{ $index }}">{{ word }} </span>
+            <span :key="word.index" v-for="(word, index) in words" :id="'text-preview-' + index">{{ word }} </span>
           </div>
         </td></tr>
       </tbody></table>
@@ -37,8 +37,7 @@
 <script>
 import buckets from '../../js/buckets.js'
 import store from '../../../vuex/store'
-import { getCurrentWords } from '../../../vuex/getters'
-import { saveActivity } from '../../../vuex/actions'
+import { mapGetters, mapActions } from 'vuex'
 import $ from 'jquery'
 import activities from '../../js/activity'
 
@@ -46,13 +45,18 @@ export default {
   data () {
     return {
       currentWordIndex: 0,
-      wordCount: this.words.length,
       activityType: activities.types.PeoplePlacesThings
     }
   },
   computed: {
+    ...mapGetters({
+      words: 'getCurrentWords'
+    }),
     currentWord: function () {
       return this.words[this.currentWordIndex]
+    },
+    wordCount: function () {
+      return this.words.length
     },
     priorTwoWords: function () {
       return 'test words'
@@ -63,6 +67,7 @@ export default {
   },
   props: ['finish', 'data'],
   methods: {
+    ...mapActions(['saveActivity']),
     incrementCurrentWord () {
       this.currentWordIndex++
     },
@@ -100,7 +105,7 @@ export default {
   components: {
   },
   store,
-  ready () {
+  mounted () {
     this.initializeBucketValues()
     buckets.setupDraggables()
     var v = this
@@ -109,14 +114,6 @@ export default {
       var bucketIndex = $(e.target).data('index')
       v.assignToBucket(bucketIndex)
     })
-  },
-  vuex: {
-    actions: {
-      saveActivity
-    },
-    getters: {
-      words: getCurrentWords
-    }
   }
 }
 </script>

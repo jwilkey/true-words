@@ -1,8 +1,8 @@
 <template>
-  <titlebar title="ACTIVITY"></titlebar>
-
-  <div class="menubar">
-    <button class="btn btn-default pull-right">Start over</button>
+  <div>
+    <div class="menubar">
+      <button class="btn btn-default pull-right">Start over</button>
+    </div>
   </div>
 </template>
 

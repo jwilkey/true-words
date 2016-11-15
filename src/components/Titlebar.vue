@@ -1,14 +1,22 @@
 <template>
   <div class="titlebar">
     <div class="titlebar-item-group left">
-      <div v-for="item in leftItems" :is="item"></div>
+      <a v-if="showLeft('close')" class="titlebar-item" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
+      <router-link v-if="showLeft('home')" class="titlebar-item" to="/">
+        <span class="glyphicon glyphicon-home"></span>
+      </router-link>
+      <a v-if="showLeft('back')" class="titlebar-item" @click="onBack()"><span class="glyphicon glyphicon-menu-left"></span></a>
+      <div v-if="showLeft('help')" class="titlebar-item" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
     </div>
-    <div class="text-center">
+    <div class="text-center title">
       {{ title }}
       <slot name="center"></slot>
     </div>
     <div class="titlebar-item-group right">
-      <div v-for="item in rightItems" :is="item"></div>
+      <a v-if="showRight('close')" class="titlebar-item" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
+      <router-link v-if="showRight('home')" class="titlebar-item" to="/"><span class="glyphicon glyphicon-home"></span></router-link>
+      <a v-if="showRight('back')" class="titlebar-item" @click="onBack()">BACK</a>
+      <div v-if="showRight('help')" class="titlebar-item" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
       <p class="titlebar-item">
         <slot name="right"></slot>
       </p>
@@ -17,52 +25,29 @@
 </template>
 
 <script>
+import $ from 'jquery'
+
 export default {
-  data () {
-    return {
-    }
-  },
-  components: {
-    'close': {
-      template: '<a class="titlebar-item" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>',
-      methods: {
-        onClose () {
-          this.$parent.onClose()
-        }
-      }
-    },
-    'home': {
-      template: '<a class="titlebar-item" v-link="\'/\'"><span class="glyphicon glyphicon-home"></span></a>'
-    },
-    'back': {
-      template: '<a class="titlebar-item" @click="onBack()"><span class="glyphicon glyphicon-menu-left"></span></a>',
-      methods: {
-        onBack () {
-          this.$parent.onBack()
-        }
-      }
-    },
-    'help': {
-      template: '<div class="titlebar-item" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>',
-      methods: {
-        help () {
-          this.$parent.onHelp !== undefined ? this.$parent.onHelp() : window.alert('Help coming soon!!!')
-        }
-      }
-    }
-  },
+  data () { return { } },
+  components: { },
   methods: {
+    showLeft (label) {
+      return this.leftItems !== undefined && this.leftItems.indexOf(label) > -1
+    },
+    showRight (label) {
+      return this.rightItems !== undefined && this.rightItems.indexOf(label) > -1
+    },
+    help () {
+      this.onHelp !== undefined ? this.onHelp() : window.alert('Help coming soon!!!')
+    }
+  },
+  mounted () {
+    $('#tasks-button').click(function () {
+      $('.menubar').toggleClass('show')
+    })
   },
   props: ['title', 'leftItems', 'rightItems', 'onHelp', 'onBack', 'onClose']
 }
-
-import $ from 'jquery'
-
-$(document).ready(function () {
-  $('#tasks-button').click(function () {
-    $('.menubar').toggleClass('show')
-  })
-})
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -70,7 +55,6 @@ $(document).ready(function () {
 @import '../../static/less/colors.less';
 .title {
   font-family: serif;
-  font-size: 16px;
   letter-spacing: 3px;
 }
 
@@ -84,7 +68,6 @@ $(document).ready(function () {
   padding-top: 10px;
   padding-bottom: 10px;
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);;
-  font-family: serif;
   font-size: 16px;
   letter-spacing: 3px;
   .titlebar-item-group {

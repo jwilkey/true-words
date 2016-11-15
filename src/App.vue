@@ -5,17 +5,10 @@
 </template>
 
 <script>
-import store from '../vuex/store'
-
 export default {
   components: {
   },
   methods: {
-  },
-  store,
-  vuex: {
-    actions: {
-    }
   }
 }
 </script>
@@ -23,10 +16,10 @@ export default {
 <style lang="less">
 @import '../static/less/app.less';
 @import '../static/less/colors.less';
-.fade-transition {
+.fade-enter-active, .fade-leave-active {
   transition: opacity .3s ease;
 }
-.fade-enter, .fade-leave {
+.fade-enter, .fade-leave-active {
   opacity: 0;
 }
 </style>
