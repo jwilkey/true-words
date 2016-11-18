@@ -1,12 +1,6 @@
 <template>
   <div>
-    <div class="action-instruction">
-      <div class="text-center" v-html="instructionText()"> </div>
-      <div v-if="currentStep === 'review'" id="review-instruction" class="text-center">
-      </div>
-    </div>
-
-    <selectable-text :delegate="selectionDelegate"></selectable-text>
+    <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
 
     <br />
     <div class="container action-items">
@@ -14,6 +8,12 @@
     </div>
 
     <div class="actionbar">
+      <div class="action-instruction">
+        <div class="text-center" v-html="instructionText()"> </div>
+        <div v-if="currentStep === 'review'" id="review-instruction" class="text-center">
+        </div>
+      </div>
+
       <div v-if="currentStep === 'tense'" id="tense-selector" class="container-fluid">
         <div class="row">
           <div class="tense-button col-xs-4">
@@ -155,6 +155,7 @@ export default {
       this.tense = undefined
       this.result = undefined
       this.currentStep = 'action'
+      this.$refs.selectableText.reset()
     },
     actionText (action) {
       var arrow = ' <span class="glyphicon glyphicon-menu-right flow"></span> '
@@ -193,6 +194,7 @@ function endsWithAny (text, suffixes) {
   z-index: 100;
   width: 100%;
   padding: 5px;
+  padding-bottom: 15px;
   box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.9);
   background-color: @color-back-raised;
   button {
@@ -200,7 +202,6 @@ function endsWithAny (text, suffixes) {
   }
 }
 .action-instruction {
-  color: @color-text-accent;
   font-size: 19px;
   margin-bottom: 10px;
   .flow {

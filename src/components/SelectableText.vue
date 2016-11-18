@@ -76,11 +76,6 @@ export default {
       $('.word').removeClass('selected multi start end')
     }
   },
-  events: {
-    'selectable-text-reset': function () {
-      this.reset()
-    }
-  },
   mounted () {
     $('#content').on('touchstart mousedown', this.onTouchStart)
     $('#content').on('touchmove mousemove', this.onTouchMove)
@@ -102,12 +97,15 @@ function getPoint (e) {
 .word {
   float: left;
   color: white;
+  font-size: 18px;
   background-color: @color-back-raised;
-  margin: 3px;
-  border-radius: 1px;
-  border: solid 1px transparent;
+  margin-top: 3px;
+  margin-bottom: 3px;
+  border: solid 1px @color-back;
   padding: 5px;
-  box-shadow: -1px 0px 2px rgba(0, 0, 0, 0.5);
+  padding-left: 8px;
+  padding-right: 8px;
+  box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.5);
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -131,17 +129,19 @@ function getPoint (e) {
   margin-right: 0px;
   box-shadow: none;
   border-radius: 0px;
-  border-right: solid 1px #9b1;
-  border-left: solid 1px #9b1;
-  border-top: solid 1px #000;
-  border-bottom: solid 1px #000;
+  border-right: solid 1px #ff8;
+  border-left: solid 1px transparent;
+  border-top: solid 1px #ff8;
+  border-bottom: solid 1px #ff8;
   &.start {
-    margin-left: 3px;
-    border-left: double 15px #7777dd;
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+    border-left: solid 1px #ff8;
   }
   &.end {
-    margin-right: 3px;
-    border-right: double 15px #7777dd;
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+    border-right: solid 1px #ff8;
   }
 }
 </style>
