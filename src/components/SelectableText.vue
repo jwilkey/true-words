@@ -28,50 +28,65 @@ export default {
   methods: {
     selected (element) {
       var wordIndex = parseInt(element.id.substring(5))
-      if (this.selectedWordIndex) {
+      if (this.selectedWordIndex !== undefined) {
         if (this.selectionStartIndex && this.selectionEndIndex) {
-          if (wordIndex < this.selectionStartIndex) {
-            $('.start.selected').removeClass('start')
-            $(element).addClass('start selected')
-            this.selectionStartIndex = wordIndex
-          } else if (wordIndex < this.selectionEndIndex) {
-            $('.end.selected').removeClass('end selected')
-            $(element).addClass('end selected')
-            this.selectionEndIndex = wordIndex
-          } else if (wordIndex > this.selectionEndIndex) {
-            $('.end.selected').removeClass('end selected')
-            $(element).addClass('end selected')
-            this.selectionEndIndex = wordIndex
-          }
+          this.adjustSelectionRange(element, wordIndex)
+        } else if (wordIndex === this.selectedWordIndex) {
+          $(element).removeClass('selected')
+          this.resetSelectedIndexes
         } else {
-          var previousWord = $('#word-' + this.selectedWordIndex)
-          if (wordIndex < this.selectedWordIndex) {
-            $(element).addClass('start selected')
-            previousWord.addClass('end selected')
-            this.selectionStartIndex = wordIndex
-            this.selectionEndIndex = this.selectedWordIndex
-          }
-          if (wordIndex > this.selectedWordIndex) {
-            $(element).addClass('end selected')
-            previousWord.addClass('start selected')
-            this.selectionStartIndex = this.selectedWordIndex
-            this.selectionEndIndex = wordIndex
-          }
+          this.createSelectionRange(element, wordIndex)
         }
-        $('.selected.start').nextUntil('.selected.end').addClass('selected')
-        $('.selected.end').nextUntil(':not(.selected)').removeClass('selected')
-        if (this.selectionStartIndex === this.selectionEndIndex) {
-          this.selectedWordIndex = wordIndex
-          this.selectionStartIndex = undefined
-          this.selectionEndIndex = undefined
-          $(element).removeClass('start end')
-        }
+        this.cleanUpSelectionRange(element, wordIndex)
       } else {
         $(element).addClass('selected')
         this.selectedWordIndex = wordIndex
       }
       if (this.delegate && this.delegate.onSelect) {
         this.delegate.onSelect($(element).text(), $(element).data('index'))
+      }
+    },
+    createSelectionRange (element, wordIndex) {
+      var previousWord = $('#word-' + this.selectedWordIndex)
+      if (wordIndex < this.selectedWordIndex) {
+        $(element).addClass('start selected')
+        previousWord.addClass('end selected')
+        this.selectionStartIndex = wordIndex
+        this.selectionEndIndex = this.selectedWordIndex
+      }
+      if (wordIndex > this.selectedWordIndex) {
+        $(element).addClass('end selected')
+        previousWord.addClass('start selected')
+        this.selectionStartIndex = this.selectedWordIndex
+        this.selectionEndIndex = wordIndex
+      }
+    },
+    adjustSelectionRange (element, wordIndex) {
+      if (wordIndex < this.selectionStartIndex) {
+        $('.start.selected').removeClass('start')
+        $(element).addClass('start selected')
+        this.selectionStartIndex = wordIndex
+      } else if (wordIndex === this.selectionStartIndex) {
+        $(element).nextUntil(':not(.selected)').addBack().removeClass('selected start end')
+        this.resetSelectedIndexes()
+      } else if (wordIndex < this.selectionEndIndex) {
+        $('.end.selected').removeClass('end selected')
+        $(element).addClass('end selected')
+        this.selectionEndIndex = wordIndex
+      } else if (wordIndex > this.selectionEndIndex) {
+        $('.end.selected').removeClass('end selected')
+        $(element).addClass('end selected')
+        this.selectionEndIndex = wordIndex
+      }
+    },
+    cleanUpSelectionRange (element, wordIndex) {
+      $('.selected.start').nextUntil('.selected.end').addClass('selected')
+      $('.selected.end').nextUntil(':not(.selected)').removeClass('selected')
+      if (this.selectionStartIndex !== undefined && this.selectionEndIndex !== undefined && (this.selectionStartIndex === this.selectionEndIndex)) {
+        this.selectedWordIndex = wordIndex
+        this.selectionStartIndex = undefined
+        this.selectionEndIndex = undefined
+        $(element).removeClass('start end')
       }
     },
     selectedText () {
@@ -82,12 +97,13 @@ export default {
     highlightSelection () {
       $('.selected').addClass('highlighted')
       $('.selected').removeClass('selected')
-      this.selectedWordIndex = undefined
-      this.selectionStartIndex = undefined
-      this.selectionEndIndex = undefined
+      this.resetSelectedIndexes()
     },
     reset () {
       $('.word').removeClass('highlighted selected start end')
+      this.resetSelectedIndexes()
+    },
+    resetSelectedIndexes () {
       this.selectedWordIndex = undefined
       this.selectionStartIndex = undefined
       this.selectionEndIndex = undefined
