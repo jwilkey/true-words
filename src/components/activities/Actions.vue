@@ -1,10 +1,12 @@
 <template>
-  <div>
-    <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
+  <div class="cleafix">
+    <div v-bind:style="{paddingBottom: paddingBottom + 'px'}">
+      <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
 
-    <br />
-    <div class="container action-items">
-      <p v-for="action in actions" v-html="actionText(action)"></p>
+      <br />
+      <div class="container action-items">
+        <p v-for="action in actions" v-html="actionText(action)"></p>
+      </div>
     </div>
 
     <div class="actionbar">
@@ -70,6 +72,7 @@
 <script>
 import SelectableText from '../SelectableText'
 import { mapGetters } from 'vuex'
+import $ from 'jquery'
 
 export default {
   data () {
@@ -98,7 +101,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({words: 'getCurrentWords'})
+    ...mapGetters({words: 'getCurrentWords'}),
+    paddingBottom () {
+      return $('.actionbar').height() + 18
+    }
   },
   components: {
     SelectableText
