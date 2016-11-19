@@ -16,6 +16,8 @@ export default {
   data () {
     return {
       selectedWordIndex: undefined,
+      selectionStartIndex: undefined,
+      selectionEndIndex: undefined,
       initialSelection: undefined
     }
   },
@@ -25,55 +27,70 @@ export default {
   props: ['delegate'],
   methods: {
     selected (element) {
-      $(element).toggleClass('selected')
+      var wordIndex = parseInt(element.id.substring(5))
+      if (this.selectedWordIndex) {
+        if (this.selectionStartIndex && this.selectionEndIndex) {
+          if (wordIndex < this.selectionStartIndex) {
+            $('.start.selected').removeClass('start')
+            $(element).addClass('start selected')
+            this.selectionStartIndex = wordIndex
+          } else if (wordIndex < this.selectionEndIndex) {
+            $('.end.selected').removeClass('end selected')
+            $(element).addClass('end selected')
+            this.selectionEndIndex = wordIndex
+          } else if (wordIndex > this.selectionEndIndex) {
+            $('.end.selected').removeClass('end selected')
+            $(element).addClass('end selected')
+            this.selectionEndIndex = wordIndex
+          }
+        } else {
+          var previousWord = $('#word-' + this.selectedWordIndex)
+          if (wordIndex < this.selectedWordIndex) {
+            $(element).addClass('start selected')
+            previousWord.addClass('end selected')
+            this.selectionStartIndex = wordIndex
+            this.selectionEndIndex = this.selectedWordIndex
+          }
+          if (wordIndex > this.selectedWordIndex) {
+            $(element).addClass('end selected')
+            previousWord.addClass('start selected')
+            this.selectionStartIndex = this.selectedWordIndex
+            this.selectionEndIndex = wordIndex
+          }
+        }
+        $('.selected.start').nextUntil('.selected.end').addClass('selected')
+        $('.selected.end').nextUntil(':not(.selected)').removeClass('selected')
+        if (this.selectionStartIndex === this.selectionEndIndex) {
+          this.selectedWordIndex = wordIndex
+          this.selectionStartIndex = undefined
+          this.selectionEndIndex = undefined
+          $(element).removeClass('start end')
+        }
+      } else {
+        $(element).addClass('selected')
+        this.selectedWordIndex = wordIndex
+      }
       if (this.delegate && this.delegate.onSelect) {
         this.delegate.onSelect($(element).text(), $(element).data('index'))
       }
     },
-    onTouchStart (e) {
-      var point = getPoint(e)
-      var element = document.elementFromPoint(point.x, point.y)
-      var v = this
-      if ($(element).hasClass('word') && !$(element).hasClass('multi')) {
-        v.initialSelection = element
-      }
+    selectedText () {
+      return $('.selected').map(function () {
+        return $.trim($(this).text())
+      }).get().join(' ')
     },
-    onTouchMove (e) {
-      if (this.initialSelection !== undefined) {
-        var point = getPoint(e)
-        var element = document.elementFromPoint(point.x, point.y)
-        if ($(element).hasClass('word')) {
-          e.preventDefault()
-          var elementIndex = parseInt(element.id.substring(5))
-          if (this.selectedWordIndex === undefined) {
-            $(element).addClass('start')
-            this.selectedWordIndex = elementIndex
-            $(element).addClass('multi')
-            $(element).removeClass('selected')
-          } else if (elementIndex === this.selectedWordIndex + 1) {
-            this.selectedWordIndex = elementIndex
-            $(element).addClass('multi')
-            $(element).removeClass('selected')
-          }
-        }
-      }
-    },
-    onTouchEnd (e) {
-      if (this.selectedWordIndex !== undefined) {
-        $('#word-' + this.selectedWordIndex).addClass('end')
-        if (this.delegate && this.delegate.onMultiSelect) {
-          var startIndex = $(this.initialSelection).data('index')
-          var selectedWords = $('.word').slice(startIndex, this.selectedWordIndex + 1).map(function () {
-            return $(this).text()
-          }).get()
-          this.delegate.onMultiSelect(selectedWords, [startIndex, this.selectedWordIndex])
-        }
-      }
+    highlightSelection () {
+      $('.selected').addClass('highlighted')
+      $('.selected').removeClass('selected')
       this.selectedWordIndex = undefined
-      this.initialSelection = undefined
+      this.selectionStartIndex = undefined
+      this.selectionEndIndex = undefined
     },
     reset () {
-      $('.word').removeClass('selected multi start end')
+      $('.word').removeClass('highlighted selected start end')
+      this.selectedWordIndex = undefined
+      this.selectionStartIndex = undefined
+      this.selectionEndIndex = undefined
     }
   },
   mounted () {
@@ -83,12 +100,15 @@ export default {
   }
 }
 
-function getPoint (e) {
-  return {
-    x: e.pageX ? e.pageX : e.originalEvent.pageX,
-    y: e.pageY ? e.pageY : e.originalEvent.pageY
-  }
-}
+// function getPoint (e) {
+//   return {
+//     x: e.pageX ? e.pageX : e.originalEvent.pageX,
+//     y: e.pageY ? e.pageY : e.originalEvent.pageY
+//   }
+// }
+// function getElement (point) {
+//   return document.elementFromPoint(point.x, point.y)
+// }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -116,17 +136,7 @@ function getPoint (e) {
 .word.selected {
   background-color: @color-selection1;
   color: @color-back;
-}
-.word:hover {
-  border: solid 1px #38f;
-}
-
-.word.multi {
-  background-color: @color-selection1;
-  color: @color-back;
   word-wrap: normal;
-  margin-left: 0px;
-  margin-right: 0px;
   box-shadow: none;
   border-radius: 0px;
   border-right: solid 1px #ff8;
@@ -142,6 +152,18 @@ function getPoint (e) {
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
     border-right: solid 1px #ff8;
+  }
+}
+.word.highlighted {
+  border-radius: 0px;
+  border: solid 1px #ff8;
+  &.start {
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+  }
+  &.end {
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
   }
 }
 </style>

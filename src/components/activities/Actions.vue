@@ -14,6 +14,10 @@
         </div>
       </div>
 
+      <div v-if="currentStep === 'action'">
+        <button class="btn btn-primary btn-block" :class="{disabled: actionNextButtonDisabled}" @click="actionSelected()">Next</button>
+      </div>
+
       <div v-if="currentStep === 'tense'" id="tense-selector" class="container-fluid">
         <div class="row">
           <div class="tense-button col-xs-4">
@@ -34,12 +38,26 @@
         </div>
       </div>
 
+      <div v-if="currentStep === 'actor'">
+        <button class="btn btn-primary btn-block" :class="{disabled: actorNextButtonDisabled}" @click="actorSelected()">Next</button>
+      </div>
+
       <div v-if="currentStep === 'target'" class="text-center">
-        <button class="btn btn-primary btn-block" @click="noTargetClicked()">No Target / I'm not sure</button>
+        <div class="col-xs-7">
+          <button class="btn btn-primary btn-block" :class="{disabled: targetNextButtonDisabled}" @click="targetSelected()">Next</button>
+        </div>
+        <div class="col-xs-5">
+          <button class="btn btn-primary btn-block" @click="noTargetClicked()">No target</button>
+        </div>
       </div>
 
       <div v-if="currentStep === 'result'" class="text-center">
-        <button class="btn btn-primary btn-block" @click="noResultClicked()">No Result / I'm not sure</button>
+        <div class="col-xs-7">
+          <button class="btn btn-primary btn-block" :class="{disabled: resultNextButtonDisabled}" @click="resultSelected()">Next</button>
+        </div>
+        <div class="col-xs-5">
+          <button class="btn btn-primary btn-block" @click="noResultClicked()">No Result</button>
+        </div>
       </div>
 
       <div v-if="currentStep === 'review'" id="review-instruction" class="text-center">
@@ -57,6 +75,10 @@ export default {
   data () {
     return {
       actions: [],
+      actionNextButtonDisabled: true,
+      actorNextButtonDisabled: true,
+      targetNextButtonDisabled: true,
+      resultNextButtonDisabled: true,
       pastTenseQualifiers: ['would have', 'had been', 'had', 'did', 'was', 'were'],
       presentTenseQualifiers: ['is', 'am', 'do', 'does', 'are'],
       futureTenseQualifiers: ['will have', 'will'],
@@ -91,19 +113,13 @@ export default {
     },
     onSelect (word, index) {
       if (this.currentStep === 'action') {
-        this.action = word
-        this.processTense(word, index)
-        this.currentStep = 'tense'
+        this.actionNextButtonDisabled = false
       } else if (this.currentStep === 'actor') {
-        this.actor = word
-        this.currentStep = 'target'
+        this.actorNextButtonDisabled = false
       } else if (this.currentStep === 'target') {
-        this.target = word
-        this.currentStep = 'result'
+        this.targetNextButtonDisabled = false
       } else if (this.currentStep === 'result') {
-        this.result = word
-        this.currentStep = 'review'
-        this.actions.push(new Action(this.action, this.actor, this.target, this.result))
+        this.resultNextButtonDisabled = false
       }
     },
     onMultiSelect (words, range) {
@@ -112,14 +128,37 @@ export default {
     shouldReset () {
       return this.currentStep === 'review'
     },
+    actionSelected () {
+      this.action = this.$refs.selectableText.selectedText()
+      this.$refs.selectableText.highlightSelection()
+      // this.processTense(this.action, index)
+      this.currentStep = 'tense'
+    },
     tenseSelected (tense) {
       this.tense = tense
       this.currentStep = 'actor'
     },
+    actorSelected () {
+      this.actor = this.$refs.selectableText.selectedText()
+      this.$refs.selectableText.highlightSelection()
+      this.currentStep = 'target'
+    },
+    targetSelected () {
+      this.target = this.$refs.selectableText.selectedText()
+      this.$refs.selectableText.highlightSelection()
+      this.currentStep = 'result'
+    },
     noTargetClicked () {
       this.currentStep = 'result'
     },
+    resultSelected () {
+      this.result = this.$refs.selectableText.selectedText()
+      this.$refs.selectableText.highlightSelection()
+      this.actions.push(new Action(this.action, this.actor, this.target, this.result))
+      this.currentStep = 'review'
+    },
     noResultClicked () {
+      this.actions.push(new Action(this.action, this.actor, this.target, this.result))
       this.currentStep = 'review'
     },
     instructionText () {
@@ -154,6 +193,10 @@ export default {
       this.actor = undefined
       this.tense = undefined
       this.result = undefined
+      this.actionNextButtonDisabled = true
+      this.actorNextButtonDisabled = true
+      this.targetNextButtonDisabled = true
+      this.resultNextButtonDisabled = true
       this.currentStep = 'action'
       this.$refs.selectableText.reset()
     },
@@ -195,7 +238,7 @@ function endsWithAny (text, suffixes) {
   width: 100%;
   padding: 5px;
   padding-bottom: 15px;
-  box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.9);
+  box-shadow: 0px -3px 15px rgba(0, 0, 0, 0.9);
   background-color: @color-back-raised;
   button {
     letter-spacing: 1px;
