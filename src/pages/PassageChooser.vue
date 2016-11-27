@@ -1,7 +1,7 @@
 <template>
   <div>
     <titlebar title="BIBLE" :left-items="['home']">
-      <span class="muted" slot="right">NASB</span>
+        <a slot="right" @click="chooseBible()">{{ getCurrentBible }}</a>
     </titlebar>
 
     <div class="container">
@@ -44,6 +44,7 @@
 
 <script>
 import $ from 'jquery'
+import { mapGetters } from 'vuex'
 import Titlebar from '../components/Titlebar'
 import { Bible } from '../js/bible.js'
 import PassageViewer from '../components/PassageViewer'
@@ -58,6 +59,9 @@ export default {
       ntBooks: Bible.ntBooks
     }
   },
+  computed: {
+    ...mapGetters(['getCurrentBible'])
+  },
   components: {
     Titlebar, PassageViewer
   },
@@ -69,6 +73,9 @@ export default {
     })
   },
   methods: {
+    chooseBible () {
+      this.$router.push('bible_chooser')
+    },
     bookSelected (element) {
       this.selectedBook = $(element).data('book')
       this.selectedBookName = Bible.bookName(this.selectedBook)

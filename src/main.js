@@ -4,6 +4,7 @@ import Vue from 'vue'
 import store from '../vuex/store'
 import App from './App'
 import Home from './pages/Home'
+import BibleChooser from './pages/BibleChooser'
 import PassageChooser from './pages/PassageChooser'
 import PassageViewer from './components/PassageViewer'
 import Activities from './pages/Activities'
@@ -16,6 +17,7 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', component: Home },
   { path: '/passage', component: PassageViewer },
+  { path: '/bible_chooser', component: BibleChooser },
   { path: '/choosepassage', component: PassageChooser },
   { path: '/viewpassage', component: PassageViewer },
   { path: '/activities', component: Activities },

@@ -10,6 +10,7 @@
 
     <div class="container">
       <ul class="list-group">
+        <h1 class="text-center muted" v-if="!verses">Loading...</h1>
         <li v-for="verse in verses" class="list-group-item verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
           <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
         </li>
@@ -27,7 +28,7 @@
 import Vue from 'vue'
 import { Bible, Verse } from '../js/bible.js'
 import bibleLoader from '../js/bibleloader.js'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 import $ from 'jquery'
 import Titlebar from './Titlebar'
 
@@ -43,6 +44,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['getCurrentBible']),
     isPassageSelected: function () {
       return this.startingVerse !== undefined
     },
@@ -76,7 +78,7 @@ export default {
   methods: {
     loadVerses () {
       var c = this
-      bibleLoader.load(this.bookIdentifier, this.chapter, function (json) {
+      bibleLoader.load(this.bookIdentifier, this.chapter, this.getCurrentBible, function (json) {
         c.verses = json
         $('html, body').animate({ scrollTop: 0 }, 'slow')
       })

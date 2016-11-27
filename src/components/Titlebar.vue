@@ -17,9 +17,9 @@
       <router-link v-if="showRight('home')" class="titlebar-item" to="/"><span class="glyphicon glyphicon-home"></span></router-link>
       <a v-if="showRight('back')" class="titlebar-item" @click="onBack()">BACK</a>
       <div v-if="showRight('help')" class="titlebar-item" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
-      <p class="titlebar-item">
+      <div class="titlebar-item">
         <slot name="right"></slot>
-      </p>
+      </div>
     </div>
   </div>
 </template>
@@ -70,6 +70,10 @@ export default {
   box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);;
   font-size: 16px;
   letter-spacing: 3px;
+  a:hover {
+    color: @color-selection1;
+    text-decoration: none;
+  }
   .titlebar-item-group {
     position: absolute;
     padding-left: 15px;

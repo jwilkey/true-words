@@ -10,6 +10,7 @@ Vue.use(Vuex)
 // Create an object to hold the initial state when the app starts up
 export const state = {
   page: 'home',
+  currentBible: 'ESV',
   studies: [],
   currentStudy: undefined,
   currentActivity: activities.types.PeoplePlacesThings,
@@ -20,6 +21,9 @@ export const state = {
 
 // Create an object storing various mutations. We will write the mutation
 export const mutations = {
+  CURRENT_BIBLE (state, bible) {
+    state.currentBible = bible
+  },
   CREATE_STUDY (state, passage, versesArray) {
     state.studies.push({id: uuid(), date: new Date(), passage: passage, verses: versesArray})
     state.currentStudy = passage

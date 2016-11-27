@@ -1,4 +1,7 @@
 export default {
+  setCurrentBible ({ commit }, bible) {
+    commit('CURRENT_BIBLE', bible)
+  },
   createNewStudy ({commit}, passage, versesArray) {
     commit('CREATE_STUDY', passage, versesArray)
   },
