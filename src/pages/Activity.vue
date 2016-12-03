@@ -72,8 +72,7 @@ export default {
   },
   store,
   mounted () {
-    $('#activity,#review').css('padding-top', $('.titlebar').css('height'))
-    $('#activity,#review').css('padding-bottom', $('.actionbar').css('height'))
+    $('#activity, #review').css('padding-top', $('.titlebar').css('height'))
   }
 }
 </script>

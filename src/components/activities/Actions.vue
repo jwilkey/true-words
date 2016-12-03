@@ -1,6 +1,6 @@
 <template>
-  <div class="cleafix">
-    <div v-bind:style="{paddingBottom: paddingBottom + 'px'}">
+  <div class="cleafix flex-v">
+    <div class="flex-1">
       <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
 
       <br />
@@ -9,7 +9,7 @@
       </div>
     </div>
 
-    <div class="actionbar">
+    <div class="actionbar-flex">
       <div class="action-instruction">
         <div class="text-center" v-html="instructionText()"> </div>
         <div v-if="currentStep === 'review'" id="review-instruction" class="text-center">
@@ -237,9 +237,17 @@ function endsWithAny (text, suffixes) {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 @import '../../../static/less/colors.less';
-.actionbar {
-  position: fixed;
-  bottom: 0;
+.flex-v {
+  display: flex;
+  flex-direction: column;
+  height: 100%
+}
+.flex-1 {
+  flex: 1;
+  overflow-y: scroll;
+}
+.actionbar-flex {
+  flex: none;
   z-index: 100;
   width: 100%;
   padding: 5px;
