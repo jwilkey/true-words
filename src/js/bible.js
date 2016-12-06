@@ -70,6 +70,7 @@ var books = [
 var Bible = {
   otBooks: books.slice(0, 39),
   ntBooks: books.slice(39, 66),
+  Passage: Passage,
   book (bookIdentifier) {
     return books.find(book => book.identifier === bookIdentifier)
   },
@@ -143,6 +144,12 @@ Passage.prototype.description = function () {
     text = text + '-' + this.end.number
   }
   return text
+}
+
+Passage.prototype.fromJson = function (json) {
+  var start = json.start
+  var end = json.end
+  return new Passage(new Verse(start.book, start.chapter, start.number), new Verse(end.book, end.chapter, end.number))
 }
 
 export { Bible, Verse }

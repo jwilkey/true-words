@@ -37,7 +37,7 @@
 <script>
 import buckets from '../../js/buckets.js'
 import store from '../../../vuex/store'
-import { mapGetters, mapActions } from 'vuex'
+import { mapGetters } from 'vuex'
 import $ from 'jquery'
 import activities from '../../js/activity'
 
@@ -67,7 +67,6 @@ export default {
   },
   props: ['finish', 'data'],
   methods: {
-    ...mapActions(['saveActivity']),
     incrementCurrentWord () {
       this.currentWordIndex++
     },
@@ -93,7 +92,6 @@ export default {
       var word = this.words[this.currentWordIndex]
       this.values[bucketIndex].add(word, this.currentWordIndex)
       if (this.currentWordIndex + 1 === this.words.length) {
-        this.saveActivity(this.activityType, this.values)
         this.finish(this.activityType, this.values)
       } else {
         this.incrementCurrentWord()

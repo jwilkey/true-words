@@ -43,7 +43,7 @@ export default {
       }
     },
     donePressed: function () {
-      this.$router.replace('/')
+      this.$router.replace('/activities')
     }
   }
 }

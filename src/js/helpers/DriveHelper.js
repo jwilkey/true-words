@@ -21,12 +21,25 @@ export default {
     var data = buildBody(metadata, jsonContent)
     return $.ajax({
       type: 'POST',
+      url: api('/upload/drive/v3/files?uploadType=multipart'),
       beforeSend: function (request) {
         request.setRequestHeader('Authorization', 'Bearer ' + authToken)
         request.setRequestHeader('Content-Type', 'multipart/related; boundary="-------314159265358979323846"')
         request.setRequestHeader('Content-Length', data.length)
       },
-      url: api('/upload/drive/v3/files?uploadType=multipart'),
+      data: data
+    })
+  },
+  update (authToken, fileId, jsonContent) {
+    var data = JSON.stringify(jsonContent)
+    return $.ajax({
+      type: 'PATCH',
+      url: api('/upload/drive/v3/files/' + fileId + '?uploadType=media'),
+      beforeSend: function (request) {
+        request.setRequestHeader('Authorization', 'Bearer ' + authToken)
+        request.setRequestHeader('Content-Type', 'application/json')
+        request.setRequestHeader('Content-Length', data.length)
+      },
       data: data
     })
   },

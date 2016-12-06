@@ -20,8 +20,9 @@ Persistor.prototype.refreshData = function (onFinish) {
     .done(function (data) {
       var studies = data.files.map(function (file) {
         var start = JSON.parse(file.properties.start)
-        var end = JSON.parse(file.properties.end)
-        var passage = Bible.buildPassage(new Verse(start.book, start.chapter, start.number), new Verse(end.book, end.chapter, end.number))
+        var end = file.properties.end !== undefined ? JSON.parse(file.properties.end) : undefined
+        var endVerse = end !== undefined ? new Verse(end.book, end.chapter, end.number) : undefined
+        var passage = Bible.buildPassage(new Verse(start.book, start.chapter, start.number), endVerse)
         var study = Studies.createStudy(file.properties.id, file.properties.createdDate, passage, undefined, file.properties.bible)
         self.addDriveFileForStudy(file.id, study.id)
         return study
@@ -49,6 +50,12 @@ Persistor.prototype.saveStudy = function (study) {
     .done(function (file) {
       self.addDriveFileForStudy(file.id, study.id)
     })
+  }
+}
+
+Persistor.prototype.updateStudy = function (study) {
+  if (this.usingDrive()) {
+    return drive.update(driveToken(), this.drive.studies[study.id], study)
   }
 }
 

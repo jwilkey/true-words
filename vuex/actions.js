@@ -27,8 +27,9 @@ export default {
   setCurrentActivity ({ commit }, activityType) {
     commit('CURRENT_ACTIVITY', activityType)
   },
-  saveActivity ({ commit }, activityID, activityData) {
-    commit('ACTIVITY_SAVE', activityID, activityData)
+  saveActivity (context, activityAchievement) {
+    context.commit('ACTIVITY_SAVE', activityAchievement)
+    return context.getters.getPersistor.updateStudy(context.getters.getCurrentStudy)
   }
 }
 

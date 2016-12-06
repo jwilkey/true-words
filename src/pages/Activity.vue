@@ -16,8 +16,9 @@
 <script>
 import $ from 'jquery'
 import store from '../../vuex/store'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import activities from '../js/activity'
+import ActivityAchievement from '../js/models/ActivityAchievement'
 import Titlebar from '../components/Titlebar'
 import Menubar from '../components/Menubar'
 import Buckets from '../components/activities/Buckets'
@@ -44,6 +45,7 @@ export default {
     Titlebar, Menubar, Actions, Buckets, BucketsReviewer
   },
   methods: {
+    ...mapActions(['saveActivity']),
     closePressed () {
       this.$router.back()
     },
@@ -51,10 +53,17 @@ export default {
       window.alert('help from the activity')
     },
     onFinish (activityType, activityData) {
-      this.currentReviewer = this.reviewerForType(activityType)
-      this.reviewerData = activityData
-      $('#activity').hide()
-      $('#review').show()
+      var self = this
+      this.saveActivity(ActivityAchievement.new(activityType, activityData, new Date(), activities.manager.version(activityType)))
+      .done(function () {
+        self.currentReviewer = self.reviewerForType(activityType)
+        self.reviewerData = activityData
+        $('#activity').hide()
+        $('#review').show()
+      })
+      .fail(function () {
+        window.alert('Failed to save your activity. Check your connection and try again.')
+      })
     },
     activityForType (activityType) {
       switch (activityType) {

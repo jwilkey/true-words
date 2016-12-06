@@ -5,7 +5,7 @@ import getters from './getters'
 import actions from './actions'
 import Persistence from '../src/js/helpers/Persistor'
 import Studies from '../src/js/models/Study'
-import { Bible, Verse } from '../src/js/bible'
+import { Bible } from '../src/js/bible'
 
 // Make vue aware of Vuex
 Vue.use(Vuex)
@@ -44,20 +44,18 @@ export const mutations = {
     for (var i = 0; i < state.studies.length; i++) {
       if (state.studies[i].id === studyObject.id) {
         state.currentStudy = state.studies[i]
-        state.currentStudy.verses = studyObject.verses
+        state.currentStudy.apply(studyObject)
         return
       }
     }
-
-    var start = studyObject.passage.start
-    var end = studyObject.passage.end
-    var passage = Bible.buildPassage(new Verse(start.book, start.chapter, start.number), new Verse(end.book, end.chapter, end.number))
+    var passage = new Bible.Passage(studyObject.passage)
     var study = Studies.createStudy(studyObject.id, studyObject.date, passage, studyObject.verses, studyObject.bible)
+    study.apply(studyObject)
     state.studies.push(study)
     state.currentStudy = study
   },
-  ACTIVITY_SAVE (state, activityType, activityData) {
-    state.activities.push({type: activityType, studyID: state.currentStudy.id, data: activityData})
+  ACTIVITY_SAVE (state, activityAchievement) {
+    state.currentStudy.saveActivity(activityAchievement)
   }
 }
 
