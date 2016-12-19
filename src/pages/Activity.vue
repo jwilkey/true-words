@@ -4,7 +4,7 @@
     <menubar></menubar>
 
     <div id="activity">
-      <component :is="currentActivity" :finish="onFinish" :data="['PEOPLE', 'PLACES', 'THINGS']"></component>
+      <component :is="currentActivity" :finish="onFinish" :data="activityData"></component>
     </div>
 
     <div id="review">
@@ -18,6 +18,7 @@ import $ from 'jquery'
 import store from '../../vuex/store'
 import { mapGetters, mapActions } from 'vuex'
 import activities from '../js/activity'
+import ActivityDataFactory from '../js/helpers/ActivityDataFactory'
 import ActivityAchievement from '../js/models/ActivityAchievement'
 import Titlebar from '../components/Titlebar'
 import Menubar from '../components/Menubar'
@@ -36,10 +37,11 @@ export default {
     title: function () {
       return activities.manager.subtitleForType(this.getCurrentActivity)
     },
+    activityData: function () {
+      return ActivityDataFactory.createForType(this.getCurrentActivity)
+    },
     currentActivity: function () { return this.activityForType(this.getCurrentActivity) },
-    currentReviewer: function () {
-      return this.reviewerForType(this.getCurrentActivity)
-    }
+    currentReviewer: function () { return this.reviewerForType(this.getCurrentActivity) }
   },
   components: {
     Titlebar, Menubar, Actions, Buckets, BucketsReviewer
@@ -54,7 +56,8 @@ export default {
     },
     onFinish (activityType, activityData) {
       var self = this
-      this.saveActivity(ActivityAchievement.new(activityType, activityData, new Date(), activities.manager.version(activityType)))
+      var achievement = new ActivityAchievement(activityType, activityData, new Date(), activities.manager.version(activityType))
+      this.saveActivity(achievement)
       .done(function () {
         self.currentReviewer = self.reviewerForType(activityType)
         self.reviewerData = activityData

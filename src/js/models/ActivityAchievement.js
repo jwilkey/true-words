@@ -1,13 +1,17 @@
-function ActivityAchievement (type, data, creationDate, version) {
-  this.type = type
-  this.data = data
-  this.creationDate = creationDate
-  this.version = version
-}
+import ActivityData from './ActivityData'
 
-export default {
-  new: ActivityAchievement,
-  fromJson (json) {
-    return new ActivityAchievement(json.type, json.data, new Date(json.creationDate), json.version)
+function ActivityAchievement (type, data, creationDate, version) {
+  if (type === 'json') {
+    this.type = data.type
+    this.data = ActivityData.fromJson(data.data)
+    this.creationDate = new Date(data.creationDate)
+    this.version = data.version
+  } else {
+    this.type = type
+    this.data = data
+    this.creationDate = creationDate
+    this.version = version
   }
 }
+
+export default ActivityAchievement

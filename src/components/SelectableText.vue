@@ -2,7 +2,7 @@
   <div id="content" class="container">
     <div class="row">
       <div id="text" class="col-sm-12">
-        <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" @click="selected($event.target)" class="word">{{ word }}</span>
+        <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" @click="selected($event.target)" class="word">{{ word.text }}</span>
       </div>
     </div>
   </div>
@@ -94,13 +94,35 @@ export default {
         return $.trim($(this).text())
       }).get().join(' ')
     },
-    highlightSelection () {
+    selectedWords () {
+      var self = this
+      return $('.selected').map(function () {
+        return self.words[this.dataset.index]
+      }).get()
+    },
+    highlightSelection (maintainSelection) {
       $('.selected').addClass('highlighted')
-      $('.selected').removeClass('selected')
+      if (maintainSelection === undefined || !maintainSelection) {
+        $('.selected').removeClass('selected')
+        this.resetSelectedIndexes()
+      }
+    },
+    fillSelection (maintainSelection) {
+      $('.selected').addClass('filled')
+      if (maintainSelection === undefined || !maintainSelection) {
+        $('.selected').removeClass('selected')
+        this.resetSelectedIndexes()
+      }
+    },
+    clearHighlight () {
+      $('.word').removeClass('highlighted')
+    },
+    clearSelection () {
+      $('.word').removeClass('selected start end')
       this.resetSelectedIndexes()
     },
     reset () {
-      $('.word').removeClass('highlighted selected start end')
+      $('.word').removeClass('highlighted filled selected start end')
       this.resetSelectedIndexes()
     },
     resetSelectedIndexes () {
@@ -142,6 +164,7 @@ export default {
   padding-left: 8px;
   padding-right: 8px;
   box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.5);
+  cursor: pointer;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -181,5 +204,8 @@ export default {
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
   }
+}
+.word.filled {
+  background-color: @color-callout;
 }
 </style>

@@ -18,9 +18,8 @@ function Study (id, date, passage, verses, bible) {
 Study.prototype.apply = function (json) {
   this.verses = json.verses
   this.activities = json.activities.map(function (activityJson) {
-    return ActivityAchievement.fromJson(activityJson)
+    return new ActivityAchievement('json', activityJson)
   })
-  console.log(this.activities)
 }
 
 Study.prototype.text = function () {
@@ -29,8 +28,20 @@ Study.prototype.text = function () {
   }).join(' ')
 }
 
-Study.prototype.words = function () {
-  return this.text().split(' ')
+Study.prototype.getWords = function () {
+  if (this.words === undefined) {
+    var b = this.passage.start.book
+    this.words = []
+    for (var vIndex in this.verses) {
+      var verse = this.verses[vIndex]
+      var verseNumber = verse.number
+      var wordTexts = verse.text.split(' ')
+      this.words.push.apply(this.words, wordTexts.map(function (text, index) {
+        return {book: b, verse: verseNumber, text: text, index: index}
+      }))
+    }
+  }
+  return this.words
 }
 
 Study.prototype.saveActivity = function (activityAchievement) {

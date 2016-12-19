@@ -3,9 +3,9 @@
     <table class="buckets vthird">
       <tbody>
         <tr>
-          <td data-index="0" class="bucket back-orange hthird dropzone" @click="assignToBucket(0)">{{ data[0] }}</td>
-          <td data-index="1" class="bucket back-purple hthird dropzone" @click="assignToBucket(1)">{{ data[1] }}</td>
-          <td data-index="2" class="bucket back-red hthird dropzone" @click="assignToBucket(2)">{{ data[2] }}</td>
+          <td data-index="0" class="bucket back-orange hthird dropzone" @click="assignToBucket(0)">{{ container(0).name }}</td>
+          <td data-index="1" class="bucket back-purple hthird dropzone" @click="assignToBucket(1)">{{ container(1).name }}</td>
+          <td data-index="2" class="bucket back-red hthird dropzone" @click="assignToBucket(2)">{{ container(2).name }}</td>
         </tr>
       </tbody>
     </table>
@@ -18,7 +18,7 @@
         </td></tr>
         <tr><td>
           <div class="text-preview">
-            <span :key="word.index" v-for="(word, index) in words" :id="'text-preview-' + index">{{ word }} </span>
+            <span :key="word.index" v-for="(word, index) in words" :id="'text-preview-' + index">{{ word.text }} </span>
           </div>
         </td></tr>
       </tbody></table>
@@ -27,7 +27,7 @@
     <table class="bucket vthird">
       <tbody>
         <tr>
-          <td data-index="3" colspan=2 class="bucket dropzone" @click="assignToBucket(3)">OTHER</td>
+          <td data-index="3" colspan=2 class="bucket dropzone" @click="assignToBucket(3)">{{ container(3).name }}</td>
         </tr>
       </tbody>
     </table>
@@ -40,6 +40,7 @@ import store from '../../../vuex/store'
 import { mapGetters } from 'vuex'
 import $ from 'jquery'
 import activities from '../../js/activity'
+import { WordSelection } from '../../js/models/ActivityData'
 
 export default {
   data () {
@@ -49,11 +50,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      words: 'getCurrentWords'
-    }),
+    ...mapGetters({ words: 'getCurrentWords' }),
     currentWord: function () {
-      return this.words[this.currentWordIndex]
+      return this.words[this.currentWordIndex].text
     },
     wordCount: function () {
       return this.words.length
@@ -67,6 +66,9 @@ export default {
   },
   props: ['finish', 'data'],
   methods: {
+    container (index) {
+      return this.data.containers[index]
+    },
     incrementCurrentWord () {
       this.currentWordIndex++
     },
@@ -80,19 +82,13 @@ export default {
       var currentLeft = parseInt($('.text-preview').css('margin-left'))
       $('.text-preview').css('margin-left', currentLeft - diff)
     },
-    initializeBucketValues () {
-      this.values = [
-        new buckets.Bucket(this.data[0]),
-        new buckets.Bucket(this.data[1]),
-        new buckets.Bucket(this.data[2]),
-        new buckets.Bucket('OTHER')
-      ]
-    },
     assignToBucket (bucketIndex) {
+      var container = this.container(bucketIndex)
       var word = this.words[this.currentWordIndex]
-      this.values[bucketIndex].add(word, this.currentWordIndex)
+      container.add(new WordSelection(word))
+
       if (this.currentWordIndex + 1 === this.words.length) {
-        this.finish(this.activityType, this.values)
+        this.finish(this.activityType, this.data)
       } else {
         this.incrementCurrentWord()
         buckets.positionWord()
@@ -104,13 +100,14 @@ export default {
   },
   store,
   mounted () {
-    this.initializeBucketValues()
-    buckets.setupDraggables()
-    var v = this
-    this.lineViewerFocusWord(this.currentWordIndex)
-    buckets.setOnWordDrop(function (e) {
-      var bucketIndex = $(e.target).data('index')
-      v.assignToBucket(bucketIndex)
+    this.$nextTick(function () {
+      buckets.setupDraggables()
+      var v = this
+      this.lineViewerFocusWord(this.currentWordIndex)
+      buckets.setOnWordDrop(function (e) {
+        var bucketIndex = $(e.target).data('index')
+        v.assignToBucket(bucketIndex)
+      })
     })
   }
 }
@@ -163,6 +160,7 @@ table {
   text-align: center;
   letter-spacing: 2px;
   font-size: 19px;
+  user-select: none;
 }
 .buckets-indicator {
   color: @color-deemphasize;

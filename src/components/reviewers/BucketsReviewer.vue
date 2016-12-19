@@ -1,11 +1,11 @@
 <template>
   <div v-if="data !== undefined">
-    <div class="bucket-label hthird back-orange">{{ data[0].name }}</div>
-    <div class="bucket-label hthird back-purple">{{ data[1].name }}</div>
-    <div class="bucket-label hthird back-red">{{ data[2].name }}</div>
+    <div class="bucket-label hthird back-orange">{{ container(0).name }}</div>
+    <div class="bucket-label hthird back-purple">{{ container(1).name }}</div>
+    <div class="bucket-label hthird back-red">{{ container(2).name }}</div>
 
     <div class="container">
-      <span :key="word.index" v-for="(word, index) in words" :class="wordClass(index)">{{ word }} </span>
+      <span :key="word.index" v-for="(word, index) in words" :class="wordClass(word)">{{ word.text }} </span>
     </div>
 
     <div class="actionbar">
@@ -31,12 +31,15 @@ export default {
   },
   props: ['data'],
   methods: {
-    wordClass: function (index) {
+    container (index) {
+      return this.data.containers[index]
+    },
+    wordClass: function (word) {
       if (this.data !== undefined) {
         return {
-          'orange': this.data[0].hasWordIndex(index),
-          'purple': this.data[1].hasWordIndex(index),
-          'red': this.data[2].hasWordIndex(index)
+          'orange': this.container(0).contains(word),
+          'purple': this.container(1).contains(word),
+          'red': this.container(2).contains(word)
         }
       } else {
         return {}

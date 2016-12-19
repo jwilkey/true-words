@@ -77,9 +77,9 @@ export default {
   },
   methods: {
     loadVerses () {
-      var c = this
+      var self = this
       bibleLoader.load(this.bookIdentifier, this.chapter, this.getCurrentBible, function (json) {
-        c.verses = json
+        self.verses = json
         $('html, body').animate({ scrollTop: 0 }, 'slow')
       })
     },

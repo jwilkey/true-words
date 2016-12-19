@@ -5,7 +5,7 @@
 
       <br />
       <div class="container action-items">
-        <p v-for="action in actions" v-html="actionText(action)"></p>
+        <p v-for="action in data.collection.items" v-html="actionText(action)"></p>
       </div>
     </div>
 
@@ -17,23 +17,23 @@
       </div>
 
       <div v-if="currentStep === 'action'">
-        <button class="btn btn-primary btn-block" :class="{disabled: actionNextButtonDisabled}" @click="actionSelected()">Next</button>
+        <button class="btn btn-actionable btn-block" :class="{disabled: actionNextButtonDisabled}" @click="actionSelected()">NEXT</button>
       </div>
 
       <div v-if="currentStep === 'tense'" id="tense-selector" class="container-fluid">
         <div class="row">
           <div class="tense-button col-xs-4">
-            <button class="btn btn-primary btn-block" @click="tenseSelected('past')">
+            <button class="btn btn-actionable btn-block" @click="tenseSelected('past')">
               <strong>PAST</strong><span v-if="pastTenseHint"> - {{ pastTenseHint }} {{ action }}</span>
             </button>
           </div>
           <div class="tense-button col-xs-4">
-            <button class="btn btn-primary btn-block" @click="tenseSelected('present')">
+            <button class="btn btn-actionable btn-block" @click="tenseSelected('present')">
               <strong>PRESENT</strong><span v-if="presentTenseHint"> - {{ presentTenseHint }} {{ action }}</span>
             </button>
           </div>
           <div class="tense-button col-xs-4">
-            <button class="btn btn-primary btn-block" @click="tenseSelected('future')">
+            <button class="btn btn-actionable btn-block" @click="tenseSelected('future')">
               <strong>FUTURE</strong><span v-if="futureTenseHint"> - {{ futureTenseHint }} {{ action }}</span>
             </button>
           </div>
@@ -41,29 +41,28 @@
       </div>
 
       <div v-if="currentStep === 'actor'">
-        <button class="btn btn-primary btn-block" :class="{disabled: actorNextButtonDisabled}" @click="actorSelected()">Next</button>
+        <button class="btn btn-actionable btn-block" :class="{alt: actorNextButtonDisabled}" @click="actorSelected()">
+          <span v-if="actorNextButtonDisabled">I do not see an <strong>actor</strong></span>
+          <span v-else>NEXT</span>
+        </button>
       </div>
 
       <div v-if="currentStep === 'target'" class="text-center">
-        <div class="col-xs-7">
-          <button class="btn btn-primary btn-block" :class="{disabled: targetNextButtonDisabled}" @click="targetSelected()">Next</button>
-        </div>
-        <div class="col-xs-5">
-          <button class="btn btn-primary btn-block" @click="noTargetClicked()">No target</button>
-        </div>
+        <button class="btn btn-actionable btn-block" :class="{alt: targetNextButtonDisabled}" @click="targetSelected()">
+          <span v-if="targetNextButtonDisabled">I do not see a <strong>target</strong> of this action</span>
+          <span v-else>NEXT</span>
+        </button>
       </div>
 
       <div v-if="currentStep === 'result'" class="text-center">
-        <div class="col-xs-7">
-          <button class="btn btn-primary btn-block" :class="{disabled: resultNextButtonDisabled}" @click="resultSelected()">Next</button>
-        </div>
-        <div class="col-xs-5">
-          <button class="btn btn-primary btn-block" @click="noResultClicked()">No Result</button>
-        </div>
+        <button class="btn btn-actionable btn-block" :class="{alt: resultNextButtonDisabled}" @click="resultSelected()">
+          <span v-if="resultNextButtonDisabled">I do not see a <strong>result</strong></span>
+          <span v-else>NEXT</span>
+        </button>
       </div>
 
       <div v-if="currentStep === 'review'" id="review-instruction" class="text-center">
-        <button class="btn btn-primary btn-block" @click="nextClicked()">NEXT</button>
+        <button class="btn btn-actionable btn-block" @click="nextClicked()">NEXT</button>
       </div>
     </div>
   </div>
@@ -73,11 +72,11 @@
 import SelectableText from '../SelectableText'
 import { mapGetters } from 'vuex'
 import $ from 'jquery'
+import { WordSelection, Action } from '../../js/models/ActivityData'
 
 export default {
   data () {
     return {
-      actions: [],
       actionNextButtonDisabled: true,
       actorNextButtonDisabled: true,
       targetNextButtonDisabled: true,
@@ -100,6 +99,7 @@ export default {
       }
     }
   },
+  props: ['finish', 'data'],
   computed: {
     ...mapGetters({words: 'getCurrentWords'}),
     paddingBottom () {
@@ -109,7 +109,6 @@ export default {
   components: {
     SelectableText
   },
-  props: ['finish', 'data'],
   methods: {
     processTense (word, index) {
       var sub = this.words.slice(index - 2, index).join(' ')
@@ -135,8 +134,9 @@ export default {
       return this.currentStep === 'review'
     },
     actionSelected () {
-      this.action = this.$refs.selectableText.selectedText()
-      this.$refs.selectableText.highlightSelection()
+      this.action = new WordSelection(this.$refs.selectableText.selectedWords())
+      this.$refs.selectableText.highlightSelection(true)
+      this.$refs.selectableText.fillSelection()
       // this.processTense(this.action, index)
       this.currentStep = 'tense'
     },
@@ -145,45 +145,44 @@ export default {
       this.currentStep = 'actor'
     },
     actorSelected () {
-      this.actor = this.$refs.selectableText.selectedText()
-      this.$refs.selectableText.highlightSelection()
+      if (!this.actorNextButtonDisabled) {
+        this.actor = new WordSelection(this.$refs.selectableText.selectedWords())
+        this.$refs.selectableText.highlightSelection()
+      }
       this.currentStep = 'target'
     },
     targetSelected () {
-      this.target = this.$refs.selectableText.selectedText()
-      this.$refs.selectableText.highlightSelection()
-      this.currentStep = 'result'
-    },
-    noTargetClicked () {
+      if (!this.targetNextButtonDisabled) {
+        this.target = new WordSelection(this.$refs.selectableText.selectedWords())
+        this.$refs.selectableText.highlightSelection()
+      }
       this.currentStep = 'result'
     },
     resultSelected () {
-      this.result = this.$refs.selectableText.selectedText()
-      this.$refs.selectableText.highlightSelection()
-      this.actions.push(new Action(this.action, this.actor, this.target, this.result))
-      this.currentStep = 'review'
-    },
-    noResultClicked () {
-      this.actions.push(new Action(this.action, this.actor, this.target, this.result))
+      if (!this.resultNextButtonDisabled) {
+        this.result = new WordSelection(this.$refs.selectableText.selectedWords())
+        this.$refs.selectableText.highlightSelection()
+      }
+      this.data.collection.add(new Action(this.action, this.actor, this.target, this.result))
       this.currentStep = 'review'
     },
     instructionText () {
       if (this.currentStep === 'action') {
-        return 'Select an action word'
+        return '<span class="instruction-label">ACTION</span>Select an action word'
       } else if (this.currentStep === 'tense') {
-        return 'What is the tense of this word?'
+        return '<span class="instruction-label">TENSE</span>What is the tense of this word?'
       } else if (this.currentStep === 'actor') {
         var tensified = this.tense === 'past' ? 'did'
         : ((this.tense) === 'present' ? 'does' : 'will do')
-        return 'Who or what ' + tensified + ' this?'
+        return '<span class="instruction-label">ACTOR</span>Who or what ' + tensified + ' this?'
       } else if (this.currentStep === 'target') {
         var targetTense = this.tense === 'past' ? 'Was this'
         : ((this.tense) === 'present' ? 'Is this' : 'Will this be')
-        return targetTense + ' done to something or someone? (select)'
+        return '<span class="instruction-label">TARGET</span>' + targetTense + ' done to something or someone? (select)'
       } else if (this.currentStep === 'result') {
-        return 'What is the result/purpose of this action?'
+        return '<span class="instruction-label">RESULT</span>What is the result / purpose of this action?'
       } else if (this.currentStep === 'review') {
-        return this.actionText(new Action(this.action, this.actor, this.target, this.result))
+        return this.actionText(this.data.collection.items.last())
       }
     },
     getCurrentTenseHint () {
@@ -195,16 +194,19 @@ export default {
       }
     },
     nextClicked () {
-      this.action = undefined
-      this.actor = undefined
-      this.tense = undefined
-      this.result = undefined
       this.actionNextButtonDisabled = true
       this.actorNextButtonDisabled = true
       this.targetNextButtonDisabled = true
       this.resultNextButtonDisabled = true
+
+      this.$refs.selectableText.clearHighlight()
+      this.$refs.selectableText.clearSelection()
+
+      this.action = undefined
+      this.actor = undefined
+      this.tense = undefined
+      this.result = undefined
       this.currentStep = 'action'
-      this.$refs.selectableText.reset()
     },
     actionText (action) {
       var arrow = ' <span class="glyphicon glyphicon-menu-right flow"></span> '
@@ -215,13 +217,6 @@ export default {
     this.selectionDelegate.onSelect = this.onSelect
     this.selectionDelegate.onMultiSelect = this.onMultiSelect
   }
-}
-
-function Action (action, actor, target, result) {
-  this.action = action
-  this.actor = actor
-  this.target = target
-  this.result = result
 }
 
 function endsWithAny (text, suffixes) {
@@ -265,6 +260,12 @@ function endsWithAny (text, suffixes) {
     color: @color-highlight-orange;
     top: 4px;
   }
+}
+.instruction-label {
+  color: @color-actionable;
+  border-right: solid 1px @color-actionable;
+  padding-right: 10px;
+  margin-right: 10px;
 }
 .action-items {
   color: @color-deemphasize;
