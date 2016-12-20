@@ -42,7 +42,7 @@ export default {
       }
     }
   },
-  created: function () {
+  mounted: function () {
     this.lib = 'https://apis.google.com/js/client.js?onload=initDrive'
 
     var vm = this
