@@ -10,13 +10,3 @@ if (!String.prototype.endsWith) {
     return lastIndex !== -1 && lastIndex === position
   }
 }
-
-if (!Array.prototype.last) {
-  var a = Array
-  a.prototype.last = function () {
-    if (this.length === 0) {
-      return undefined
-    }
-    return this[this.length - 1]
-  }
-}

@@ -182,7 +182,7 @@ export default {
       } else if (this.currentStep === 'result') {
         return '<span class="instruction-label">RESULT</span>What is the result / purpose of this action?'
       } else if (this.currentStep === 'review') {
-        return this.actionText(this.data.collection.items.last())
+        return this.actionText(this.data.collection.last())
       }
     },
     getCurrentTenseHint () {

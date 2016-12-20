@@ -4,7 +4,7 @@
     <menubar></menubar>
 
     <div id="activity">
-      <component :is="currentActivity" :finish="onFinish" :data="activityData"></component>
+      <component v-if="getCurrentActivity" :is="currentActivity" :finish="onFinish" :data="activityData"></component>
     </div>
 
     <div id="review">
@@ -33,7 +33,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getCurrentActivity']),
+    ...mapGetters(['getCurrentActivity', 'getCurrentStudy']),
     title: function () {
       return activities.manager.subtitleForType(this.getCurrentActivity)
     },
@@ -72,7 +72,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets'
         case activities.types.Actions: return 'actions'
-        default: return 'buckets'
+        default: return undefined
       }
     },
     reviewerForType (activityType) {
@@ -85,6 +85,12 @@ export default {
   store,
   mounted () {
     $('#activity, #review').css('padding-top', $('.titlebar').css('height'))
+    var completedActivity = this.getCurrentStudy.findActivity(this.getCurrentActivity)
+    if (completedActivity !== undefined) {
+      this.reviewerData = completedActivity.data
+      $('#activity').hide()
+      $('#review').show()
+    }
   }
 }
 </script>

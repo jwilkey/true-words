@@ -88,6 +88,10 @@ Collection.prototype.add = function (item) {
   this.items.push(item)
 }
 
+Collection.prototype.last = function () {
+  return (this.items.length === 0) ? undefined : this.items[this.items.length - 1]
+}
+
 // Containers
 function Container (name, itemKind) {
   this.kind = 'container'

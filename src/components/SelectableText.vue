@@ -1,7 +1,7 @@
 <template>
   <div id="content" class="container">
     <div class="row">
-      <div id="text" class="col-sm-12">
+      <div v-if="words" id="text" class="col-sm-12">
         <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" @click="selected($event.target)" class="word">{{ word.text }}</span>
       </div>
     </div>
