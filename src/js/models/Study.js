@@ -46,7 +46,12 @@ Study.prototype.getWords = function () {
 
 Study.prototype.saveActivity = function (activityAchievement) {
   activityAchievement.studyID = this.id
-  this.activities.push(activityAchievement)
+  var existingActivity = this.findActivity(activityAchievement.type)
+  if (existingActivity !== undefined) {
+    existingActivity = activityAchievement
+  } else {
+    this.activities.push(activityAchievement)
+  }
 }
 
 Study.prototype.findActivity = function (activityType) {
