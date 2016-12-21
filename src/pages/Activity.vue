@@ -25,6 +25,7 @@ import Menubar from '../components/Menubar'
 import Buckets from '../components/activities/Buckets'
 import Actions from '../components/activities/Actions'
 import BucketsReviewer from '../components/reviewers/BucketsReviewer'
+import ActionsReviewer from '../components/reviewers/ActionsReviewer'
 
 export default {
   data () {
@@ -44,7 +45,7 @@ export default {
     currentReviewer: function () { return this.reviewerForType(this.getCurrentActivity) }
   },
   components: {
-    Titlebar, Menubar, Actions, Buckets, BucketsReviewer
+    Titlebar, Menubar, Actions, Buckets, BucketsReviewer, ActionsReviewer
   },
   methods: {
     ...mapActions(['saveActivity']),
@@ -78,13 +79,14 @@ export default {
     reviewerForType (activityType) {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets-reviewer'
+        case activities.types.Actions: return 'actions-reviewer'
         default: return undefined
       }
     }
   },
   store,
   mounted () {
-    $('#activity, #review').css('padding-top', $('.titlebar').css('height'))
+    $('#activity, #review').css('padding-top', parseInt($('.titlebar').css('height')) + 5 + 'px')
     var completedActivity = this.getCurrentStudy.findActivity(this.getCurrentActivity)
     if (completedActivity !== undefined) {
       this.reviewerData = completedActivity.data

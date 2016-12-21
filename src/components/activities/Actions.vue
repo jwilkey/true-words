@@ -62,7 +62,12 @@
       </div>
 
       <div v-if="currentStep === 'review'" id="review-instruction" class="text-center">
-        <button class="btn btn-actionable btn-block" @click="nextClicked()">NEXT</button>
+        <div class="col-xs-9">
+          <button class="btn btn-actionable btn-block" @click="nextClicked()">NEXT</button>
+        </div>
+        <div class="col-xs-3">
+          <button class="btn btn-actionable alt btn-block" @click="finishedClicked()">DONE</button>
+        </div>
       </div>
     </div>
   </div>
@@ -73,6 +78,7 @@ import SelectableText from '../SelectableText'
 import { mapGetters } from 'vuex'
 import $ from 'jquery'
 import { WordSelection, Action } from '../../js/models/ActivityData'
+import activities from '../../js/activity'
 
 export default {
   data () {
@@ -163,7 +169,7 @@ export default {
         this.result = new WordSelection(this.$refs.selectableText.selectedWords())
         this.$refs.selectableText.highlightSelection()
       }
-      this.data.collection.add(new Action(this.action, this.actor, this.target, this.result))
+      this.data.collection.add(new Action(this.action, this.tense, this.actor, this.target, this.result))
       this.currentStep = 'review'
     },
     instructionText () {
@@ -208,9 +214,12 @@ export default {
       this.result = undefined
       this.currentStep = 'action'
     },
+    finishedClicked () {
+      this.finish(activities.types.Actions, this.data)
+    },
     actionText (action) {
       var arrow = ' <span class="glyphicon glyphicon-menu-right flow"></span> '
-      return action.actor + arrow + action.action + arrow + action.target + arrow + action.result
+      return (action.actor || '?') + arrow + (action.action || '?') + arrow + (action.target || '?') + arrow + (action.result || '?')
     }
   },
   mounted () {

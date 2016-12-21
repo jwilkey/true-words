@@ -21,7 +21,10 @@ function getPrototype (kind) {
 }
 
 function deserialize (kind, json) {
-  var type = getPrototype(kind)
+  if (json === undefined) {
+    return undefined
+  }
+  var type = (json.kind !== undefined) ? getPrototype(json.kind) : getPrototype(kind)
   if (type.fromJson === undefined) {
     throw new Error('Object of kind: ' + kind + ' does not implement fromJson')
   }
@@ -150,16 +153,17 @@ WordSelection.prototype.toString = function () {
 }
 
 // Action
-function Action (action, actor, target, result) {
+function Action (action, tense, actor, target, result) {
   this.kind = 'action'
   this.action = action
+  this.tense = tense
   this.actor = actor
   this.target = target
   this.result = result
 }
 
 Action.prototype.fromJson = function (json) {
-  return new Action(json.action, json.actor, json.target, json.result)
+  return new Action(deserialize(0, json.action), json.tense, deserialize(0, json.actor), deserialize(0, json.target), deserialize(0, json.result))
 }
 
 export { WordSelection, Action }
