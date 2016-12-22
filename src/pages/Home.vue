@@ -3,8 +3,6 @@
     <titlebar title="TRUE WORDS"></titlebar>
     <div class="container">
 
-      <google-auth></google-auth>
-
       <card title="BEGIN" subtitle="Choose a Bible text to study">
         <div class="row clearfix">
           <div class="col-xs-6">
@@ -23,8 +21,14 @@
             <p class="col-xs-3 text-right muted">{{ study.bible }}</p>
           </div>
         </div>
-        <div v-if="getStudies.length === 0" class="muted"><i>You have not begun any studies</i></div>
+        <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
+        <div v-if="getPersistor === undefined" class="row">
+          <div class="col-xs-6">
+            <google-auth class="col-xs-12"></google-auth>
+          </div>
+        </div>
       </card>
+
     </div>
   </div>
 </template>
@@ -42,7 +46,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getStudies', 'getPersistor'])
+    ...mapGetters(['getStudies', 'getPersistor']),
+    shouldShowStudiesEmptyState: function () {
+      return this.getPersistor !== undefined && this.getStudies.length === 0
+    }
   },
   methods: {
     openStudy (studyId) {

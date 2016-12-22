@@ -1,9 +1,9 @@
 <template>
-  <div class="row clearfix">
-    <div id="authorize-div" style="display: none">
-      <p class="text-center">Use Google Drive to save your studies</p>
-      <button id="authorize-button" class="btn btn-primary btn-block" @click="handleAuthClick(event)">Connect Google Drive</button>
-      <hr/>
+  <div id="authorize-div" class="clearfix" style="display: none" @click="handleAuthClick(event)">
+    <img class="drive-logo" src="../assets/drive.png" />
+    <div class="drive-text">
+      <p class="drive-connect-label">Use Google Drive to save your studies</p>
+      <p class="drive-connect">Sign in using Google</p>
     </div>
   </div>
 </template>
@@ -38,7 +38,7 @@ export default {
         this.setPersistenceStrategy('GOOGLE_DRIVE')
         authorizeDiv.style.display = 'none'
       } else {
-        authorizeDiv.style.display = 'inline'
+        authorizeDiv.style.display = 'table'
       }
     }
   },
@@ -62,7 +62,38 @@ var SCOPES = ['https://www.googleapis.com/auth/drive.appdata']
 </script>
 
 <style lang="less">
-body {
-  padding-top: 55px
+@import '../../static/less/colors.less';
+
+#authorize-div {
+  display: table;
+  background-color: @color-back-raised2;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  box-shadow: @shadow;
+  cursor: pointer;
+  &:hover {
+    box-shadow: 0px 0px 15px rgba(250, 240, 230, 0.5);
+  }
+}
+.drive-text {
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+}
+.drive-logo {
+  display: table-cell;
+  width: 80px;
+  height: 80px;
+  float: left;
+  margin-right: 25px;
+}
+.drive-connect-label {
+  margin-bottom: 0px;
+}
+.drive-connect {
+  font-size: 34px;
+  color: @color-actionable;
+  margin-bottom: 0px;
 }
 </style>
