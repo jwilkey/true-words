@@ -12,8 +12,8 @@
         </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.observationActivities" @click="activitySelected(type)">
-            <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
-            <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+            <td>{{ activities.manager.titleForType(type) }}</td>
+            <td class="text-right muted">{{ completionPhrase(type) }}</td>
           </tr>
         </tbody>
       </table>
@@ -25,8 +25,8 @@
         </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.interpretationActivities" @click="activitySelected(type)">
-            <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
-            <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+            <td>{{ activities.manager.titleForType(type) }}</td>
+            <td class="text-right muted">{{ completionPhrase(type) }}</td>
           </tr>
         </tbody>
       </table>
@@ -38,8 +38,8 @@
         </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.applicationActivities" @click="activitySelected(type)">
-            <td :class="{'muted': isDisabled(type)}">{{ activities.manager.titleForType(type) }}</td>
-            <td :class="{'muted': isDisabled(type)}" class="text-right">{{ activities.manager.subtitleForType(type) }}</td>
+            <td>{{ activities.manager.titleForType(type) }}</td>
+            <td class="text-right muted">{{ completionPhrase(type) }}</td>
           </tr>
         </tbody>
       </table>
@@ -50,7 +50,7 @@
 <script>
 import activities from '../js/activity'
 import Titlebar from '../components/Titlebar'
-import { mapActions } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   data () {
@@ -62,6 +62,9 @@ export default {
     Titlebar
   },
   props: ['data'],
+  computed: {
+    ...mapGetters(['getCurrentStudy'])
+  },
   methods: {
     activitySelected: function (type) {
       if (this.isEnabled(type)) {
@@ -71,14 +74,25 @@ export default {
         window.alert(this.activities.manager.titleForType(type) + ' activity coming soon!')
       }
     },
-    isDisabled: function (type) {
-      return !this.activities.manager.find(type).enabled
+    completionPhrase (type) {
+      var activity = this.getCurrentStudy.findActivity(type)
+      if (activity !== undefined) {
+        var days = daysAgo(activity.creationDate)
+        return days === 0 ? 'completed today' : 'completed ' + days + ' days ago'
+      }
+      return ''
     },
     isEnabled: function (type) {
       return this.activities.manager.find(type).enabled
     },
     ...mapActions(['setCurrentActivity'])
   }
+}
+
+function daysAgo (date) {
+  var oneDay = 24 * 60 * 60 * 1000 // hours*minutes*seconds*milliseconds
+  var now = new Date()
+  return Math.round(Math.abs((date.getTime() - now.getTime()) / oneDay))
 }
 </script>
 

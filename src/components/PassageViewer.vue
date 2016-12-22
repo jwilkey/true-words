@@ -77,9 +77,9 @@ export default {
   },
   methods: {
     loadVerses () {
-      var c = this
+      var self = this
       bibleLoader.load(this.bookIdentifier, this.chapter, this.getCurrentBible, function (json) {
-        c.verses = json
+        self.verses = json
         $('html, body').animate({ scrollTop: 0 }, 'slow')
       })
     },
@@ -121,14 +121,17 @@ export default {
     actionPressed () {
       var selected = this.selectedVerses
       var versesArray = this.verses.slice(selected[0] - 1, selected[0] + selected.length - 1)
-      this.createNewStudy(Bible.buildPassage(this.startingVerse, this.endingVerse), versesArray)
-      var text = $(versesArray).map(function () {
-        return this.text
-      }).get().join(' ')
-      this.setCurrentWords(text)
-      this.$router.push('/activities')
+      var vm = this
+      var passage = Bible.buildPassage(this.startingVerse, this.endingVerse)
+      this.createNewStudy({passage: passage, verses: versesArray})
+      .done(function () {
+        vm.$router.push('/activities')
+      })
+      .fail(function () {
+        window.alert('Failed to create study')
+      })
     },
-    ...mapActions(['createNewStudy', 'setCurrentWords'])
+    ...mapActions(['createNewStudy'])
   },
   watch: {
     chapter: function (value) {

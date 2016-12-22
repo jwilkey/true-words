@@ -2,6 +2,9 @@
   <div>
     <titlebar title="TRUE WORDS"></titlebar>
     <div class="container">
+
+      <google-auth></google-auth>
+
       <card title="BEGIN" subtitle="Choose a Bible text to study">
         <div class="row clearfix">
           <div class="col-xs-6">
@@ -14,8 +17,13 @@
       </card>
 
       <card title="CONTINUE" subtitle="Choose a study">
-        <p v-for="study in getStudies">{{ study.passage.description() }}</p>
-        Ephesians 1:1-7
+        <div v-for="study in getStudies" class="row study" @click="openStudy(study.id)">
+          <div class="study-label col-xs-12">
+            <p class="col-xs-9">{{ study.passage.description() }}</p>
+            <p class="col-xs-3 text-right muted">{{ study.bible }}</p>
+          </div>
+        </div>
+        <div v-if="getStudies.length === 0" class="muted"><i>You have not begun any studies</i></div>
       </card>
     </div>
   </div>
@@ -23,9 +31,10 @@
 
 <script>
 import Titlebar from '../components/Titlebar'
+import GoogleAuth from '../components/GoogleAuth'
 import store from '../../vuex/store'
 import Card from '../components/Card'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -33,10 +42,21 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getStudies'])
+    ...mapGetters(['getStudies', 'getPersistor'])
+  },
+  methods: {
+    openStudy (studyId) {
+      var self = this
+      this.getPersistor.loadStudy(studyId)
+      .done(function (studyObject) {
+        self.setCurrentStudy(studyObject)
+        self.$router.push('/activities')
+      })
+    },
+    ...mapActions(['setCurrentStudy'])
   },
   components: {
-    Card, Titlebar
+    Card, Titlebar, GoogleAuth
   },
   store
 }
@@ -49,5 +69,31 @@ export default {
   background-color: @color-back-raised2;
   box-shadow: @shadow;
   padding: 10px;
+  &:hover {
+    color: @color-selection1;
+    text-decoration: none;
+  }
+}
+.study {
+  padding-left: 15px;
+  padding-right: 15px;
+  margin-bottom: 10px;
+  &:last-child {
+    margin-bottom: 0px;
+  }
+}
+.study-label {
+  background-color: @color-back-raised2;
+  box-shadow: @shadow;
+    border: solid 1px transparent;
+  padding: 10px;
+  &:hover {
+    color: @color-highlight-orange;
+    border: solid 1px @color-highlight-orange;
+    cursor: pointer;
+  }
+  p {
+    margin: 0px;
+  }
 }
 </style>

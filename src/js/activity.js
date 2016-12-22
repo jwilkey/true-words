@@ -20,9 +20,9 @@ function Activity (id, category, title, subtitle, enabled) {
 }
 
 function ActivityManager () {
-  this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions, ActivityType.CauseEffect]
-  this.interpretationActivities = [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms, ActivityType.Paraphrase]
-  this.applicationActivities = [ActivityType.SPACE]
+  this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions] // , ActivityType.CauseEffect
+  this.interpretationActivities = [] // [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms, ActivityType.Paraphrase]
+  this.applicationActivities = [] // [ActivityType.SPACE]
   this.activities = [
     new Activity('PPT', 'observation', 'People, Places & Things', 'Nouns', true),
     new Activity('ACTIONS', 'observation', 'Actions', 'Actions', true),
@@ -50,6 +50,10 @@ ActivityManager.prototype.titleForType = function (type) {
 ActivityManager.prototype.subtitleForType = function (type) {
   var activity = this.find(type)
   return activity ? activity.subtitle : null
+}
+
+ActivityManager.prototype.version = function (type) {
+  return '0.5'
 }
 
 export default {

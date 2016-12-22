@@ -29,6 +29,15 @@ const router = new VueRouter({
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  if (['/activity', '/activities'].indexOf(to.path) !== -1) {
+    if (store.getters.getCurrentStudy === undefined) {
+      next('/')
+    }
+  }
+  next()
+})
+
 // router.start(App, '#app')
 var v = new Vue({
   el: '#app',
