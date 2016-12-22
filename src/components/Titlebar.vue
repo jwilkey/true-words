@@ -7,6 +7,7 @@
       </router-link>
       <a v-if="showLeft('back')" class="titlebar-item" @click="onBack()"><span class="glyphicon glyphicon-menu-left"></span></a>
       <div v-if="showLeft('help')" class="titlebar-item" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
+      <a v-for="title in customLeftButtons" class="titlebar-item" @click="onSelect(title)">{{ title }}</a>
     </div>
     <div class="text-center title">
       {{ title }}
@@ -20,6 +21,7 @@
       <div class="titlebar-item">
         <slot name="right"></slot>
       </div>
+      <a v-for="title in customRightButtons" class="titlebar-item" @click="onSelect(title)">{{ title }}</a>
     </div>
   </div>
 </template>
@@ -29,6 +31,18 @@ import $ from 'jquery'
 
 export default {
   data () { return { } },
+  computed: {
+    customLeftButtons: function () {
+      return (this.leftItems === undefined) ? [] : this.leftItems.filter(function (e) {
+        return ['close', 'home', 'back', 'help'].indexOf(e) === -1
+      })
+    },
+    customRightButtons: function () {
+      return (this.rightItems === undefined) ? [] : this.rightItems.filter(function (e) {
+        return ['close', 'home', 'back', 'help'].indexOf(e) === -1
+      })
+    }
+  },
   components: { },
   methods: {
     showLeft (label) {
@@ -46,7 +60,7 @@ export default {
       $('.menubar').toggleClass('show')
     })
   },
-  props: ['title', 'leftItems', 'rightItems', 'onHelp', 'onBack', 'onClose']
+  props: ['title', 'leftItems', 'rightItems', 'onHelp', 'onBack', 'onClose', 'onSelect']
 }
 </script>
 
@@ -95,6 +109,7 @@ export default {
       padding: 10px;
       min-width: 35px;
       box-shadow: @shadow;
+      cursor: pointer;
     }
   }
 }

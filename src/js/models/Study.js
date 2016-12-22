@@ -48,7 +48,8 @@ Study.prototype.saveActivity = function (activityAchievement) {
   activityAchievement.studyID = this.id
   var existingActivity = this.findActivity(activityAchievement.type)
   if (existingActivity !== undefined) {
-    existingActivity = activityAchievement
+    var index = this.activities.indexOf(existingActivity)
+    this.activities[index] = activityAchievement
   } else {
     this.activities.push(activityAchievement)
   }

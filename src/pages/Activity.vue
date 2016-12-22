@@ -1,14 +1,14 @@
 <template>
   <div>
-    <titlebar :title="title.toUpperCase()" :left-items="['close']" :right-items="['help']" :on-close="closePressed" :on-help="helpPressed"></titlebar>
+    <titlebar :title="title.toUpperCase()" :left-items="leftMenuItems" :right-items="rightMenuItems" :on-close="closePressed" :on-help="helpPressed" :on-select="titlebarSelect"></titlebar>
     <menubar></menubar>
 
     <div id="activity">
-      <component v-if="getCurrentActivity" :is="currentActivity" :finish="onFinish" :data="activityData"></component>
+      <component v-if="getCurrentActivity && activityData" :is="currentActivity" :finish="onFinish" :data="activityData"></component>
     </div>
 
     <div id="review">
-      <component v-if="currentReviewer" :is="currentReviewer" :data="reviewerData"></component>
+      <component v-if="currentReviewer && activityData" :is="currentReviewer" :data="activityData"></component>
     </div>
   </div>
 </template>
@@ -30,16 +30,15 @@ import ActionsReviewer from '../components/reviewers/ActionsReviewer'
 export default {
   data () {
     return {
-      reviewerData: undefined
+      leftMenuItems: ['close'],
+      rightMenuItems: ['help'],
+      activityData: undefined
     }
   },
   computed: {
     ...mapGetters(['getCurrentActivity', 'getCurrentStudy']),
     title: function () {
       return activities.manager.subtitleForType(this.getCurrentActivity)
-    },
-    activityData: function () {
-      return ActivityDataFactory.createForType(this.getCurrentActivity)
     },
     currentActivity: function () { return this.activityForType(this.getCurrentActivity) },
     currentReviewer: function () { return this.reviewerForType(this.getCurrentActivity) }
@@ -55,15 +54,23 @@ export default {
     helpPressed () {
       window.alert('help from the activity')
     },
+    titlebarSelect (buttonTitle) {
+      if (buttonTitle === 'RETRY') {
+        this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity)
+        $('#activity').show()
+        $('#review').hide()
+        this.rightMenuItems = ['help']
+      }
+    },
     onFinish (activityType, activityData) {
       var self = this
       var achievement = new ActivityAchievement(activityType, activityData, new Date(), activities.manager.version(activityType))
       this.saveActivity(achievement)
       .done(function () {
         self.currentReviewer = self.reviewerForType(activityType)
-        self.reviewerData = activityData
         $('#activity').hide()
         $('#review').show()
+        this.rightMenuItems = ['RETRY']
       })
       .fail(function () {
         window.alert('Failed to save your activity. Check your connection and try again.')
@@ -89,9 +96,13 @@ export default {
     $('#activity, #review').css('padding-top', parseInt($('.titlebar').css('height')) + 5 + 'px')
     var completedActivity = this.getCurrentStudy.findActivity(this.getCurrentActivity)
     if (completedActivity !== undefined) {
-      this.reviewerData = completedActivity.data
+      this.activityData = completedActivity.data
       $('#activity').hide()
       $('#review').show()
+      this.rightMenuItems = ['RETRY']
+    } else {
+      this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity)
+      this.rightMenuItems = ['help']
     }
   }
 }
