@@ -2,7 +2,7 @@
   <div id="authorize-div" class="clearfix" style="display: none" @click="signInToDrive(event)">
     <img class="drive-logo" src="../assets/drive.png" />
     <div class="drive-text">
-      <p class="drive-connect-label">Use Google Drive to save your studies</p>
+      <p class="drive-connect-label">Save your studies in Google Drive</p>
       <p class="drive-connect">Sign in using Google</p>
     </div>
   </div>
@@ -101,7 +101,7 @@ export default {
     font-size: 14px;
   }
   @media (min-width: 768px) {
-    font-size: 34px;
+    font-size: 16px;
   }
   margin-bottom: 0px;
 }
@@ -110,7 +110,7 @@ export default {
     font-size: 23px;
   }
   @media (min-width: 768px) {
-    font-size: 34px;
+    font-size: 35px;
   }
   color: @color-actionable;
   margin-bottom: 0px;
