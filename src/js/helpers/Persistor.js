@@ -74,5 +74,5 @@ Persistor.prototype.addDriveFileForStudy = function (driveFileId, studyId) {
 }
 
 function driveToken () {
-  return window.gapi.auth.getToken().access_token
+  return window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
 }

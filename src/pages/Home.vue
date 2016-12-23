@@ -23,7 +23,7 @@
         </div>
         <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
         <div v-if="getPersistor === undefined" class="row">
-          <div class="col-xs-6">
+          <div class="col-md-6">
             <google-auth class="col-xs-12"></google-auth>
           </div>
         </div>

@@ -1,5 +1,5 @@
 <template>
-  <div id="authorize-div" class="clearfix" style="display: none" @click="handleAuthClick(event)">
+  <div id="authorize-div" class="clearfix" style="display: none" @click="signInToDrive(event)">
     <img class="drive-logo" src="../assets/drive.png" />
     <div class="drive-text">
       <p class="drive-connect-label">Use Google Drive to save your studies</p>
@@ -10,8 +10,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-
-var gapi
+import $ from 'jquery'
 
 export default {
   data () {
@@ -25,40 +24,37 @@ export default {
   methods: {
     ...mapActions(['setPersistenceStrategy']),
     checkAuth () {
-      gapi = window.gapi
-      gapi.auth.authorize({ 'client_id': CLIENT_ID, 'scope': SCOPES.join(' '), 'immediate': true }, this.handleAuthResult)
+      var self = this
+      var CLIENT_ID = '105793449722-prnvpc85hufiqrn8vebatsbfk2aa7u2b.apps.googleusercontent.com'
+      var SCOPE = 'https://www.googleapis.com/auth/drive.appdata'
+      window.gapi.auth2.init({ client_id: CLIENT_ID, scope: SCOPE })
+      .then(function () {
+        window.gapi.auth2.getAuthInstance().isSignedIn.listen(self.updateSigninStatus)
+        self.updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get())
+      })
     },
-    handleAuthClick (event) {
-      gapi.auth.authorize({client_id: CLIENT_ID, scope: SCOPES, immediate: false}, this.handleAuthResult)
-      return false
-    },
-    handleAuthResult (authResult) {
+    updateSigninStatus (isSignedIn) {
       var authorizeDiv = document.getElementById('authorize-div')
-      if (authResult && !authResult.error) {
+      if (isSignedIn) {
         this.setPersistenceStrategy('GOOGLE_DRIVE')
         authorizeDiv.style.display = 'none'
       } else {
         authorizeDiv.style.display = 'table'
       }
+    },
+    signInToDrive () {
+      window.gapi.auth2.getAuthInstance().signIn()
     }
   },
   mounted: function () {
-    this.lib = 'https://apis.google.com/js/client.js?onload=initDrive'
-
-    var vm = this
-    window.initDrive = function () {
-      vm.checkAuth()
-    }
-
-    var script = document.createElement('script')
-    script.type = 'text/javascript'
-    script.src = this.lib
-    document.body.appendChild(script)
+    $.holdReady(true)
+    var self = this
+    $.getScript('https://apis.google.com/js/api.js', function () {
+      $.holdReady(false)
+      window.gapi.load('auth2', self.checkAuth)
+    })
   }
 }
-
-var CLIENT_ID = '105793449722-prnvpc85hufiqrn8vebatsbfk2aa7u2b.apps.googleusercontent.com'
-var SCOPES = ['https://www.googleapis.com/auth/drive.appdata']
 </script>
 
 <style lang="less">
@@ -67,8 +63,13 @@ var SCOPES = ['https://www.googleapis.com/auth/drive.appdata']
 #authorize-div {
   display: table;
   background-color: @color-back-raised2;
+  @media screen and (max-width: 767px) {
+    padding-left: 10px;
+  }
+  @media (min-width: 768px) {
+    padding-left: 20px;
+  }
   padding: 10px;
-  padding-left: 20px;
   padding-right: 20px;
   box-shadow: @shadow;
   cursor: pointer;
@@ -82,17 +83,35 @@ var SCOPES = ['https://www.googleapis.com/auth/drive.appdata']
   width: 100%;
 }
 .drive-logo {
+  @media screen and (max-width: 767px) {
+    width: 50px;
+    height: 50px;
+    margin-right: 15px;
+  }
+  @media (min-width: 768px) {
+    width: 80px;
+    height: 80px;
+    margin-right: 25px;
+  }
   display: table-cell;
-  width: 80px;
-  height: 80px;
   float: left;
-  margin-right: 25px;
 }
 .drive-connect-label {
+  @media screen and (max-width: 767px) {
+    font-size: 14px;
+  }
+  @media (min-width: 768px) {
+    font-size: 34px;
+  }
   margin-bottom: 0px;
 }
 .drive-connect {
-  font-size: 34px;
+  @media screen and (max-width: 767px) {
+    font-size: 23px;
+  }
+  @media (min-width: 768px) {
+    font-size: 34px;
+  }
   color: @color-actionable;
   margin-bottom: 0px;
 }
