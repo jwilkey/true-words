@@ -14,6 +14,7 @@ Vue.use(Vuex)
 export const state = {
   page: 'home',
   persistor: undefined,
+  user: {},
   currentBible: 'ESV',
   studies: [],
   currentStudy: undefined,
@@ -26,6 +27,9 @@ export const state = {
 export const mutations = {
   SET_PERSISTANCE_STRATEGY (state, persistenceStrategy) {
     state.persistor = new Persistence.Persistor(persistenceStrategy)
+  },
+  SET_USER (state, user) {
+    state.user = user
   },
   SET_STUDIES (state, studies) {
     state.studies = studies

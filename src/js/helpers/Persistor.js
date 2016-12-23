@@ -27,7 +27,7 @@ Persistor.prototype.refreshData = function (onFinish) {
         self.addDriveFileForStudy(file.id, study.id)
         return study
       })
-      onFinish(studies)
+      onFinish(studies, driveUser())
     })
     .fail(function (resp) {
       window.alert('Failed to load your saved studies from Google Drive')
@@ -75,4 +75,9 @@ Persistor.prototype.addDriveFileForStudy = function (driveFileId, studyId) {
 
 function driveToken () {
   return window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
+}
+
+function driveUser () {
+  var profile = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+  return {name: profile.getName(), imageUrl: profile.getImageUrl()}
 }

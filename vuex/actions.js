@@ -3,8 +3,9 @@ import Studies from '../src/js/models/Study'
 export default {
   setPersistenceStrategy (context, persistenceStrategy) {
     context.commit('SET_PERSISTANCE_STRATEGY', persistenceStrategy)
-    context.getters.getPersistor.refreshData(function (studies) {
+    context.getters.getPersistor.refreshData(function (studies, user) {
       context.commit('SET_STUDIES', studies)
+      context.commit('SET_USER', user)
     })
   },
   setStudies ({ commit }, studies) {

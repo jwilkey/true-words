@@ -30,6 +30,12 @@
       </card>
 
     </div>
+    <div class="actionbar">
+      <div class="pull-right muted">
+        <img v-if="userimage" class="user-img" :src="userimage" />
+        {{ username }}
+      </div>
+    </div>
   </div>
 </template>
 
@@ -46,9 +52,15 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getStudies', 'getPersistor']),
+    ...mapGetters(['getStudies', 'getPersistor', 'getUser']),
     shouldShowStudiesEmptyState: function () {
       return this.getPersistor !== undefined && this.getStudies.length === 0
+    },
+    username: function () {
+      return this.getUser ? this.getUser.name : undefined
+    },
+    userimage: function () {
+      return this.getUser ? this.getUser.imageUrl : undefined
     }
   },
   methods: {
@@ -80,6 +92,12 @@ export default {
     color: @color-selection1;
     text-decoration: none;
   }
+}
+.user-img {
+  height: 20px;
+  width: 20px;
+  margin-right: 8px;
+  border-radius: 5px;
 }
 .study {
   padding-left: 15px;
