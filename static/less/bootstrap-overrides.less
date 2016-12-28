@@ -49,12 +49,19 @@
   }
   .list-group-item {
     color: white;
-    background-color: @color-back-raised;
+    background-color: transparent;
     box-shadow: @shadow;
     border: none;
     border-radius: 0;
     margin-bottom: 5px;
   }
+}
+
+.form-control:focus {
+  border-color: @color-actionable;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 9px @color-actionable;
+  color: white;
+  font-size: 16px;
 }
 
 .col-xs-5c,

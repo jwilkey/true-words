@@ -1,5 +1,5 @@
 <template>
-  <div class="cleafix flex-v">
+  <div class="flex-v">
     <div class="flex-1">
       <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
 

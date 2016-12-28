@@ -15,6 +15,7 @@ function getPrototype (kind) {
     case 'collection': return Collection.prototype
     case 'container': return Container.prototype
     case 'word-selection': return WordSelection.prototype
+    case 'free-text': return FreeText.prototype
     case 'action': return Action.prototype
     default: return undefined
   }
@@ -152,6 +153,20 @@ WordSelection.prototype.toString = function () {
   }).join(' ')
 }
 
+// FreeText
+function FreeText (text, passage) {
+  this.kind = 'free-text'
+  this.text = text
+  this.passage = passage
+}
+
+FreeText.prototype.fromJson = function (json) {
+  if (json !== undefined) {
+    return new FreeText(json.text, json.passage)
+  }
+  return undefined
+}
+
 // Action
 function Action (action, tense, actor, target, result) {
   this.kind = 'action'
@@ -166,4 +181,4 @@ Action.prototype.fromJson = function (json) {
   return new Action(deserialize(0, json.action), json.tense, deserialize(0, json.actor), deserialize(0, json.target), deserialize(0, json.result))
 }
 
-export { WordSelection, Action }
+export { WordSelection, FreeText, Action }

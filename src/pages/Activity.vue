@@ -24,8 +24,10 @@ import Titlebar from '../components/Titlebar'
 import Menubar from '../components/Menubar'
 import Buckets from '../components/activities/Buckets'
 import Actions from '../components/activities/Actions'
+import Paraphrase from '../components/activities/Paraphrase'
 import BucketsReviewer from '../components/reviewers/BucketsReviewer'
 import ActionsReviewer from '../components/reviewers/ActionsReviewer'
+import ParaphraseReviewer from '../components/reviewers/ParaphraseReviewer'
 
 export default {
   data () {
@@ -44,7 +46,7 @@ export default {
     currentReviewer: function () { return this.reviewerForType(this.getCurrentActivity) }
   },
   components: {
-    Titlebar, Menubar, Actions, Buckets, BucketsReviewer, ActionsReviewer
+    Titlebar, Menubar, Actions, Buckets, Paraphrase, BucketsReviewer, ActionsReviewer, ParaphraseReviewer
   },
   methods: {
     ...mapActions(['saveActivity']),
@@ -52,7 +54,7 @@ export default {
       this.$router.back()
     },
     helpPressed () {
-      window.alert('help from the activity')
+      window.alert('help not available at this time')
     },
     titlebarSelect (buttonTitle) {
       if (buttonTitle === 'RETRY') {
@@ -80,6 +82,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets'
         case activities.types.Actions: return 'actions'
+        case activities.types.Paraphrase: return 'paraphrase'
         default: return undefined
       }
     },
@@ -87,6 +90,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets-reviewer'
         case activities.types.Actions: return 'actions-reviewer'
+        case activities.types.Paraphrase: return 'paraphrase-reviewer'
         default: return undefined
       }
     }

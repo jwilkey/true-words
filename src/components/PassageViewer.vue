@@ -182,6 +182,9 @@ export default {
   padding: 5px;
   border-radius: 1px;
 }
+.list-group-item.verse {
+  background-color: @color-back-raised;
+}
 .verse {
   color: white;
   padding-top: 1px;

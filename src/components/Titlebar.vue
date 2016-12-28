@@ -18,10 +18,10 @@
       <router-link v-if="showRight('home')" class="titlebar-item" to="/"><span class="glyphicon glyphicon-home"></span></router-link>
       <a v-if="showRight('back')" class="titlebar-item" @click="onBack()">BACK</a>
       <div v-if="showRight('help')" class="titlebar-item" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
+      <a v-for="title in customRightButtons" class="titlebar-item pull-right" @click="onSelect(title)">{{ title }}</a>
       <div class="titlebar-item">
         <slot name="right"></slot>
       </div>
-      <a v-for="title in customRightButtons" class="titlebar-item" @click="onSelect(title)">{{ title }}</a>
     </div>
   </div>
 </template>
@@ -90,8 +90,14 @@ export default {
   }
   .titlebar-item-group {
     position: absolute;
-    padding-left: 15px;
-    padding-right: 15px;
+    @media screen and (max-width: 767px) {
+      padding-left: 7px;
+      padding-right: 7px;
+    }
+    @media (min-width: 768px) {
+      padding-left: 15px;
+      padding-right: 15px;
+    }
     height: 100%;
     top: 50%;
     &.left > * {
@@ -110,6 +116,7 @@ export default {
       min-width: 35px;
       box-shadow: @shadow;
       cursor: pointer;
+      letter-spacing: 1px;
     }
   }
 }

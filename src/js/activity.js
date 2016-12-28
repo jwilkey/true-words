@@ -21,7 +21,7 @@ function Activity (id, category, title, subtitle, enabled) {
 
 function ActivityManager () {
   this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions] // , ActivityType.CauseEffect
-  this.interpretationActivities = [] // [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms, ActivityType.Paraphrase]
+  this.interpretationActivities = [ActivityType.Paraphrase] // [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms]
   this.applicationActivities = [] // [ActivityType.SPACE]
   this.activities = [
     new Activity('PPT', 'observation', 'People, Places & Things', 'Nouns', true),
@@ -31,7 +31,7 @@ function ActivityManager () {
     new Activity('KEYWORDS', 'interpretation', 'Key Words', 'Key Words', false),
     new Activity('TOPICS', 'interpretation', 'Topics', 'Topics', false),
     new Activity('IDIOMS', 'interpretation', 'Idioms', 'Words not used in everyday talk', false),
-    new Activity('PARAPHRASE', 'interpretation', 'Paraphrase', 'Paraphrase', false),
+    new Activity('PARAPHRASE', 'interpretation', 'Paraphrase', 'Paraphrase', true),
 
     new Activity('SPACE', 'application', 'SPACE', 'SPACE', false)
   ]

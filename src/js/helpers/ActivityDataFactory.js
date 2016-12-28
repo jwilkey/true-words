@@ -6,6 +6,7 @@ export default {
     switch (activityType) {
       case activities.types.PeoplePlacesThings: return peoplePlacesThingsData()
       case activities.types.Actions: return actionsData()
+      case activities.types.Paraphrase: return paraphraseData()
       default: ActivityData.new()
     }
   }
@@ -23,5 +24,12 @@ function peoplePlacesThingsData () {
 function actionsData () {
   var data = ActivityData.new()
   data.initCollection('map')
+  return data
+}
+
+// Interpret
+function paraphraseData () {
+  var data = ActivityData.new()
+  data.initCollection('free-text')
   return data
 }
