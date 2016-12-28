@@ -30,12 +30,18 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (['/activity', '/activities'].indexOf(to.path) !== -1) {
-    if (store.getters.getCurrentStudy === undefined) {
-      next('/')
-    }
+  if (store.getters.getPersistor === undefined) {
+    next()
+  } else {
+    store.getters.getPersistor.refreshAuthorization(function (result) {
+      if (['/activity', '/activities'].indexOf(to.path) !== -1) {
+        if (store.getters.getCurrentStudy === undefined) {
+          next('/')
+        }
+      }
+      next()
+    })
   }
-  next()
 })
 
 // router.start(App, '#app')

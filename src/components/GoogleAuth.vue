@@ -11,6 +11,7 @@
 <script>
 import { mapGetters, mapActions } from 'vuex'
 import $ from 'jquery'
+import drive from '../js/helpers/DriveHelper'
 
 export default {
   data () {
@@ -25,12 +26,9 @@ export default {
     ...mapActions(['setPersistenceStrategy']),
     checkAuth () {
       var self = this
-      var CLIENT_ID = '105793449722-prnvpc85hufiqrn8vebatsbfk2aa7u2b.apps.googleusercontent.com'
-      var SCOPE = 'https://www.googleapis.com/auth/drive.appdata'
-      window.gapi.auth2.init({ client_id: CLIENT_ID, scope: SCOPE })
-      .then(function () {
+      drive.initAuth(function () {
         window.gapi.auth2.getAuthInstance().isSignedIn.listen(self.updateSigninStatus)
-        self.updateSigninStatus(window.gapi.auth2.getAuthInstance().isSignedIn.get())
+        self.updateSigninStatus(drive.isSignedIn())
       })
     },
     updateSigninStatus (isSignedIn) {

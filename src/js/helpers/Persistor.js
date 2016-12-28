@@ -13,6 +13,14 @@ function Persistor (persistenceStrategy) {
   }
 }
 
+Persistor.prototype.refreshAuthorization = function (callback) {
+  if (this.usingDrive) {
+    drive.initAuth(callback)
+  }
+  // no persistenceStrategy
+  callback(undefined)
+}
+
 Persistor.prototype.refreshData = function (onFinish) {
   if (this.usingDrive()) {
     var self = this

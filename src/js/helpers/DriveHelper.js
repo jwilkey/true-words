@@ -7,6 +7,15 @@ function api (path) {
 }
 
 export default {
+  initAuth (callback) {
+    var CLIENT_ID = '105793449722-prnvpc85hufiqrn8vebatsbfk2aa7u2b.apps.googleusercontent.com'
+    var SCOPE = 'https://www.googleapis.com/auth/drive.appdata'
+    window.gapi.auth2.init({ client_id: CLIENT_ID, scope: SCOPE })
+    .then(callback)
+  },
+  isSignedIn () {
+    return window.gapi.auth2.getAuthInstance().isSignedIn.get()
+  },
   fetchFiles (authToken, query) {
     var url = api('/drive/v3/files?spaces=appDataFolder&fields=files(id,appProperties,properties)&q=' + query)
     return $.ajax({
