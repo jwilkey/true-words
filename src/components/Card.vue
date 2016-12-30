@@ -14,11 +14,7 @@
 export default {
   components: {
   },
-  props: ['title', 'subtitle'],
-  vuex: {
-    actions: {
-    }
-  }
+  props: ['title', 'subtitle']
 }
 </script>
 

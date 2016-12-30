@@ -6,6 +6,16 @@ ActivityData.prototype.addContainer = function (name, itemKind) {
   this.containers.push(new Container(name, itemKind))
 }
 
+ActivityData.prototype.findContainer = function (containerName) {
+  for (var i in this.containers) {
+    var c = this.containers[i]
+    if (c.name === containerName) {
+      return c
+    }
+  }
+  return undefined
+}
+
 ActivityData.prototype.initCollection = function (itemKind) {
   this.collection = new Collection(itemKind)
 }

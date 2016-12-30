@@ -1,10 +1,12 @@
 <template>
-  <div v-if="data !== undefined">
-    <div class="container">
-      <span v-for="freeText in data.collection.items">{{ freeText.text }} </span>
+  <div v-if="data !== undefined" class="flex-v">
+    <div class="flex-1">
+      <div class="container">
+        <span v-for="freeText in data.collection.items">{{ freeText.text }} </span>
+      </div>
     </div>
 
-    <div class="actionbar">
+    <div class="actionbar-flex">
       <button @click="donePressed()" class="btn btn-lg btn-primary btn-block">DONE</button>
     </div>
   </div>

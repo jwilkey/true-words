@@ -1,36 +1,38 @@
 <template>
-  <div v-if="data !== undefined">
-    <div class="container">
-      <div>
-        <table class="actions-table">
-          <tbody>
-            <tr v-for="action in data.collection.items">
-              <td>
-                <p class="action-label">ACTOR</p>
-                <div>{{action.actor ? action.actor.toString() : '?'}}</div>
-              </td>
-              <td class="arrow-cell"></td>
-              <td>
-                <p class="action-label">ACTION</p>
-                <div>{{action.action ? action.action.toString() : '?'}}</div>
-              </td>
-              <td class="arrow-cell"></td>
-              <td>
-                <p class="action-label">TARGET</p>
-                <div>{{action.target ? action.target.toString() : '?'}}</div>
-              </td>
-              <td class="arrow-cell"></td>
-              <td>
-                <p class="action-label">RESULT</p>
-                <div>{{action.result ? action.result.toString() : '?'}}</div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+  <div v-if="data !== undefined" class="flex-v">
+    <div class="flex-1">
+      <div class="container">
+        <div>
+          <table class="actions-table">
+            <tbody>
+              <tr v-for="action in data.collection.items">
+                <td>
+                  <p class="action-label">ACTOR</p>
+                  <div>{{action.actor ? action.actor.toString() : '?'}}</div>
+                </td>
+                <td class="arrow-cell"></td>
+                <td>
+                  <p class="action-label">ACTION</p>
+                  <div>{{action.action ? action.action.toString() : '?'}}</div>
+                </td>
+                <td class="arrow-cell"></td>
+                <td>
+                  <p class="action-label">TARGET</p>
+                  <div>{{action.target ? action.target.toString() : '?'}}</div>
+                </td>
+                <td class="arrow-cell"></td>
+                <td>
+                  <p class="action-label">RESULT</p>
+                  <div>{{action.result ? action.result.toString() : '?'}}</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
 
-    <div class="actionbar">
+    <div class="actionbar-flex">
       <button @click="donePressed()" class="btn btn-lg btn-primary btn-block">DONE</button>
     </div>
   </div>

@@ -8,7 +8,7 @@ var ActivityType = {
   Idioms: 'IDIOMS',
   Paraphrase: 'PARAPHRASE',
 
-  SPACE: 'SPACE'
+  Space: 'SPACE'
 }
 
 function Activity (id, category, title, subtitle, enabled) {
@@ -22,7 +22,7 @@ function Activity (id, category, title, subtitle, enabled) {
 function ActivityManager () {
   this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions] // , ActivityType.CauseEffect
   this.interpretationActivities = [ActivityType.Paraphrase] // [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms]
-  this.applicationActivities = [] // [ActivityType.SPACE]
+  this.applicationActivities = [ActivityType.Space]
   this.activities = [
     new Activity('PPT', 'observation', 'People, Places & Things', 'Nouns', true),
     new Activity('ACTIONS', 'observation', 'Actions', 'Actions', true),
@@ -33,7 +33,7 @@ function ActivityManager () {
     new Activity('IDIOMS', 'interpretation', 'Idioms', 'Words not used in everyday talk', false),
     new Activity('PARAPHRASE', 'interpretation', 'Paraphrase', 'Paraphrase', true),
 
-    new Activity('SPACE', 'application', 'SPACE', 'SPACE', false)
+    new Activity('SPACE', 'application', 'SPACE', 'SPACE', true)
   ]
 }
 
