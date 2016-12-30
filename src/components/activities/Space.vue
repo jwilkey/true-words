@@ -87,9 +87,11 @@ export default {
     },
     textInputDone (text) {
       $('.overlay').hide()
-      var container = this.data.findContainer(this.currentSpaceContainer)
-      container.add(new FreeText(text, this.getCurrentStudy.passage))
-      $('.space-done-button').show()
+      if (text.length > 0) {
+        var container = this.data.findContainer(this.currentSpaceContainer)
+        container.add(new FreeText(text, this.getCurrentStudy.passage))
+        $('.space-done-button').show()
+      }
     },
     finished () {
       this.finish(this.activityType, this.data)
