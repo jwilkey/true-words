@@ -102,19 +102,6 @@ function determineParaphrasingRange (currentVerseContainer) {
 <style lang="less" scoped>
 @import '../../../static/less/colors.less';
 @import '../../../static/less/app.less';
-::-webkit-scrollbar
-{
-  width: 12px;  /* for vertical scrollbars */
-  height: 12px; /* for horizontal scrollbars */
-}
-::-webkit-scrollbar-track
-{
-  background: rgba(0, 0, 0, 0.1);
-}
-::-webkit-scrollbar-thumb
-{
-  background: rgba(0, 0, 0, 0.5);
-}
 
 .verse-container {
   padding: 0px;

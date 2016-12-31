@@ -1,0 +1,88 @@
+<template>
+  <div v-if="data !== undefined" class="flex-v">
+    <div class="flex-1">
+      <div class="container">
+        <div class="space-container">
+          <p class="space-title"><span class="acronym">S</span>INS TO CONFESS</p>
+          <p v-for="freeText in this.data.findContainer('S').items" class="space-item">{{ freeText.text }}</p>
+          <p v-if="this.data.findContainer('S').items.length === 0" class="space-item-empty">none identified</p>
+        </div>
+        <div class="space-container">
+          <p class="space-title"><span class="acronym">P</span>ROMISES TO CLAIM</p>
+          <p v-for="freeText in this.data.findContainer('P').items" class="space-item">{{ freeText.text }}</p>
+          <p v-if="this.data.findContainer('P').items.length === 0" class="space-item-empty">none identified</p>
+        </div>
+        <div class="space-container">
+          <p class="space-title"><span class="acronym">A</span>CTIONS TO TAKE</p>
+          <p v-for="freeText in this.data.findContainer('A').items" class="space-item">{{ freeText.text }}</p>
+          <p v-if="this.data.findContainer('A').items.length === 0" class="space-item-empty">none identified</p>
+        </div>
+        <div class="space-container">
+          <p class="space-title"><span class="acronym">C</span>OMMANDS TO OBEY</p>
+          <p v-for="freeText in this.data.findContainer('C').items" class="space-item">{{ freeText.text }}</p>
+          <p v-if="this.data.findContainer('C').items.length === 0" class="space-item-empty">none identified</p>
+        </div>
+        <div class="space-container">
+          <p class="space-title"><span class="acronym">E</span>XAMPLES TO FOLLOW</p>
+          <p v-for="freeText in this.data.findContainer('E').items" class="space-item">{{ freeText.text }}</p>
+          <p v-if="this.data.findContainer('E').items.length === 0" class="space-item-empty">none identified</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="actionbar-flex">
+      <button @click="donePressed()" class="btn btn-lg btn-primary btn-block">DONE</button>
+    </div>
+  </div>
+</template>
+
+<script>
+import { mapGetters } from 'vuex'
+import activities from '../../js/activity'
+
+export default {
+  data () { return { } },
+  computed: {
+    ...mapGetters(['getCurrentActivity']),
+    title: function () {
+      return activities.manager.titleForType(this.getCurrentActivity)
+    }
+  },
+  props: ['data'],
+  methods: {
+    donePressed: function () {
+      this.$router.replace('/activities')
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+@import '../../../static/less/colors.less';
+.space-container {
+  margin-bottom: 20px;
+}
+.space-title {
+  color: @color-deemphasize;
+  border-bottom: solid 1px @color-back-raised2;
+  font-family: serif;
+  letter-spacing: 2px;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+  .acronym {
+    font-size: 20px;
+    font-weight: bold;
+  }
+}
+.space-item {
+  border-bottom: solid 1px @color-back-raised;
+  padding: 5px;
+  margin: 0px;
+}
+.space-item-empty {
+  font-style: italic;
+  color: @color-deemphasize;
+  padding: 5px;
+  margin: 0px;
+}
+</style>

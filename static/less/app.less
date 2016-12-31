@@ -26,6 +26,20 @@ a {
   color: #fff;
 }
 
+::-webkit-scrollbar
+{
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-track
+{
+  background: transparent;
+}
+::-webkit-scrollbar-thumb
+{
+  background: @color-back-raised;
+}
+
 .actionbar {
   position: fixed;
   bottom: 0;
@@ -52,7 +66,7 @@ a {
   z-index: 100;
   width: 100%;
   padding: 5px;
-  padding-bottom: 15px;
+  padding-bottom: 10px;
   box-shadow: 0px -3px 15px rgba(0, 0, 0, 0.9);
   background-color: @color-back-raised;
   button {

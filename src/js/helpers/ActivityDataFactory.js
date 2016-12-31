@@ -7,6 +7,7 @@ export default {
       case activities.types.PeoplePlacesThings: return peoplePlacesThingsData()
       case activities.types.Actions: return actionsData()
       case activities.types.Paraphrase: return paraphraseData()
+      case activities.types.Space: return spaceData()
       default: ActivityData.new()
     }
   }
@@ -31,5 +32,16 @@ function actionsData () {
 function paraphraseData () {
   var data = ActivityData.new()
   data.initCollection('free-text')
+  return data
+}
+
+// Apply
+function spaceData () {
+  var data = ActivityData.new()
+  data.addContainer('S', 'free-text')
+  data.addContainer('P', 'free-text')
+  data.addContainer('A', 'free-text')
+  data.addContainer('C', 'free-text')
+  data.addContainer('E', 'free-text')
   return data
 }

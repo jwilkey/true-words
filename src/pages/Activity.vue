@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="activity-wrapper">
     <titlebar :title="title.toUpperCase()" :left-items="leftMenuItems" :right-items="rightMenuItems" :on-close="closePressed" :on-help="helpPressed" :on-select="titlebarSelect"></titlebar>
     <menubar></menubar>
 
@@ -25,9 +25,11 @@ import Menubar from '../components/Menubar'
 import Buckets from '../components/activities/Buckets'
 import Actions from '../components/activities/Actions'
 import Paraphrase from '../components/activities/Paraphrase'
+import Space from '../components/activities/Space'
 import BucketsReviewer from '../components/reviewers/BucketsReviewer'
 import ActionsReviewer from '../components/reviewers/ActionsReviewer'
 import ParaphraseReviewer from '../components/reviewers/ParaphraseReviewer'
+import SpaceReviewer from '../components/reviewers/SpaceReviewer'
 
 export default {
   data () {
@@ -46,7 +48,7 @@ export default {
     currentReviewer: function () { return this.reviewerForType(this.getCurrentActivity) }
   },
   components: {
-    Titlebar, Menubar, Actions, Buckets, Paraphrase, BucketsReviewer, ActionsReviewer, ParaphraseReviewer
+    Titlebar, Menubar, Actions, Buckets, Paraphrase, Space, BucketsReviewer, ActionsReviewer, ParaphraseReviewer, SpaceReviewer
   },
   methods: {
     ...mapActions(['saveActivity']),
@@ -83,6 +85,7 @@ export default {
         case activities.types.PeoplePlacesThings: return 'buckets'
         case activities.types.Actions: return 'actions'
         case activities.types.Paraphrase: return 'paraphrase'
+        case activities.types.Space: return 'space'
         default: return undefined
       }
     },
@@ -91,6 +94,7 @@ export default {
         case activities.types.PeoplePlacesThings: return 'buckets-reviewer'
         case activities.types.Actions: return 'actions-reviewer'
         case activities.types.Paraphrase: return 'paraphrase-reviewer'
+        case activities.types.Space: return 'space-reviewer'
         default: return undefined
       }
     }
