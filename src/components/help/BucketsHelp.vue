@@ -24,17 +24,7 @@ export default {
   components: { },
   props: [],
   computed: { },
-  methods: {
-    isSelected: function (index) {
-      return [4, 10, 11, 12].indexOf(index) !== -1
-    },
-    isStart: function (index) {
-      return index === 10
-    },
-    isEnd: function (index) {
-      return index === 12
-    }
-  }
+  methods: { }
 }
 </script>
 
