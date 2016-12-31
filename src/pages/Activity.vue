@@ -14,7 +14,7 @@
     <div id="help" class="visible">
       <div class="help-container">
         <div class="help-box">
-          <div class="help-title">{{ title.toUpperCase() }}: HOW TO</div>
+          <div class="help-title">{{ title.toUpperCase() }}: HOW TO <span @click="helpDismiss()" class="glyphicon glyphicon-remove"></span></div>
           <component v-if="getCurrentActivity" :is="currentHelpView"></component>
           <button class="btn btn-block btn-help" @click="helpDismiss()">OK</button>
         </div>
@@ -44,6 +44,7 @@ import ParaphraseReviewer from '../components/reviewers/ParaphraseReviewer'
 import SpaceReviewer from '../components/reviewers/SpaceReviewer'
 
 import ActionsHelp from '../components/help/ActionsHelp'
+import BucketsHelp from '../components/help/BucketsHelp'
 
 export default {
   data () {
@@ -63,7 +64,7 @@ export default {
     currentHelpView: function () { return this.helpViewForType(this.getCurrentActivity) }
   },
   components: {
-    Titlebar, Menubar, Actions, Buckets, Paraphrase, Space, BucketsReviewer, ActionsReviewer, ParaphraseReviewer, SpaceReviewer, ActionsHelp
+    Titlebar, Menubar, Actions, Buckets, Paraphrase, Space, BucketsReviewer, ActionsReviewer, ParaphraseReviewer, SpaceReviewer, ActionsHelp, BucketsHelp
   },
   methods: {
     ...mapActions(['saveActivity']),
@@ -212,11 +213,20 @@ body {
     margin-bottom: 10px;
   }
   .help-container {
+    height: 100%;
     display: table-cell;
     vertical-align: middle;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
     padding: 15px;
+    padding-top: 25px;
     .help-box {
       max-width: 420px;
+      max-height: 100%;
+      overflow-y: scroll;
       margin: auto;
       padding: 10px;
       border-radius: 5px;
@@ -231,6 +241,14 @@ body {
         border-bottom: solid 1px @color-help;
         padding-bottom: 5px;
         margin-bottom: 10px;
+        .glyphicon {
+          float: right;
+          cursor: pointer;
+          padding: 1px;
+        }
+      }
+      .help-content {
+        width: 100%;
       }
       .btn-help {
         background-color: @color-help;

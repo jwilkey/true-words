@@ -1,5 +1,5 @@
 <template>
-  <div class="container help-content">
+  <div class="container">
     <div class="clearfix">
       <span :key="index" v-for="(word, index) in words" class="word" :class="{ selected: isSelected(index), start: isStart(index), end: isEnd(index) }">{{ word }}</span>
     </div>
