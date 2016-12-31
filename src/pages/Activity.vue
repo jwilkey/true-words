@@ -78,8 +78,11 @@ export default {
       $('#activity').addClass('blur')
       $('#review').addClass('blur')
     },
-    helpDismiss () {
+    helpDismiss (immediately) {
       $('#help').removeClass('visible')
+      if (immediately === undefined || !immediately) {
+        $('#help').addClass('not-visible')
+      }
       $('#activity').removeClass('blur')
       $('#review').removeClass('blur')
     },
@@ -138,6 +141,7 @@ export default {
     $('#activity, #review').css('padding-top', parseInt($('.titlebar').css('height')) + 5 + 'px')
     var completedActivity = this.getCurrentStudy.findActivity(this.getCurrentActivity)
     if (completedActivity !== undefined) {
+      this.helpDismiss(true)
       this.activityData = completedActivity.data
       $('#activity').hide()
       $('#review').show()
@@ -182,8 +186,6 @@ body {
 }
 #help {
   display: table;
-  animation: HIDE 0.5s;
-  animation-fill-mode: both;
   position: absolute;
   top: -100%;
   right: 0;
@@ -192,6 +194,10 @@ body {
   width: 100%;
   height: 100%;
   z-index: @help-zindex;
+  &.not-visible {
+    animation: HIDE 0.5s;
+    animation-fill-mode: both;
+  }
   &.visible {
     top: 0;
     background-color: rgba(0, 0, 0, 0.3);
