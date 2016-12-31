@@ -46,6 +46,7 @@ import SpaceReviewer from '../components/reviewers/SpaceReviewer'
 import ActionsHelp from '../components/help/ActionsHelp'
 import BucketsHelp from '../components/help/BucketsHelp'
 import ParaphraseHelp from '../components/help/ParaphraseHelp'
+import SpaceHelp from '../components/help/SpaceHelp'
 
 export default {
   data () {
@@ -65,7 +66,7 @@ export default {
     currentHelpView: function () { return this.helpViewForType(this.getCurrentActivity) }
   },
   components: {
-    Titlebar, Menubar, Actions, Buckets, Paraphrase, Space, BucketsReviewer, ActionsReviewer, ParaphraseReviewer, SpaceReviewer, ActionsHelp, BucketsHelp, ParaphraseHelp
+    Titlebar, Menubar, Actions, Buckets, Paraphrase, Space, BucketsReviewer, ActionsReviewer, ParaphraseReviewer, SpaceReviewer, ActionsHelp, BucketsHelp, ParaphraseHelp, SpaceHelp
   },
   methods: {
     ...mapActions(['saveActivity']),
