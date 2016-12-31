@@ -1,6 +1,8 @@
 <template>
   <div class="container help-content">
-    <span :key="index" v-for="(word, index) in words" class="word" :class="{ selected: isSelected(index), start: isStart(index), end: isEnd(index) }">{{ word }}</span>
+    <div class="clearfix">
+      <span :key="index" v-for="(word, index) in words" class="word" :class="{ selected: isSelected(index), start: isStart(index), end: isEnd(index) }">{{ word }}</span>
+    </div>
   </div>
 </template>
 
@@ -69,5 +71,9 @@ export default {
     border-top-right-radius: 6px;
     border-right: solid 1px #ff8;
   }
+}
+.help-example {
+  color: @color-help-secondary;
+  font-style: italic;
 }
 </style>

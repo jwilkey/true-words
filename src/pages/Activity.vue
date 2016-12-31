@@ -203,6 +203,14 @@ body {
     from { opacity: 1; top: 0; }
     to { opacity: 0; top: -100%; }
   }
+  p {
+    margin-bottom: 3px;
+  }
+  hr {
+    border-color: @color-help;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
   .help-container {
     display: table-cell;
     vertical-align: middle;
