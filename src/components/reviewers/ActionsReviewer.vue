@@ -2,32 +2,25 @@
   <div v-if="data !== undefined" class="flex-v">
     <div class="flex-1">
       <div class="container">
-        <div>
-          <table class="actions-table">
-            <tbody>
-              <tr v-for="action in data.collection.items">
-                <td>
-                  <p class="action-label">ACTOR</p>
-                  <div>{{action.actor ? action.actor.toString() : '?'}}</div>
-                </td>
-                <td class="arrow-cell"></td>
-                <td>
-                  <p class="action-label">ACTION</p>
-                  <div>{{action.action ? action.action.toString() : '?'}}</div>
-                </td>
-                <td class="arrow-cell"></td>
-                <td>
-                  <p class="action-label">TARGET</p>
-                  <div>{{action.target ? action.target.toString() : '?'}}</div>
-                </td>
-                <td class="arrow-cell"></td>
-                <td>
-                  <p class="action-label">RESULT</p>
-                  <div>{{action.result ? action.result.toString() : '?'}}</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="actions">
+          <div v-for="action in data.collection.items" class="action clearfix">
+            <div class="action-item">
+              <p class="action-label">ACTOR</p>
+              <div>{{action.actor ? action.actor.toString() : '?'}}</div>
+            </div>
+            <div class="action-item">
+              <p class="action-label">ACTION</p>
+              <div class="accent">{{action.action ? action.action.toString() : '?'}}</div>
+            </div>
+            <div class="action-item">
+              <p class="action-label">TARGET</p>
+              <div>{{action.target ? action.target.toString() : '?'}}</div>
+            </div>
+            <div class="action-item">
+              <p class="action-label">RESULT</p>
+              <div>{{action.result ? action.result.toString() : '?'}}</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -64,34 +57,28 @@ export default {
 
 <style lang="less" scoped>
 @import '../../../static/less/colors.less';
-.actions-table {
-  border-collapse:separate;
-  border-spacing:5px;
+.actions {
+  display: table;
   margin-left: auto;
   margin-right: auto;
-  tr {
+  .action {
+    padding-bottom: 15px;
+    .action-item:first-child {
+      border-left: solid 2px @color-actionable;
+      padding-left: 15px;
+    }
   }
-  td {
+  .action-item {
     background-color: @color-back-raised;
     padding: 10px;
-    vertical-align: top;
-    border-bottom: solid 2px @color-back-raised2;
-    &:first-child {
-      border-top-left-radius: 7px;
-    }
-    &:last-child {
-      border-bottom-right-radius: 7px;
-    }
-    &.arrow-cell {
-      width: 10px;
-      padding: 0px;
-      background-color: @color-actionable;
-      background-image: url('../../assets/arrow.png');
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-      color: white;
-      border-bottom: none;
-    }
+    padding-right: 15px;
+    float: left;
+    border-right: solid 1px @color-deemphasize;
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+    border-top-left-radius: 2px;
+    border-bottom-left-radius: 2px;
+    box-shadow: inset -3px 0px 8px rgba(255, 255, 255, 0.6), 3px 0px 7px #000, inset 2px 0px 5px #000;
   }
 }
 .action-label {
