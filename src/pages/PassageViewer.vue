@@ -30,7 +30,7 @@ import { Bible, Verse } from '../js/bible.js'
 import bibleLoader from '../js/bibleloader.js'
 import { mapActions, mapGetters } from 'vuex'
 import $ from 'jquery'
-import Titlebar from './Titlebar'
+import Titlebar from '../components/Titlebar'
 
 export default {
   data () {

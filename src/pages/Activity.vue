@@ -16,7 +16,7 @@
         <div class="help-box">
           <div class="help-title">{{ title.toUpperCase() }}: HOW TO <span @click="helpDismiss()" class="glyphicon glyphicon-remove"></span></div>
           <component v-if="getCurrentActivity" :is="currentHelpView"></component>
-          <button class="btn btn-block btn-help" @click="helpDismiss()">OK</button>
+          <button class="btn btn-block btn-help" @click="helpDismiss()">START</button>
         </div>
       </div>
     </div>
@@ -92,6 +92,7 @@ export default {
         $('#activity').show()
         $('#review').hide()
         this.rightMenuItems = ['help']
+        this.analytics.trackScreen(this.title)
       }
     },
     onFinish (activityType, activityData) {
@@ -141,12 +142,14 @@ export default {
     $('#activity, #review').css('padding-top', parseInt($('.titlebar').css('height')) + 5 + 'px')
     var completedActivity = this.getCurrentStudy.findActivity(this.getCurrentActivity)
     if (completedActivity !== undefined) {
+      this.analytics.trackScreen(this.title + 'Reviewer')
       this.helpDismiss(true)
       this.activityData = completedActivity.data
       $('#activity').hide()
       $('#review').show()
       this.rightMenuItems = ['RETRY']
     } else {
+      this.analytics.trackScreen(this.title)
       this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity)
       this.rightMenuItems = ['help']
     }

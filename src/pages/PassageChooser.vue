@@ -47,7 +47,7 @@ import $ from 'jquery'
 import { mapGetters } from 'vuex'
 import Titlebar from '../components/Titlebar'
 import { Bible } from '../js/bible.js'
-import PassageViewer from '../components/PassageViewer'
+import PassageViewer from '../pages/PassageViewer'
 export default {
   data () {
     return {
