@@ -1,12 +1,12 @@
 <template>
   <div class="titlebar">
     <div class="titlebar-item-group left">
-      <a v-if="showLeft('close')" class="titlebar-item" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
-      <router-link v-if="showLeft('home')" class="titlebar-item" to="/">
+      <a v-if="showLeft('close')" class="titlebar-item" data-title="close" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
+      <router-link v-if="showLeft('home')" data-title="home" class="titlebar-item" to="/">
         <span class="glyphicon glyphicon-home"></span>
       </router-link>
-      <a v-if="showLeft('back')" class="titlebar-item" @click="onBack()"><span class="glyphicon glyphicon-menu-left"></span></a>
-      <div v-if="showLeft('help')" class="titlebar-item" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
+      <a v-if="showLeft('back')" class="titlebar-item" data-title="back" @click="onBack()"><span class="glyphicon glyphicon-menu-left"></span></a>
+      <div v-if="showLeft('help')" class="titlebar-item" data-title="help" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
       <a v-for="title in customLeftButtons" class="titlebar-item" @click="onSelect(title)">{{ title }}</a>
     </div>
     <div class="text-center title">
@@ -14,10 +14,10 @@
       <slot name="center"></slot>
     </div>
     <div class="titlebar-item-group right">
-      <a v-if="showRight('close')" class="titlebar-item" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
-      <router-link v-if="showRight('home')" class="titlebar-item" to="/"><span class="glyphicon glyphicon-home"></span></router-link>
+      <a v-if="showRight('close')" class="titlebar-item" data-title="close" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
+      <router-link v-if="showRight('home')" class="titlebar-item" data-title="home" to="/"><span class="glyphicon glyphicon-home"></span></router-link>
       <a v-if="showRight('back')" class="titlebar-item" @click="onBack()">BACK</a>
-      <div v-if="showRight('help')" class="titlebar-item" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
+      <div v-if="showRight('help')" class="titlebar-item" data-title="help" @click="help()"><span class="glyphicon glyphicon-question-sign"></span></div>
       <a v-for="title in customRightButtons" class="titlebar-item pull-right" @click="onSelect(title)">{{ title }}</a>
       <div class="titlebar-item">
         <slot name="right"></slot>

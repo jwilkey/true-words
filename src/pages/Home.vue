@@ -52,7 +52,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getStudies', 'getPersistor', 'getUser']),
+    ...mapGetters(['getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
     shouldShowStudiesEmptyState: function () {
       return this.getPersistor !== undefined && this.getStudies.length === 0
     },
@@ -70,6 +70,7 @@ export default {
       .done(function (studyObject) {
         self.setCurrentStudy(studyObject)
         self.$router.push('/activities')
+        self.analytics.trackEvent('ContinueStudy', 'click', self.getCurrentStudy.passage.description())
       })
     },
     ...mapActions(['setCurrentStudy'])
