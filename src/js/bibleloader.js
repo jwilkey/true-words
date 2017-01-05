@@ -1,6 +1,6 @@
 import $ from 'jquery'
 
-var ESV = '220c852e0d6abf77'
+var ESV = window.esv
 export default {
   load (bookIdentifier, chapter, version, onload) {
     if (version === 'NASB') {
