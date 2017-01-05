@@ -1,0 +1,10 @@
+{
+  "name": "true-words",
+  "version": "0.2.0",
+  "description": "Read God's word with intention.",
+  "author": "Tentkeep",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm install express"
+  }
+}
