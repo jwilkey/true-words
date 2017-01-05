@@ -6,3 +6,4 @@ test/unit/coverage
 test/e2e/reports
 static/info.js
 CNAME
+dist
