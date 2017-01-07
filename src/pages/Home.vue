@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="home">
     <titlebar title="TRUE WORDS"></titlebar>
     <div class="container">
 
@@ -84,13 +84,26 @@ export default {
 <style lang="less">
 @import '../../static/less/colors.less';
 
+html {
+  height: 100%;
+}
+body {
+  background-image: url('/static/bible-midnight-fade.png');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%
+}
 .card-button {
   background-color: @color-back-raised2;
   box-shadow: @shadow;
   padding: 10px;
+  padding-bottom: 8px;
+  border-bottom: solid 2px transparent;
   &:hover {
-    color: @color-selection1;
+    color: @color-button-hover-text;
     text-decoration: none;
+    border-bottom: solid 2px @color-selection1;
   }
 }
 .user-img {
@@ -116,11 +129,12 @@ export default {
 .study-label {
   background-color: @color-back-raised2;
   box-shadow: @shadow;
-    border: solid 1px transparent;
+  border: solid 1px transparent;
+  border-left: solid 3px transparent;
   padding: 10px;
+  padding-left: 5px;
   &:hover {
-    color: @color-highlight-orange;
-    border: solid 1px @color-highlight-orange;
+    border-left: solid 3px @color-selection1;
     cursor: pointer;
   }
   p {

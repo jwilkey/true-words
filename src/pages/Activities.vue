@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <div class="">
     <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
-    <div class="container">
+    <div class="container main-background">
       <p v-if="getPersistor.isLoggedIn()" class="text-center accent">Choose an Activity to begin</p>
 
       <div v-if="!getPersistor.isLoggedIn()" class="text-center">

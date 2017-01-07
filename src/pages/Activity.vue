@@ -3,11 +3,11 @@
     <titlebar :title="title.toUpperCase()" :left-items="leftMenuItems" :right-items="rightMenuItems" :on-close="closePressed" :on-help="helpPressed" :on-select="titlebarSelect"></titlebar>
     <menubar></menubar>
 
-    <div id="activity" class="blur">
+    <div id="activity" class="blur main-background">
       <component v-if="getCurrentActivity && activityData" :is="currentActivity" :finish="onFinish" :data="activityData"></component>
     </div>
 
-    <div id="review" class="blur">
+    <div id="review" class="blur main-background">
       <component v-if="currentReviewer && activityData" :is="currentReviewer" :data="activityData"></component>
     </div>
 
