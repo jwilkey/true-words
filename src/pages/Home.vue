@@ -31,7 +31,7 @@
 
     </div>
     <div class="actionbar">
-      <div class="pull-right muted">
+      <div class="pull-right muted user">
         <img v-if="userimage" class="user-img" :src="userimage" />
         {{ username }}
       </div>
@@ -119,5 +119,8 @@ export default {
   p {
     margin: 0px;
   }
+}
+.user {
+  padding-right: 10px;
 }
 </style>
