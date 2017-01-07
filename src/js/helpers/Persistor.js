@@ -37,6 +37,7 @@ Persistor.prototype.refreshData = function (onFinish) {
         var endVerse = end !== undefined ? new Verse(end.book, end.chapter, end.number) : undefined
         var passage = Bible.buildPassage(new Verse(start.book, start.chapter, start.number), endVerse)
         var study = Studies.createStudy(file.properties.id, file.properties.createdDate, passage, undefined, file.properties.bible)
+        study.lastEdit = new Date(file.modifiedTime)
         self.addDriveFileForStudy(file.id, study.id)
         return study
       })

@@ -17,7 +17,7 @@ export default {
     return window.gapi.auth2.getAuthInstance().isSignedIn.get()
   },
   fetchFiles (authToken, query) {
-    var url = api('/drive/v3/files?spaces=appDataFolder&fields=files(id,appProperties,properties)&q=' + query)
+    var url = api('/drive/v3/files?spaces=appDataFolder&fields=files(id,appProperties,properties,modifiedTime)&q=' + query)
     return $.ajax({
       type: 'GET',
       url: url,

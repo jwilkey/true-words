@@ -17,8 +17,9 @@
       <card title="CONTINUE" subtitle="Choose a study">
         <div v-for="study in getStudies" class="row study" @click="continueStudy(study.id)">
           <div class="study-label col-xs-12">
-            <p class="col-xs-9">{{ study.passage.description() }}</p>
-            <p class="col-xs-3 text-right muted">{{ study.bible }}</p>
+            <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
+            <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEdit.toDateString() }} <span class="bible">{{ study.bible }}</span></p>
+            <p class="col-sm-12 visible-xs">{{ study.passage.description() }},&nbsp;&nbsp;<span class="muted">{{ study.lastEdit.toDateString() }} ({{ study.bible }})</span></p>
           </div>
         </div>
         <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
@@ -104,6 +105,12 @@ export default {
   margin-bottom: 10px;
   &:last-child {
     margin-bottom: 0px;
+  }
+  .bible {
+    display: inline-block;
+    width: 54px;
+    margin-left: 24px;
+    border-left: solid 1px @color-back-raised;
   }
 }
 .study-label {
