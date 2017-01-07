@@ -85,7 +85,7 @@ export default {
   font-size: 16px;
   letter-spacing: 3px;
   a:hover {
-    color: @color-selection1;
+    color: @color-callout-light;
     text-decoration: none;
   }
   .titlebar-item-group {

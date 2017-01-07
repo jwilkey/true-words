@@ -6,10 +6,10 @@
 
     <div class="container">
       <ul class="nav nav-pills" role="tablist">
-        <li role="presentation">
+        <li role="presentation" class="testament">
           <a id="ot-tab" href="#ot-chooser" aria-controls="ot-chooser" role="tab" data-toggle="tab">Old Testament</a>
         </li>
-        <li role="presentation">
+        <li role="presentation" class="testament">
           <a id="nt-tab" href="#nt-chooser" aria-controls="nt-chooser" role="tab" data-toggle="tab">New Testament</a>
         </li>
         <a href="#chapter-chooser" aria-controls="chapter-chooser" role="tab" data-toggle="tab"></a>
@@ -117,6 +117,11 @@ export default {
 }
 .tab-pane {
   padding-top: 10px;
+}
+.testament:not(.active)>a:hover {
+  background-color: transparent;
+  color: @color-button-hover-text !important;
+  border-color: @color-callout-light;
 }
 .book {
   padding: 4px;
