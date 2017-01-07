@@ -1,4 +1,5 @@
 import Studies from '../src/js/models/Study'
+import $ from 'jquery'
 
 export default {
   setPersistenceStrategy (context, persistenceStrategy) {
@@ -22,6 +23,23 @@ export default {
       context.commit('CREATE_STUDY', study)
     })
   },
+  openStudy (context, studyID) {
+    if (context.getters.getPersistor.isLoggedIn()) {
+      return context.getters.getPersistor.loadStudy(studyID)
+      .done(function (studyObject) {
+        context.commit('CURRENT_STUDY', studyObject)
+      })
+    } else {
+      var studies = context.getters.getStudies
+      for (var i = 0; i < studies.length; i++) {
+        if (studies[i].id === studyID) {
+          context.commit('CURRENT_STUDY', studies[i])
+          return $.when(studies[i])
+        }
+      }
+      return $.when(new Error('Study not found!'))
+    }
+  },
   setCurrentStudy ({ commit }, studyObject) {
     commit('CURRENT_STUDY', studyObject)
   },
@@ -30,7 +48,11 @@ export default {
   },
   saveActivity (context, activityAchievement) {
     context.commit('ACTIVITY_SAVE', activityAchievement)
-    return context.getters.getPersistor.updateStudy(context.getters.getCurrentStudy)
+    if (context.getters.getPersistor.isLoggedIn()) {
+      return context.getters.getPersistor.updateStudy(context.getters.getCurrentStudy)
+    } else {
+      return $.when(console.log('Not saving activity, not logged in'))
+    }
   }
 }
 

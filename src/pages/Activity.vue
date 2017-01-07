@@ -103,7 +103,7 @@ export default {
         self.currentReviewer = self.reviewerForType(activityType)
         $('#activity').hide()
         $('#review').show()
-        this.rightMenuItems = ['RETRY']
+        self.rightMenuItems = ['RETRY']
       })
       .fail(function () {
         window.alert('Failed to save your activity. Check your connection and try again.')

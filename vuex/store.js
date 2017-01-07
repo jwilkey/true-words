@@ -13,7 +13,7 @@ Vue.use(Vuex)
 // Create an object to hold the initial state when the app starts up
 export const state = {
   page: 'home',
-  persistor: undefined,
+  persistor: new Persistence.Persistor(),
   user: {},
   currentBible: 'ESV',
   studies: [],

@@ -3,7 +3,12 @@
     <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
     <div class="container">
-      <p class="text-center accent">Choose an Activity to begin</p>
+      <p v-if="getPersistor.isLoggedIn()" class="text-center accent">Choose an Activity to begin</p>
+
+      <div v-if="!getPersistor.isLoggedIn()" class="text-center">
+        <button class="btn btn-primary" @click="login()">Login to save your work</button>
+        <hr />
+      </div>
 
       <table>
         <thead><tr>
@@ -63,7 +68,7 @@ export default {
   },
   props: ['data'],
   computed: {
-    ...mapGetters(['getCurrentStudy'])
+    ...mapGetters(['getCurrentStudy', 'getPersistor'])
   },
   methods: {
     activitySelected: function (type) {
@@ -73,6 +78,9 @@ export default {
       } else {
         window.alert(this.activities.manager.titleForType(type) + ' activity coming soon!')
       }
+    },
+    login () {
+      this.$router.push('login?referrer=activities')
     },
     completionPhrase (type) {
       var activity = this.getCurrentStudy.findActivity(type)
@@ -116,5 +124,11 @@ table {
       }
     }
   }
+}
+.warning {
+  color: @color-warning;
+  border: solid 1px @color-warning;
+  border-radius: 4px;
+  padding: 8px;
 }
 </style>

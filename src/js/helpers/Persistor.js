@@ -1,6 +1,7 @@
 import drive from './DriveHelper'
 import Studies from '../models/Study'
 import { Bible, Verse } from '../bible'
+import $ from 'jquery'
 
 export default {
   Persistor: Persistor
@@ -11,6 +12,10 @@ function Persistor (persistenceStrategy) {
   this.drive = {
     studies: {}
   }
+}
+
+Persistor.prototype.isLoggedIn = function () {
+  return this.persistenceStrategy !== undefined
 }
 
 Persistor.prototype.refreshAuthorization = function (callback) {
@@ -59,18 +64,24 @@ Persistor.prototype.saveStudy = function (study) {
       self.addDriveFileForStudy(file.id, study.id)
     })
   }
+
+  return $.when(console.log('Not logged in - requested to save study.'))
 }
 
 Persistor.prototype.updateStudy = function (study) {
   if (this.usingDrive()) {
     return drive.update(driveToken(), this.drive.studies[study.id], study)
   }
+
+  return $.when(console.log('Not logged in - requested to update study.'))
 }
 
 Persistor.prototype.loadStudy = function (studyId) {
   if (this.usingDrive()) {
     return drive.fetchFileContent(driveToken(), this.drive.studies[studyId])
   }
+
+  return $.when()
 }
 
 Persistor.prototype.usingDrive = function () {

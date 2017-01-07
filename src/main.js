@@ -5,6 +5,7 @@ import Analytics from './js/helpers/AnalyticsHelper'
 
 import store from '../vuex/store'
 import App from './App'
+import Login from './pages/Login'
 import Home from './pages/Home'
 import BibleChooser from './pages/BibleChooser'
 import PassageChooser from './pages/PassageChooser'
@@ -19,6 +20,7 @@ Vue.use(VueRouter)
 
 const routes = [
   { path: '/', component: Home, name: 'Home' },
+  { path: '/login', component: Login, name: 'Login' },
   { path: '/passage', component: PassageViewer, name: 'PassageViewer' },
   { path: '/bible_chooser', component: BibleChooser, name: 'BibleChooser' },
   { path: '/choosepassage', component: PassageChooser, name: 'PassageChooser' },
@@ -34,7 +36,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (['/activity', '/activities'].indexOf(to.path) !== -1) {
-    if (store.getters.getPersistor === undefined || store.getters.getCurrentStudy === undefined) {
+    if (store.getters.getCurrentStudy === undefined) {
       next('/')
       return
     }

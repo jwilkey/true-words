@@ -15,14 +15,14 @@
       </card>
 
       <card title="CONTINUE" subtitle="Choose a study">
-        <div v-for="study in getStudies" class="row study" @click="openStudy(study.id)">
+        <div v-for="study in getStudies" class="row study" @click="continueStudy(study.id)">
           <div class="study-label col-xs-12">
             <p class="col-xs-9">{{ study.passage.description() }}</p>
             <p class="col-xs-3 text-right muted">{{ study.bible }}</p>
           </div>
         </div>
         <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
-        <div v-if="getPersistor === undefined" class="row">
+        <div v-if="!getPersistor.isLoggedIn()" class="row">
           <div class="col-md-6">
             <google-auth class="col-xs-12"></google-auth>
           </div>
@@ -54,7 +54,7 @@ export default {
   computed: {
     ...mapGetters(['getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
     shouldShowStudiesEmptyState: function () {
-      return this.getPersistor !== undefined && this.getStudies.length === 0
+      return this.getPersistor.isLoggedIn() && this.getStudies.length === 0
     },
     username: function () {
       return this.getUser ? this.getUser.name : undefined
@@ -64,16 +64,14 @@ export default {
     }
   },
   methods: {
-    openStudy (studyId) {
+    continueStudy (studyId) {
       var self = this
-      this.getPersistor.loadStudy(studyId)
-      .done(function (studyObject) {
-        self.setCurrentStudy(studyObject)
+      this.openStudy(studyId).done(function (x) {
         self.$router.push('/activities')
         self.analytics.trackEvent('ContinueStudy', 'click', self.getCurrentStudy.passage.description())
       })
     },
-    ...mapActions(['setCurrentStudy'])
+    ...mapActions(['setCurrentStudy', 'openStudy'])
   },
   components: {
     Card, Titlebar, GoogleAuth
