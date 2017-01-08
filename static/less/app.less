@@ -18,12 +18,20 @@ body {
   background-color: @color-back;
   padding-top: 10px;
   padding-bottom: 55px;
+  height: 100%;
+}
+#app {
+  height: 100%;
 }
 h2 {
   color: #eee;
 }
 a {
-  color: #fff;
+  color: @color-button-hover-text;
+  &:hover {
+    color: @color-callout;
+    text-decoration: none;
+  }
 }
 
 ::-webkit-scrollbar

@@ -32,6 +32,9 @@
 
     </div>
     <div class="actionbar">
+      <div class="pull-left feedback">
+        <a class="muted" @click="feedback()">Feedback</a>
+      </div>
       <div class="pull-right muted user">
         <img v-if="userimage" class="user-img" :src="userimage" />
         {{ username }}
@@ -71,6 +74,9 @@ export default {
         self.$router.push('/activities')
         self.analytics.trackEvent('ContinueStudy', 'click', self.getCurrentStudy.passage.description())
       })
+    },
+    feedback () {
+      this.$router.push('feedback')
     },
     ...mapActions(['setCurrentStudy', 'openStudy'])
   },
@@ -140,6 +146,9 @@ body {
   p {
     margin: 0px;
   }
+}
+.feedback {
+  padding-left: 10px;
 }
 .user {
   padding-right: 10px;
