@@ -11,7 +11,7 @@
     </table>
 
     <div id="buckets-neutral-zone" class="vthird">
-      <div class="word draggable">{{ currentWord }}</div>
+      <div id="current-word" class="word draggable">{{ currentWord }}</div>
       <table class="text-previewer"><tbody>
         <tr class="buckets-indicator"><td>
           {{ currentWordIndex + 1 }} / {{ wordCount }}
@@ -21,17 +21,18 @@
             <span :key="word.index" v-for="(word, index) in words" :id="'text-preview-' + index">{{ word.text }} </span>
           </div>
         </td></tr>
-      </tbody></table>
-    </div>
-
-    <table class="bucket vthird">
-      <tbody>
-        <tr>
-          <td data-index="3" colspan=2 class="bucket dropzone" @click="assignToBucket(3)">{{ container(3).name }}</td>
-        </tr>
       </tbody>
     </table>
   </div>
+
+  <table class="bucket vthird">
+    <tbody>
+      <tr>
+        <td data-index="3" colspan=2 class="bucket dropzone" @click="assignToBucket(3)">{{ container(3).name }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 </template>
 
 <script>
@@ -122,12 +123,15 @@ export default {
 #buckets-neutral-zone {
   position: relative;
 }
+#current-word {
+  z-index: 100;
+  position: absolute;
+}
 .text-previewer {
   position: absolute;
   table-layout: fixed;
   height: 100%;
   width: 100%;
-  z-index: -10;
   tr {
     vertical-align: bottom;
   }
