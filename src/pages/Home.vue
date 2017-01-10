@@ -67,6 +67,11 @@ export default {
       return this.getUser ? this.getUser.imageUrl : undefined
     }
   },
+  watch: {
+    getStudies: function (newStudies, oldVal) {
+      this.$forceUpdate()
+    }
+  },
   methods: {
     continueStudy (studyId) {
       var self = this
