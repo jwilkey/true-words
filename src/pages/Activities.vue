@@ -3,7 +3,7 @@
     <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
     <div class="container main-background">
-      <p v-if="getPersistor.isLoggedIn()" class="text-center accent">Choose an Activity to begin</p>
+      <p v-if="getPersistor.isLoggedIn()" class="text-center muted">Choose an Activity to begin</p>
 
       <div v-if="!getPersistor.isLoggedIn()" class="text-center">
         <button class="btn btn-primary" @click="login()">Login to save your work</button>
@@ -12,39 +12,39 @@
 
       <table>
         <thead><tr>
-          <th>Observe</th>
-          <th class="text-right accent">What does it say?</th>
+          <th><span class="stage-title">OBSERVE</span><span class="stage-subtitle">What does it say?</span></th>
+          <th></th>
         </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.observationActivities" @click="activitySelected(type)">
             <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right muted">{{ completionPhrase(type) }}</td>
+            <td class="text-right" v-html="completionPhrase(type)"></td>
           </tr>
         </tbody>
       </table>
 
       <table>
         <thead><tr>
-          <th>Interpret</th>
-          <th class="text-right accent">What does it mean?</th>
+          <th><span class="stage-title">INTERPRET</span><span class="stage-subtitle">What does it mean?</span></th>
+          <th></th>
         </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.interpretationActivities" @click="activitySelected(type)">
             <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right muted">{{ completionPhrase(type) }}</td>
+            <td class="text-right" v-html="completionPhrase(type)"></td>
           </tr>
         </tbody>
       </table>
 
       <table>
         <thead><tr>
-          <th>Apply</th>
-          <th class="text-right accent">What should I do?</th>
+          <th><span class="stage-title">APPLY</span><span class="stage-subtitle">What should I do?</span></th>
+          <th></th>
         </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.applicationActivities" @click="activitySelected(type)">
             <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right muted">{{ completionPhrase(type) }}</td>
+            <td class="text-right" v-html="completionPhrase(type)"></td>
           </tr>
         </tbody>
       </table>
@@ -82,11 +82,15 @@ export default {
     login () {
       this.$router.push('login?referrer=activities')
     },
+    completedActivity (type) {
+      return this.getCurrentStudy.findActivity(type)
+    },
     completionPhrase (type) {
       var activity = this.getCurrentStudy.findActivity(type)
       if (activity !== undefined) {
         var days = daysAgo(activity.creationDate)
-        return days === 0 ? 'completed today' : 'completed ' + days + ' days ago'
+        var phrase = (days === 0 ? 'today' : (days + ' days ago')) + ''
+        return '<span class="muted light">' + phrase + '</span>&nbsp;&nbsp;<span class="glyphicon glyphicon-ok-circle green"></span>'
       }
       return ''
     },
@@ -106,11 +110,21 @@ function daysAgo (date) {
 
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
+
+.stage-title {
+  letter-spacing: 1px;
+}
+.stage-subtitle {
+  color: @color-deemphasize;
+  margin-left: 10px;
+  padding-left: 10px;
+  border-left: solid 1px @color-callout-light;
+}
 table {
   width: 100%;
   margin-bottom: 15px;
   thead tr {
-    background-color: @color-callout;
+    background-color: @color-back-raised;
     th {
       padding: 10px;
     }
