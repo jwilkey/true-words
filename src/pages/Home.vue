@@ -3,14 +3,10 @@
     <titlebar title="TRUE WORDS"></titlebar>
     <div class="container">
 
-      <card title="BEGIN" subtitle="Choose a Bible text to study">
-        <div class="row clearfix">
-          <div class="col-xs-6">
-            <router-link class="col-xs-12 text-center card-button" to="/choosepassage?t=ot">Old Testament</router-link>
-          </div>
-          <div class="col-xs-6">
-            <router-link class="col-xs-12 text-center card-button" to="/choosepassage?t=nt">New Testament</router-link>
-          </div>
+      <card title="BEGIN" subtitle="Choose a Bible text to study" class="nopad">
+        <div class="clearfix">
+          <router-link class="text-center testament-button" to="/choosepassage?t=ot">OLD TESTAMENT</router-link>
+          <router-link class="text-center testament-button" to="/choosepassage?t=nt">NEW TESTAMENT</router-link>
         </div>
       </card>
 
@@ -105,16 +101,22 @@ body {
   background-size: cover;
   height: 100%
 }
-.card-button {
-  background-color: @color-back-raised2;
-  box-shadow: @shadow;
-  padding: 10px;
-  padding-bottom: 8px;
+.testament-button {
+  padding: 23px 5px 20px 5px;
   border-bottom: solid 2px transparent;
+  float: left;
+  width: 50%;
+  letter-spacing: 1px;
   &:hover {
     color: @color-button-hover-text;
     text-decoration: none;
     border-bottom: solid 2px @color-selection1;
+  }
+  &:first-child {
+    border-right: solid 1px @color-back;
+  }
+  &:last-child {
+    border-left: solid 1px @color-back;
   }
 }
 .user-img {

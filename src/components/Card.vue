@@ -24,6 +24,14 @@ export default {
   background-color: @color-back-raised;
   box-shadow: @shadow;
   margin-bottom: 20px;
+  .card-content {
+    padding: 20px;
+  }
+  &.nopad {
+    .card-content {
+      padding: 0px;
+    }
+  }
 }
 .card-header {
   background-color: @color-callout;
@@ -44,8 +52,5 @@ export default {
     font-size: 18px;
     padding: 10px;
   }
-}
-.card-content {
-  padding: 20px;
 }
 </style>
