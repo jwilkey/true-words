@@ -156,13 +156,15 @@ export default {
   float: left;
   color: white;
   font-size: 18px;
+  text-align: center;
+  min-width: 32px;
   background-color: @color-back-raised;
-  margin-top: 3px;
-  margin-bottom: 3px;
+  margin-top: 2px;
+  margin-bottom: 2px;
   border: solid 1px @color-back;
   padding: 5px;
-  padding-left: 8px;
-  padding-right: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
   box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   -webkit-touch-callout: none;
@@ -173,24 +175,23 @@ export default {
   user-select: none;
 }
 .word.selected {
-  background-color: @color-selection1;
+  background-color: @color-highlight-blue;
   color: @color-back;
   word-wrap: normal;
-  box-shadow: none;
   border-radius: 0px;
-  border-right: solid 1px #ff8;
+  border-right: solid 1px @color-back-raised2;
   border-left: solid 1px transparent;
-  border-top: solid 1px #ff8;
-  border-bottom: solid 1px #ff8;
+  border-top: solid 1px @color-back-raised2;
+  border-bottom: solid 1px @color-back-raised2;
   &.start {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
-    border-left: solid 1px #ff8;
+    border-left: solid 1px @color-back-raised2;
   }
   &.end {
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
-    border-right: solid 1px #ff8;
+    border-right: solid 1px @color-back-raised2;
   }
 }
 .word.highlighted {
