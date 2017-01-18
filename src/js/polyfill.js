@@ -10,3 +10,19 @@ if (!String.prototype.endsWith) {
     return lastIndex !== -1 && lastIndex === position
   }
 }
+
+function arrayLast (arr) {
+  if (arr !== undefined && arr.length > 0) {
+    return arr[arr.length - 1]
+  }
+  return undefined
+}
+
+function arrayEmpty (arr) {
+  if (arr === undefined) {
+    throw new Error('Cannot check emptiness of undefined')
+  }
+  return arr.length === 0
+}
+
+export { arrayLast, arrayEmpty }

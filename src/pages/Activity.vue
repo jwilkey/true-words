@@ -35,16 +35,19 @@ import Menubar from '../components/Menubar'
 
 import Buckets from '../components/activities/Buckets'
 import Actions from '../components/activities/Actions'
+import Outline from '../components/activities/Outline'
 import Paraphrase from '../components/activities/Paraphrase'
 import Space from '../components/activities/Space'
 
 import BucketsReviewer from '../components/reviewers/BucketsReviewer'
 import ActionsReviewer from '../components/reviewers/ActionsReviewer'
+import OutlineReviewer from '../components/reviewers/OutlineReviewer'
 import ParaphraseReviewer from '../components/reviewers/ParaphraseReviewer'
 import SpaceReviewer from '../components/reviewers/SpaceReviewer'
 
 import ActionsHelp from '../components/help/ActionsHelp'
 import BucketsHelp from '../components/help/BucketsHelp'
+import OutlineHelp from '../components/help/OutlineHelp'
 import ParaphraseHelp from '../components/help/ParaphraseHelp'
 import SpaceHelp from '../components/help/SpaceHelp'
 
@@ -66,7 +69,7 @@ export default {
     currentHelpView: function () { return this.helpViewForType(this.getCurrentActivity) }
   },
   components: {
-    Titlebar, Menubar, Actions, Buckets, Paraphrase, Space, BucketsReviewer, ActionsReviewer, ParaphraseReviewer, SpaceReviewer, ActionsHelp, BucketsHelp, ParaphraseHelp, SpaceHelp
+    Titlebar, Menubar, Actions, Buckets, Outline, Paraphrase, Space, BucketsReviewer, ActionsReviewer, OutlineReviewer, ParaphraseReviewer, SpaceReviewer, ActionsHelp, BucketsHelp, OutlineHelp, ParaphraseHelp, SpaceHelp
   },
   methods: {
     ...mapActions(['saveActivity']),
@@ -88,7 +91,7 @@ export default {
     },
     titlebarSelect (buttonTitle) {
       if (buttonTitle === 'RETRY') {
-        this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity)
+        this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity, this.getCurrentStudy)
         $('#activity').show()
         $('#review').hide()
         this.rightMenuItems = ['help']
@@ -113,6 +116,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets'
         case activities.types.Actions: return 'actions'
+        case activities.types.Outline: return 'outline'
         case activities.types.Paraphrase: return 'paraphrase'
         case activities.types.Space: return 'space'
         default: return undefined
@@ -122,6 +126,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets-reviewer'
         case activities.types.Actions: return 'actions-reviewer'
+        case activities.types.Outline: return 'outline-reviewer'
         case activities.types.Paraphrase: return 'paraphrase-reviewer'
         case activities.types.Space: return 'space-reviewer'
         default: return undefined
@@ -131,6 +136,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets-help'
         case activities.types.Actions: return 'actions-help'
+        case activities.types.Outline: return 'outline-help'
         case activities.types.Paraphrase: return 'paraphrase-help'
         case activities.types.Space: return 'space-help'
         default: return undefined
@@ -150,7 +156,7 @@ export default {
       this.rightMenuItems = ['RETRY']
     } else {
       this.analytics.trackScreen(this.title)
-      this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity)
+      this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity, this.getCurrentStudy)
       this.rightMenuItems = ['help']
     }
   }

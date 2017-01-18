@@ -1,9 +1,15 @@
+import { WordRange } from '../bible'
+
 function ActivityData () {
   this.containers = []
 }
 
 ActivityData.prototype.addContainer = function (name, itemKind) {
   this.containers.push(new Container(name, itemKind))
+}
+
+ActivityData.prototype.getContainer = function (index) {
+  return this.containers[index]
 }
 
 ActivityData.prototype.findContainer = function (containerName) {
@@ -14,6 +20,10 @@ ActivityData.prototype.findContainer = function (containerName) {
     }
   }
   return undefined
+}
+
+ActivityData.prototype.removeContainer = function (index) {
+  this.containers.splice(index, 1)
 }
 
 ActivityData.prototype.initCollection = function (itemKind) {
@@ -27,6 +37,8 @@ function getPrototype (kind) {
     case 'word-selection': return WordSelection.prototype
     case 'free-text': return FreeText.prototype
     case 'action': return Action.prototype
+    case 'section': return Section.prototype
+    case 'word-range': return WordRange.prototype
     default: return undefined
   }
 }
@@ -104,6 +116,10 @@ Collection.prototype.add = function (item) {
 
 Collection.prototype.last = function () {
   return (this.items.length === 0) ? undefined : this.items[this.items.length - 1]
+}
+
+Collection.prototype.isEmpty = function () {
+  return this.items.length <= 0
 }
 
 // Containers
@@ -191,4 +207,40 @@ Action.prototype.fromJson = function (json) {
   return new Action(deserialize(0, json.action), json.tense, deserialize(0, json.actor), deserialize(0, json.target), deserialize(0, json.result))
 }
 
-export { WordSelection, FreeText, Action }
+// Section
+function Section (title, wordRange) {
+  this.kind = 'section'
+  this.id = uuid()
+  this.title = title
+  this.wordRange = wordRange
+  this.subSections = new Collection('section')
+}
+
+Section.prototype.addSubSection = function (section) {
+  this.subSections.add(section)
+}
+
+Section.prototype.rangeDescription = function () {
+  if (this.wordRange && this.wordRange.startingWord) {
+    var ending = this.wordRange.endingWord ? '-' + this.wordRange.endingWord.verse : ''
+    return 'v. ' + this.wordRange.startingWord.verse + ending
+  }
+  return undefined
+}
+
+Section.prototype.fromJson = function (json) {
+  var section = new Section(json.title, deserialize('word-range', json.wordRange))
+  section.id = json.id
+  section.subSections = collectionFromJson(json.subSections)
+  return section
+}
+
+function uuid () {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+    var r = Math.random() * 16 | 0
+    var v = c === 'x' ? r : (r & 0x3 | 0x8)
+    return v.toString(16)
+  })
+}
+
+export { WordSelection, FreeText, Action, Section }

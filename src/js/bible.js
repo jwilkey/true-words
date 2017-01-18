@@ -117,6 +117,7 @@ var Bible = {
   }
 }
 
+// Verse
 function Verse (bookIdentifier, chapter, number) {
   this.book = bookIdentifier
   this.chapter = chapter
@@ -133,6 +134,7 @@ Verse.prototype.isBefore = function (verse) {
   return Bible.compareReferences(this, verse) === 1
 }
 
+// Passage
 function Passage (startVerse, endVerse) {
   this.start = startVerse
   this.end = endVerse
@@ -152,4 +154,25 @@ Passage.prototype.fromJson = function (json) {
   return new Passage(new Verse(start.book, start.chapter, start.number), new Verse(end.book, end.chapter, end.number))
 }
 
-export { Bible, Verse }
+// WordRange
+// word: {book: b, verse: verseNumber, text: text, index: index}
+function WordRange (startingWord, endingWord) {
+  this.kind = 'word-range'
+  this.startingWord = startingWord
+  this.endingWord = endingWord
+}
+
+WordRange.prototype.includes = function (word) {
+  var start = this.startingWord.verse * 100 + this.startingWord.index
+  var end = this.endingWord.verse * 100 + this.endingWord.index
+  var wordRef = word.verse * 100 + word.index
+  return this.startingWord.book === word.book &&
+  wordRef >= start &&
+  wordRef <= end
+}
+
+WordRange.prototype.fromJson = function (json) {
+  return new WordRange(json.startingWord, json.endingWord)
+}
+
+export { Bible, Verse, WordRange }

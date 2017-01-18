@@ -56,6 +56,23 @@ hr {
   border-color: @color-back-raised;
 }
 
+::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+  color: @color-input-placeholder;
+  font-style: italic;
+}
+::-moz-placeholder { /* Firefox 19+ */
+  color: @color-input-placeholder;
+  font-style: italic;
+}
+:-ms-input-placeholder { /* IE 10+ */
+  color: @color-input-placeholder;
+  font-style: italic;
+}
+:-moz-placeholder { /* Firefox 18- */
+  color: @color-input-placeholder;
+  font-style: italic;
+}
+
 .main-background {
   background-color: @color-back;
   padding-top: 8px;
@@ -92,5 +109,22 @@ hr {
   background-color: @color-back-raised;
   button {
     letter-spacing: 1px;
+  }
+}
+
+.add-button, .edit-button {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  circle, line {
+    stroke: @color-actionable;
+  }
+}
+.close-button {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  circle, line {
+    stroke: @color-callout-light;
   }
 }

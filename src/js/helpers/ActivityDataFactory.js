@@ -1,14 +1,17 @@
 import activities from '../activity'
-import ActivityData from '../models/ActivityData'
+import ActivityData, { Section } from '../models/ActivityData'
+import { arrayLast } from '../polyfill'
+import { WordRange } from '../bible'
 
 export default {
-  createForType (activityType) {
+  createForType (activityType, study) {
     switch (activityType) {
       case activities.types.PeoplePlacesThings: return peoplePlacesThingsData()
       case activities.types.Actions: return actionsData()
+      case activities.types.Outline: return outlineData(study)
       case activities.types.Paraphrase: return paraphraseData()
       case activities.types.Space: return spaceData()
-      default: ActivityData.new()
+      default: throw new Error('No ActivityData for this activity type')
     }
   }
 }
@@ -29,6 +32,16 @@ function actionsData () {
 }
 
 // Interpret
+function outlineData (study) {
+  var data = ActivityData.new()
+  data.initCollection('section')
+  var firstWord = study.getWords()[0]
+  var lastWord = arrayLast(study.getWords())
+  var section = new Section('', new WordRange(firstWord, lastWord))
+  data.collection.add(section)
+  return data
+}
+
 function paraphraseData () {
   var data = ActivityData.new()
   data.initCollection('free-text')
