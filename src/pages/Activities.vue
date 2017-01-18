@@ -10,41 +10,32 @@
         <hr />
       </div>
 
+      <div class="stage-heading"><span class="stage-title">OBSERVE</span><span class="stage-subtitle">What does it say?</span></div>
       <table>
-        <thead><tr>
-          <th><span class="stage-title">OBSERVE</span><span class="stage-subtitle">What does it say?</span></th>
-          <th></th>
-        </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.observationActivities" @click="activitySelected(type)">
             <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right" v-html="completionPhrase(type)"></td>
+            <td class="text-right completion" v-html="completionPhrase(type)"></td>
           </tr>
         </tbody>
       </table>
 
+      <div class="stage-heading"><span class="stage-title">INTERPRET</span><span class="stage-subtitle">What does it mean?</span></div>
       <table>
-        <thead><tr>
-          <th><span class="stage-title">INTERPRET</span><span class="stage-subtitle">What does it mean?</span></th>
-          <th></th>
-        </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.interpretationActivities" @click="activitySelected(type)">
             <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right" v-html="completionPhrase(type)"></td>
+            <td class="text-right completion" v-html="completionPhrase(type)"></td>
           </tr>
         </tbody>
       </table>
 
+      <div class="stage-heading"><span class="stage-title">APPLY</span><span class="stage-subtitle">What should I do?</span></div>
       <table>
-        <thead><tr>
-          <th><span class="stage-title">APPLY</span><span class="stage-subtitle">What should I do?</span></th>
-          <th></th>
-        </tr></thead>
         <tbody>
           <tr v-for="type in activities.manager.applicationActivities" @click="activitySelected(type)">
             <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right" v-html="completionPhrase(type)"></td>
+            <td class="text-right completion" v-html="completionPhrase(type)"></td>
           </tr>
         </tbody>
       </table>
@@ -111,6 +102,10 @@ function daysAgo (date) {
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
 
+.stage-heading {
+  background-color: @color-back-raised;
+  padding: 10px;
+}
 .stage-title {
   letter-spacing: 1px;
 }
@@ -135,6 +130,10 @@ table {
       cursor: pointer;
       td {
         padding: 10px;
+      }
+      .completion {
+        white-space: nowrap;
+        letter-spacing: -0.5px;
       }
     }
   }
