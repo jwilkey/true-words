@@ -50,26 +50,26 @@ export default {
   user-select: none;
 }
 .word.selected {
-  background-color: @color-selection1;
+  background-color: @color-highlight-blue;
   color: @color-back;
   word-wrap: normal;
   padding: 2px;
   padding-left: 5px;
   padding-right: 5px;
   border-radius: 0px;
-  border-right: solid 1px #ff8;
-  border-left: solid 1px transparent;
-  border-top: solid 1px #ff8;
-  border-bottom: solid 1px #ff8;
+  border-right: solid 1px @color-back-raised2;
+  border-left: solid 1px @color-back-raised2;
+  border-top: solid 1px @color-back-raised2;
+  border-bottom: solid 1px @color-back-raised2;
   &.start {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
-    border-left: solid 1px #ff8;
+    border-left: solid 1px @color-back-raised2;
   }
   &.end {
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
-    border-right: solid 1px #ff8;
+    border-right: solid 1px @color-back-raised2;
   }
 }
 .help-example {
