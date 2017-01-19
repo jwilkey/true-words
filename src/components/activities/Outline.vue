@@ -67,7 +67,7 @@ export default {
     },
     deleteSection (section, sectionIndex) {
       if (sectionIndex === 0) {
-        window.alert('You must provide a section title at the beginning of the passage.')
+        this.alert('You must provide a section title at the beginning of the passage.', 'ok')
       } else {
         var sections = this.data.collection.items
         var previousSection = sections[sectionIndex - 1]
@@ -86,7 +86,7 @@ export default {
       if (this.isOutlined()) {
         this.finish(activities.types.Outline, this.data)
       } else {
-        window.alert('You must provide at least one section title')
+        this.alert('You must provide at least one section title', 'ok')
       }
     }
   },

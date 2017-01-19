@@ -59,6 +59,24 @@ Vue.mixin({
       analytics: Analytics
     }
   },
+  methods: {
+    alert (message, option) {
+      $('#application').addClass('obscure')
+      $('#alert-message').text(message)
+      $('#alert').css('display', 'table')
+      switch (option) {
+        case 'ok': $('#alert').addClass('ok-alert')
+          break
+        default: break
+      }
+    },
+    dismissAlert () {
+      $('#application').removeClass('obscure')
+      $('#alert-message').text('')
+      $('#alert').css('display', 'none')
+      $('#alert').removeClass('ok-alert')
+    }
+  },
   mounted: function () {
     var label = this.$options._componentTag
     Analytics.attach(label, this.$el)

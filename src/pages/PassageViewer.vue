@@ -123,13 +123,16 @@ export default {
       var versesArray = this.verses.slice(selected[0] - 1, selected[0] + selected.length - 1)
       var vm = this
       var passage = Bible.buildPassage(this.startingVerse, this.endingVerse)
+      var self = this
+      this.alert('SAVING...')
       this.createNewStudy({passage: passage, verses: versesArray})
       .done(function () {
         vm.$router.push('/activities')
       })
       .fail(function () {
-        window.alert('Failed to create study')
+        self.alert('Failed to create study', 'ok')
       })
+      .always(self.dismissAlert)
     },
     ...mapActions(['createNewStudy'])
   },

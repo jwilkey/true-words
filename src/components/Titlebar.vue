@@ -52,7 +52,7 @@ export default {
       return this.rightItems !== undefined && this.rightItems.indexOf(label) > -1
     },
     help () {
-      this.onHelp !== undefined ? this.onHelp() : window.alert('Help coming soon!!!')
+      this.onHelp !== undefined ? this.onHelp() : this.alert('Help coming soon!!!', 'ok')
     }
   },
   mounted () {

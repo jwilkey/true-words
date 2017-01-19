@@ -71,10 +71,12 @@ export default {
   methods: {
     continueStudy (studyId) {
       var self = this
+      this.alert('LOADING...')
       this.openStudy(studyId).done(function (x) {
         self.$router.push('/activities')
         self.analytics.trackEvent('ContinueStudy', 'click', self.getCurrentStudy.passage.description())
       })
+      .always(self.dismissAlert)
     },
     feedback () {
       this.$router.push('feedback')

@@ -67,7 +67,7 @@ export default {
         this.setCurrentActivity(type)
         this.$router.push('/activity')
       } else {
-        window.alert(this.activities.manager.titleForType(type) + ' activity coming soon!')
+        this.alert(this.activities.manager.titleForType(type) + ' activity coming soon!', 'ok')
       }
     },
     login () {

@@ -101,6 +101,7 @@ export default {
     onFinish (activityType, activityData) {
       var self = this
       var achievement = new ActivityAchievement(activityType, activityData, new Date(), activities.manager.version(activityType))
+      this.alert('SAVING...')
       this.saveActivity(achievement)
       .done(function () {
         self.currentReviewer = self.reviewerForType(activityType)
@@ -109,8 +110,9 @@ export default {
         self.rightMenuItems = ['RETRY']
       })
       .fail(function () {
-        window.alert('Failed to save your activity. Check your connection and try again.')
+        self.alert('Failed to save your activity. Check your connection and try again.', 'ok')
       })
+      .always(self.dismissAlert)
     },
     activityForType (activityType) {
       switch (activityType) {

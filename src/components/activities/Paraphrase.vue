@@ -63,7 +63,7 @@ export default {
     },
     donePressed () {
       if ($('.paraphrase-input').last().is(':empty')) {
-        window.alert('You should paraphrase all verses.')
+        this.alert('You should paraphrase all verses.', 'ok')
       } else {
         var book = this.getCurrentStudy.passage.start.book
         var chapter = this.getCurrentStudy.passage.start.chapter
