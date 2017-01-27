@@ -1,4 +1,5 @@
 import { WordRange } from '../bible'
+import { arrayRemove } from '../polyfill'
 
 function ActivityData () {
   this.containers = []
@@ -141,10 +142,25 @@ Container.prototype.add = function (item) {
   this.items.push(item)
 }
 
+Container.prototype.remove = function (item) {
+  arrayRemove(this.items, item)
+}
+
+Container.prototype.includes = function (item) {
+  return this.items.indexOf(item) !== -1
+}
+
 Container.prototype.contains = function (query) {
+  if (this.items.length > 0 && this.items[0].matches === undefined) {
+    throw new Error('Items in container do not implement "matches"')
+  }
+  this.search(query) !== undefined
+}
+
+Container.prototype.search = function (query) {
   return this.items.find(function (i) {
     return i.matches(query)
-  }) !== undefined
+  })
 }
 
 // Word Selection

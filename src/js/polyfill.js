@@ -11,6 +11,11 @@ if (!String.prototype.endsWith) {
   }
 }
 
+function isTouchDevice () {
+  var ieCheck = navigator.maxTouchPoints
+  return 'ontouchstart' in window || ieCheck
+}
+
 function arrayLast (arr) {
   if (arr !== undefined && arr.length > 0) {
     return arr[arr.length - 1]
@@ -25,4 +30,11 @@ function arrayEmpty (arr) {
   return arr.length === 0
 }
 
-export { arrayLast, arrayEmpty }
+function arrayRemove (arr, item) {
+  var index = arr.indexOf(item)
+  if (index >= 0) {
+    arr.splice(index, 1)
+  }
+}
+
+export { isTouchDevice, arrayLast, arrayEmpty, arrayRemove }

@@ -241,27 +241,6 @@ function endsWithAny (text, suffixes) {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 @import '../../../static/less/colors.less';
-.flex-v {
-  display: flex;
-  flex-direction: column;
-  height: 100%
-}
-.flex-1 {
-  flex: 1;
-  overflow-y: scroll;
-}
-.actionbar-flex {
-  flex: none;
-  z-index: 100;
-  width: 100%;
-  padding: 5px;
-  padding-bottom: 15px;
-  box-shadow: 0px -3px 15px rgba(0, 0, 0, 0.9);
-  background-color: @color-back-raised;
-  button {
-    letter-spacing: 1px;
-  }
-}
 .action-instruction {
   font-size: 19px;
   margin-bottom: 10px;

@@ -21,7 +21,6 @@ function peoplePlacesThingsData () {
   data.addContainer('PEOPLE', 'word-selection')
   data.addContainer('PLACES', 'word-selection')
   data.addContainer('THINGS', 'word-selection')
-  data.addContainer('OTHER', 'word-selection')
   return data
 }
 

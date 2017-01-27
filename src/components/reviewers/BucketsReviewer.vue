@@ -4,8 +4,8 @@
     <div class="bucket-label hthird back-purple">{{ container(1).name }}</div>
     <div class="bucket-label hthird back-red">{{ container(2).name }}</div>
 
-    <div class="container">
-      <span :key="word.index" v-for="(word, index) in words" :class="wordClass(word)">{{ word.text }} </span>
+    <div id="buckets-reviewer-words" class="container">
+      <span :key="index" v-for="(word, index) in words" :class="wordClass(word)">{{ word.text }} </span>
     </div>
 
     <div class="actionbar">
@@ -37,9 +37,9 @@ export default {
     wordClass: function (word) {
       if (this.data !== undefined) {
         return {
-          'orange': this.container(0).contains(word),
-          'purple': this.container(1).contains(word),
-          'red': this.container(2).contains(word)
+          orange: this.container(0).search(word),
+          purple: this.container(1).search(word),
+          red: this.container(2).search(word)
         }
       } else {
         return {}
@@ -54,6 +54,10 @@ export default {
 
 <style lang="less" scoped>
 @import '../../../static/less/colors.less';
+
+#buckets-reviewer-words {
+  font-size: 18px;
+}
 .bucket-label {
   text-align: center;
   float: left;
