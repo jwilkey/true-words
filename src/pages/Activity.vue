@@ -1,6 +1,6 @@
 <template>
   <div id="activity-wrapper">
-    <titlebar :title="title.toUpperCase()" :left-items="leftMenuItems" :right-items="rightMenuItems" :on-close="closePressed" :on-help="helpPressed" :on-select="titlebarSelect"></titlebar>
+    <titlebar id="activity-titlebar" :title="title.toUpperCase()" :left-items="leftMenuItems" :right-items="rightMenuItems" :on-close="closePressed" :on-help="helpPressed" :on-select="titlebarSelect"></titlebar>
     <menubar></menubar>
 
     <div id="activity" class="blur main-background">
@@ -108,11 +108,11 @@ export default {
         $('#activity').hide()
         $('#review').show()
         self.rightMenuItems = ['RETRY']
+        self.dismissAlert()
       })
       .fail(function () {
         self.alert('Failed to save your activity. Check your connection and try again.', 'ok')
       })
-      .always(self.dismissAlert)
     },
     activityForType (activityType) {
       switch (activityType) {
@@ -147,7 +147,6 @@ export default {
   },
   store,
   mounted () {
-    $('#activity, #review').css('padding-top', parseInt($('.titlebar').css('height')) + 5 + 'px')
     var completedActivity = this.getCurrentStudy.findActivity(this.getCurrentActivity)
     if (completedActivity !== undefined) {
       this.analytics.trackScreen(this.title + 'Reviewer')
@@ -168,6 +167,18 @@ export default {
 <style lang="less">
 @import '../../static/less/colors.less';
 @import '../../static/less/common.less';
+
+#activity, #review {
+  padding-top: @titlebar-height;
+}
+@media screen and (max-height: 380px) {
+  #activity-titlebar {
+    display: none;
+  }
+  #activity, #review {
+    padding-top: 0px;
+  }
+}
 
 body {
   padding-top: 55px;
@@ -280,11 +291,5 @@ body {
       }
     }
   }
-}
-.vthird {
-  height: 33.33%;
-}
-.hthird {
-  width: 33.33%;
 }
 </style>

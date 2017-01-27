@@ -67,12 +67,14 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
+@import '../../static/less/common.less';
+
 .title {
   font-family: serif;
   letter-spacing: 3px;
 }
-
 .titlebar {
+  height: @titlebar-height;
   position: fixed;
   top: 0;
   z-index: 100;
