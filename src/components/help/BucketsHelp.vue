@@ -1,16 +1,19 @@
 <template>
   <div class="container help-content">
     <div class="clearfix">
-      <p>Place each of the words from the passage in 1 of 4 buckets/categories: People, Places, Things, or Other.</p>
+      <p>Place words from the passage in 1 of 3 buckets/categories: People, Places, or Things.</p>
       <div class="help-buckets">
         <div class="third back-orange">PEOPLE</div>
         <div class="third back-purple">PLACES</div>
         <div class="third back-red">THINGS</div>
-        <div class="back-dark">OTHER</div>
       </div>
-      <p>• To place a word in one of these buckets, drag the current <span class="current-word">word</span> into the corresponding bucket, or simply tap the bucket.</p>
-      <p>• "OTHER" refers to any word that is not a person, place or thing.</p>
-      <p>• The activity is completed once you have placed every word in a bucket.</p>
+      <br/>
+
+    </br/>
+      <p>Scroll the text left or right to <span class="selected">select</span> a different word.</p>
+      <p>• Tap a bucket to place the selected word in the corresponding category, and the word will change to the matching color.</p>
+      <p>• To clear a word from a category, select the <img id="buckets-help-clear" class="svg close-button" src="/static/images/close.svg" /> button that appears beneath the selected word.</p>
+      <p>• Once you are finished categorizing words in the passage, select the 'DONE' button at the bottom of the screen.</p>
     </div>
   </div>
 </template>
@@ -51,12 +54,12 @@ export default {
   letter-spacing: 2px;
   font-size: 19px;
 }
-.current-word {
-  color: @color-back;
-  background-color: @color-selection1;
-  border-radius: 4px;
-  padding-left: 5px;
-  padding-right: 5px;
-  box-shadow: @shadow;
+.selected {
+  border-top: solid 2px @color-highlight-blue;
+  border-bottom: solid 2px @color-highlight-blue;
+}
+#buckets-help-clear {
+  height: 17px;
+  width: 17px;
 }
 </style>
