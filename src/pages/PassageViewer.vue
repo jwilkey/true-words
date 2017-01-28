@@ -8,18 +8,24 @@
       </div>
     </titlebar>
 
-    <div class="container">
-      <ul class="list-group">
-        <h1 class="text-center muted" v-if="!verses">Loading...</h1>
-        <li v-for="verse in verses" class="list-group-item verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
-          <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
-        </li>
-      </ul>
-    </div>
+    <div id="passage-viewer">
+      <div class="flex-column vfull">
+        <div class="flex-one scrolly">
+          <div class="container">
+            <ul class="list-group">
+              <h1 class="text-center muted" v-if="!verses">Loading...</h1>
+              <li v-for="verse in verses" class="list-group-item verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
+                <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
 
-    <div class="actionbar">
-      <p class="text-center accent">{{ actionText }}</p>
-      <button @click="actionPressed()" class="btn btn-lg btn-primary btn-block" v-if="isPassageSelected">BEGIN</button>
+        <div class="passage-actionbar flex-zero">
+          <p class="text-center actionable">{{ actionText }}</p>
+          <button @click="actionPressed()" class="btn btn-lg btn-actionable btn-block" v-if="isPassageSelected">BEGIN</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -154,6 +160,23 @@ export default {
 <style lang="less" scoped>
 @import '../../static/less/app.less';
 @import '../../static/less/colors.less';
+@import '../../static/less/flex.less';
+
+#passage-viewer {
+  position: absolute;
+  top: @titlebar-height;
+  bottom: 0;
+  .container {
+    padding-left: 0px;
+    padding-right: 0px;
+  }
+}
+.passage-actionbar {
+  padding: 5px;
+  button {
+    letter-spacing: 1px;
+  }
+}
 .center-wrapper {
   height: 100%;
   text-align: center;
@@ -195,8 +218,11 @@ export default {
   font-size: 18px;
 }
 .verse.selected, .verse.selected:hover {
-  background-color: @color-selection1;
+  background-color: @color-highlight-blue;
   color: @color-back;
+  .verse-number {
+    color: @color-callout-light;
+  }
 }
 .verse:hover {
   background-color: @color-back-raised2;
