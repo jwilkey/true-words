@@ -3,10 +3,10 @@
     <div class="flex-one flex-column">
       <div class="flex-two flex-row">
         <div data-index="0" class="flex-one flex-column flex-center bucket back-orange dropzone" @click="assignToBucket(0)">
-          {{ container(0).name }}
+          <p>{{ container(0).name }} <span v-if="!container(0).isEmpty()" class="bubble">{{ container(0).items.length }}</span></p>
         </div>
         <div data-index="1" class="flex-one flex-column flex-center bucket back-purple dropzone" @click="assignToBucket(1)">
-          {{ container(1).name }}
+          <p>{{ container(1).name }} <span v-if="!container(1).isEmpty()" class="bubble">{{ container(1).items.length }}</span></p>
         </div>
       </div>
 
@@ -29,7 +29,7 @@
 
       <div class="flex-two flex-row">
         <div data-index="2" class="flex-one flex-column flex-center bucket back-red dropzone" @click="assignToBucket(2)">
-          {{ container(2).name }}
+          <p>{{ container(2).name }} <span v-if="!container(2).isEmpty()" class="bubble">{{ container(2).items.length }}</span></p>
         </div>
       </div>
     </div>
@@ -240,9 +240,21 @@ export default {
   font-weight: bold;
   user-select: none;
   transition: all 0.2s;
+  p {
+    margin-bottom: 0px;
+  }
   &:hover {
     font-size: 21px;
     border: solid 1px @color-text;
+  }
+  .bubble {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding-bottom: 1px;
+    padding-left: 5px;
+    padding-right: 5px;
+    font-size: 13px;
+    letter-spacing: normal;
   }
 }
 #current-word {

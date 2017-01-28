@@ -146,6 +146,10 @@ Container.prototype.remove = function (item) {
   arrayRemove(this.items, item)
 }
 
+Container.prototype.isEmpty = function () {
+  return this.items.length === 0
+}
+
 Container.prototype.includes = function (item) {
   return this.items.indexOf(item) !== -1
 }
