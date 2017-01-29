@@ -20,7 +20,7 @@
             </div>
           </div>
         </div>
-        <div v-if="!loaded">
+        <div v-if="!loaded && getPersistor.isLoggedIn()">
           <p class="text-center">Loading studies...</p>
         </div>
         <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
