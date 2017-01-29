@@ -27,6 +27,11 @@ export default {
   .card-content {
     padding: 20px;
   }
+  @media (max-width: 400px) {
+    .card-content {
+      padding: 12px;
+    }
+  }
   &.nopad {
     .card-content {
       padding: 0px;

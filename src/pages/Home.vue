@@ -1,8 +1,8 @@
 <template>
   <div class="home">
     <titlebar title="TRUE WORDS"></titlebar>
-    <div class="container">
 
+    <div id="home-content" class="container">
       <card title="BEGIN" subtitle="Choose a Bible text to study" class="nopad">
         <div class="clearfix">
           <router-link class="text-center testament-button" to="/choosepassage?t=ot">OLD TESTAMENT</router-link>
@@ -15,7 +15,9 @@
           <div class="study-label col-xs-12">
             <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
             <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEdit.toDateString() }} <span class="bible">{{ study.bible }}</span></p>
-            <p class="col-sm-12 visible-xs">{{ study.passage.description() }},&nbsp;&nbsp;<span class="muted">{{ study.lastEdit.toDateString() }} ({{ study.bible }})</span></p>
+            <div class="col-sm-12 visible-xs nopad-left nopad-right">
+              <p >{{ study.passage.description() }},&nbsp;&nbsp;<span class="muted">{{ study.lastEdit.toDateString() }} ({{ study.bible }})</span></p>
+            </div>
           </div>
         </div>
         <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
@@ -25,8 +27,8 @@
           </div>
         </div>
       </card>
-
     </div>
+
     <div class="actionbar">
       <div class="pull-left feedback">
         <a class="muted" @click="feedback()">Feedback</a>
@@ -103,6 +105,9 @@ body {
   background-size: cover;
   height: 100%
 }
+#home-content {
+  padding-bottom: 50px;
+}
 .testament-button {
   padding: 23px 5px 20px 5px;
   border-bottom: solid 2px transparent;
@@ -128,8 +133,8 @@ body {
   border-radius: 5px;
 }
 .study {
-  padding-left: 15px;
-  padding-right: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
   margin-bottom: 10px;
   &:last-child {
     margin-bottom: 0px;
