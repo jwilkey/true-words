@@ -166,6 +166,8 @@ export default {
   position: absolute;
   top: @titlebar-height;
   bottom: 0;
+  left: 0;
+  right: 0;
   .container {
     padding-left: 0px;
     padding-right: 0px;

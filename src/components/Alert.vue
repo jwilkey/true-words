@@ -4,6 +4,15 @@
       <div class="alert-box">
         <p id="alert-message"></p>
         <button id="ok-alert-button" class="btn btn-block btn-alert" @click="dismissAlert()">OK</button>
+
+        <div class="row">
+          <div class="col-xs-6">
+            <button id="yes-alert-button" class="btn btn-block btn-alert col-xs-6" @click="confirmYes()">YES</button>
+          </div>
+          <div class="col-xs-6">
+            <button id="no-alert-button" class="btn btn-block btn-alert alt col-xs-6" @click="confirmNo()">NO</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -11,8 +20,27 @@
 
 <script>
 export default {
+  data () {
+    return {
+      app: this.$root.$children[0]
+    }
+  },
   components: { },
   methods: {
+    confirmYes () {
+      if (this.app.alertCallback) {
+        this.app.alertCallback('yes')
+      } else {
+        console.log('Confirmation alert has no alertCallback implementation')
+      }
+    },
+    confirmNo () {
+      if (this.app.alertCallback) {
+        this.app.alertCallback('no')
+      } else {
+        console.log('Confirmation alert has no alertCallback implementation')
+      }
+    }
   }
 }
 </script>
@@ -32,11 +60,16 @@ export default {
   left: 0;
   right: 0;
   background-color: rgba(0,0,0,0.4);
-  #ok-alert-button {
+  #ok-alert-button, #yes-alert-button, #no-alert-button {
     display: none;
   }
   &.ok-alert {
     #ok-alert-button {
+      display: inherit;
+    }
+  }
+  &.confirm-alert {
+    #yes-alert-button, #no-alert-button {
       display: inherit;
     }
   }
@@ -67,8 +100,13 @@ export default {
         border-color: @color-help;
         color: @color-help-back;
         margin-top: 20px;
+        &.alt {
+          background-color: transparent;
+          color: @color-help;
+        }
         &:hover {
-          background-color: @color-help-secondary;
+          background-color: @color-highlight-blue;
+          color: @color-help;
         }
       }
     }

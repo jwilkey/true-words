@@ -52,6 +52,16 @@ export default {
       data: data
     })
   },
+  delete (authToken, fileId) {
+    return $.ajax({
+      type: 'DELETE',
+      url: api('/drive/v3/files/' + fileId),
+      beforeSend: function (request) {
+        request.setRequestHeader('Authorization', 'Bearer ' + authToken)
+        request.setRequestHeader('Content-Type', 'application/json')
+      }
+    })
+  },
   fetchFileContent (authToken, fileId) {
     return $.ajax({
       type: 'GET',

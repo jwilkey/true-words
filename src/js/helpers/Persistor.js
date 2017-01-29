@@ -41,7 +41,9 @@ Persistor.prototype.refreshData = function (onFinish) {
         self.addDriveFileForStudy(file.id, study.id)
         return study
       })
-      onFinish(studies, driveUser())
+      if (onFinish) {
+        onFinish(studies, driveUser())
+      }
     })
     .fail(function (resp) {
       window.alert('Failed to load your saved studies from Google Drive')
@@ -83,6 +85,16 @@ Persistor.prototype.loadStudy = function (studyId) {
   }
 
   return $.when()
+}
+
+Persistor.prototype.deleteStudy = function (studyId) {
+  if (this.usingDrive()) {
+    var self = this
+    return drive.delete(driveToken(), this.drive.studies[studyId])
+    .done(function () {
+      self.drive.studies[studyId] = undefined
+    })
+  }
 }
 
 Persistor.prototype.usingDrive = function () {

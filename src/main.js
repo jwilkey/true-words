@@ -67,6 +67,8 @@ Vue.mixin({
       switch (option) {
         case 'ok': $('#alert').addClass('ok-alert')
           break
+        case 'confirm': $('#alert').addClass('confirm-alert')
+          break
         default: break
       }
     },
@@ -74,7 +76,10 @@ Vue.mixin({
       $('#application').removeClass('obscure')
       $('#alert-message').text('')
       $('#alert').css('display', 'none')
-      $('#alert').removeClass('ok-alert')
+      $('#alert').removeClass('ok-alert confirm-alert')
+    },
+    setAlertCallback (callback) {
+      this.$root.$children[0].alertCallback = callback
     }
   },
   mounted: function () {

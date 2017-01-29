@@ -11,16 +11,25 @@
   background-color: @color-callout;
   border-color: @color-callout;
   box-shadow: @shadow;
+  &:hover {
+    background-color: @color-callout-light;
+    border-color: @color-callout;
+    outline: none;
+  }
+}
+.btn-primary.alt {
+  background-color: transparent;
+  color: @color-callout-light;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  &:hover {
+    color: @color-text;
+  }
 }
 .btn-primary.disabled, .btn-primary.disabled:hover {
   background-color: @color-disabled-button;
   color: @color-disabled-button-text;
   border-color: transparent;
-}
-.btn-primary:hover {
-  background-color: @color-callout-light;
-  border-color: @color-callout;
-  outline: none;
 }
 
 .btn-actionable {

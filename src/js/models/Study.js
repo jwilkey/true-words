@@ -28,6 +28,14 @@ Study.prototype.text = function () {
   }).join(' ')
 }
 
+Study.prototype.lastEditLabel = function () {
+  if (this.lastEdit) {
+    return this.lastEdit.toDateString()
+  } else {
+    return ''
+  }
+}
+
 Study.prototype.getWords = function () {
   if (this.words === undefined) {
     var b = this.passage.start.book

@@ -2,9 +2,11 @@
   <div class="">
     <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
-    <div class="container main-background">
-      <p v-if="getPersistor.isLoggedIn()" class="text-center muted">Choose an Activity to begin</p>
+    <div class="passage-label">
+      {{ getCurrentStudy.passage.description() }}
+    </div>
 
+    <div class="container main-background">
       <div v-if="!getPersistor.isLoggedIn()" class="text-center">
         <button class="btn btn-primary" @click="login()">Login to save your work</button>
         <hr />
@@ -39,6 +41,10 @@
           </tr>
         </tbody>
       </table>
+
+      <div class="delete-view">
+        <button class="btn btn-primary alt" @click="deletePressed()">DELETE STUDY</button>
+      </div>
     </div>
   </div>
 </template>
@@ -88,6 +94,26 @@ export default {
     isEnabled: function (type) {
       return this.activities.manager.find(type).enabled
     },
+    deletePressed () {
+      var self = this
+      this.setAlertCallback(function (id) {
+        if (id === 'yes') {
+          self.dismissAlert()
+          self.alert('Deleting this study...')
+          self.getPersistor.deleteStudy(self.getCurrentStudy.id)
+          .done(function () {
+            self.dismissAlert()
+            self.$router.replace('/')
+          })
+          .fail(function () {
+            self.alert('Failed to delete this study', 'ok')
+          })
+        } else {
+          self.dismissAlert()
+        }
+      })
+      this.alert('Are you sure you want to delete this study?', 'confirm')
+    },
     ...mapActions(['setCurrentActivity'])
   }
 }
@@ -102,6 +128,12 @@ function daysAgo (date) {
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
 
+.passage-label {
+  text-align: center;
+  padding: 10px;
+  letter-spacing: 1px;
+  font-size: 20px;
+}
 .stage-heading {
   background-color: @color-back-raised;
   padding: 10px;
@@ -137,6 +169,11 @@ table {
       }
     }
   }
+}
+.delete-view {
+  float: right;
+  padding: 10px;
+  margin-top: 20px;
 }
 .warning {
   color: @color-warning;

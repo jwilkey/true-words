@@ -11,14 +11,17 @@
       </card>
 
       <card title="CONTINUE" subtitle="Choose a study">
-        <div v-for="study in getStudies" class="row study" @click="continueStudy(study.id)">
+        <div v-if="loaded" v-for="study in getStudies" class="row study" @click="continueStudy(study.id)">
           <div class="study-label col-xs-12">
             <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
-            <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEdit.toDateString() }} <span class="bible">{{ study.bible }}</span></p>
+            <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEditLabel() }} <span class="bible">{{ study.bible }}</span></p>
             <div class="col-sm-12 visible-xs nopad-left nopad-right">
-              <p >{{ study.passage.description() }},&nbsp;&nbsp;<span class="muted">{{ study.lastEdit.toDateString() }} ({{ study.bible }})</span></p>
+              <p >{{ study.passage.description() }},&nbsp;&nbsp;<span class="muted">{{ study.lastEditLabel() }} ({{ study.bible }})</span></p>
             </div>
           </div>
+        </div>
+        <div v-if="!loaded">
+          <p class="text-center">Loading studies...</p>
         </div>
         <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
         <div v-if="!getPersistor.isLoggedIn()" class="row">
@@ -51,6 +54,7 @@ import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
+      loaded: false
     }
   },
   computed: {
@@ -65,9 +69,12 @@ export default {
       return this.getUser ? this.getUser.imageUrl : undefined
     }
   },
+  components: {
+    Card, Titlebar, GoogleAuth
+  },
   watch: {
-    getStudies: function (newStudies, oldVal) {
-      this.$forceUpdate()
+    getPersistor: function (newValue, oldVal) {
+      this.refresh()
     }
   },
   methods: {
@@ -83,12 +90,24 @@ export default {
     feedback () {
       this.$router.push('feedback')
     },
-    ...mapActions(['setCurrentStudy', 'openStudy'])
+    refresh () {
+      this.loaded = false
+      var self = this
+      this.getPersistor.refreshData(function (studies) {
+        self.setStudies(studies)
+        self.loaded = true
+      })
+    },
+    ...mapActions(['setCurrentStudy', 'setStudies', 'openStudy'])
   },
-  components: {
-    Card, Titlebar, GoogleAuth
-  },
-  store
+  store,
+  mounted () {
+    if (this.getPersistor) {
+      this.refresh()
+    } else {
+      console.log('no persistor')
+    }
+  }
 }
 </script>
 

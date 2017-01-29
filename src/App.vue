@@ -8,6 +8,11 @@
 <script>
 import Alert from './components/Alert'
 export default {
+  data () {
+    return {
+      alertCallback: undefined
+    }
+  },
   components: {
     Alert
   },
