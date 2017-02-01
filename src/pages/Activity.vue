@@ -4,7 +4,7 @@
     <menubar></menubar>
 
     <div id="activity" class="blur main-background">
-      <component v-if="getCurrentActivity && activityData" :is="currentActivity" :finish="onFinish" :data="activityData"></component>
+      <component ref="activity" v-if="getCurrentActivity && activityData" :is="currentActivity" :finish="onFinish" :data="activityData"></component>
     </div>
 
     <div id="review" class="blur main-background">
@@ -90,8 +90,10 @@ export default {
       $('#review').removeClass('blur')
     },
     titlebarSelect (buttonTitle) {
-      if (buttonTitle === 'RETRY') {
-        this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity, this.getCurrentStudy)
+      if (buttonTitle === 'EDIT') {
+        if (this.$refs.activity.willAppear) {
+          this.$refs.activity.willAppear()
+        }
         $('#activity').show()
         $('#review').hide()
         this.rightMenuItems = ['help']
@@ -107,7 +109,7 @@ export default {
         self.currentReviewer = self.reviewerForType(activityType)
         $('#activity').hide()
         $('#review').show()
-        self.rightMenuItems = ['RETRY']
+        self.rightMenuItems = ['EDIT']
         self.dismissAlert()
       })
       .fail(function () {
@@ -154,7 +156,7 @@ export default {
       this.activityData = completedActivity.data
       $('#activity').hide()
       $('#review').show()
-      this.rightMenuItems = ['RETRY']
+      this.rightMenuItems = ['EDIT']
     } else {
       this.analytics.trackScreen(this.title)
       this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity, this.getCurrentStudy)

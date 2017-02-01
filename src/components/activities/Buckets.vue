@@ -11,14 +11,35 @@
       </div>
 
       <div class="relative flex-three flex-column flex-center">
-        <div class="flex-one">
-          <div class="word-viewer-container">
-            <span id="word-viewer"></span>
+        <div class="flex-one flex-row">
+          <div class="flex-one flex-column">
+            <div class="flex-one"></div>
+            <div class="flex-zero join-container">
+              <div class="join-button left" @click="joinLeft()">
+                <span class="glyphicon glyphicon-menu-left"></span> JOIN
+              </div>
+            </div>
+          </div>
+          <div class="flex-two flex-column word-viewer-container">
+            <div class="flex-one"></div>
+            <div>
+              <span id="word-viewer"></span>
+            </div>
+          </div>
+          <div class="flex-one flex-column text-right">
+            <div class="flex-one"></div>
+            <div class="flex-zero join-container">
+              <div class="join-button right" @click="joinRight()">
+                JOIN <span class="glyphicon glyphicon-menu-right"></span>
+              </div>
+            </div>
           </div>
         </div>
+
         <div class="text-view">
           <p :key="word.index" v-for="(word, index) in words" class="bucket-word" :data-index="index" :data-word="word.verse + '-' + word.index">{{ word.text }}</p>
         </div>
+
         <div class="flex-one">
           <div id="buckets-clear-button" class="image-button" @click="clearCurrentWordSelection()">
             <img class="svg close-button" src="/static/images/close.svg" />
@@ -68,7 +89,8 @@ export default {
       var wordId = newWord.verse + '-' + newWord.index
       var wordElement = $('.bucket-word[data-word=' + wordId + ']')
       this.scrollToWord(wordElement)
-      if (this.findContainerAndWordSelection(newWord)) {
+      var selection = this.findContainerAndWordSelection(newWord)
+      if (selection) {
         $('#buckets-clear-button').show()
       } else {
         $('#buckets-clear-button').hide()
@@ -116,6 +138,15 @@ export default {
         $centerElement.addClass('current')
 
         this.currentWord = this.words[$centerElement.data('index')]
+
+        var result = this.findContainerAndWordSelection()
+        if (result) {
+          result.wordSelection.words.forEach(function (w) {
+            var wordId = w.verse + '-' + w.index
+            var $wordElement = $('.bucket-word[data-word=' + wordId + ']')
+            $wordElement.addClass('current')
+          })
+        }
       }
     },
     scrollToWord (wordElement) {
@@ -137,24 +168,38 @@ export default {
       }
       return ''
     },
+    joinLeft () {
+      $('.current:first').prev().addClass('current')
+    },
+    joinRight () {
+      $('.current:last').next().addClass('current')
+    },
+    buildWordSelectionFromCurrentSelection () {
+      var self = this
+      var selectedWords = $('.current').map(function () {
+        var index = parseInt(this.dataset.index)
+        if (typeof index === 'number') {
+          return self.words[index]
+        }
+      }).get()
+      return new WordSelection(selectedWords)
+    },
     assignToBucket (bucketIndex) {
       var self = this
       this.data.containers.forEach(function (container, i) {
         var wordSelection = container.search(self.currentWord)
         if (i === bucketIndex) {
           if (wordSelection === undefined) {
-            container.add(new WordSelection(self.currentWord))
+            container.add(self.buildWordSelectionFromCurrentSelection())
           }
         } else if (wordSelection !== undefined) {
           container.remove(wordSelection)
         }
       })
 
-      var wordIndex = self.words.indexOf(self.currentWord)
-      var $wordElement = $('.bucket-word[data-index=' + wordIndex + ']')
-      $wordElement.removeClass('orange purple red')
-      $wordElement.addClass(self.bucketClass(bucketIndex))
-      $wordElement[0].dataset.container = bucketIndex
+      var $currentSelection = $('.current')
+      $currentSelection.removeClass('orange purple red')
+      $currentSelection.addClass(self.bucketClass(bucketIndex))
 
       this.moveToNextWord()
     },
@@ -178,6 +223,22 @@ export default {
         $('.bucket-word.current').removeClass('orange red purple')
       }
     },
+    setupData () {
+      var self = this
+      $('.bucket-word').removeClass('orange purple red')
+      this.data.containers.forEach(function (container, cIndex) {
+        container.items.forEach(function (wordSelection) {
+          wordSelection.words.forEach(function (word) {
+            var wordId = word.verse + '-' + word.index
+            var $wordElement = $('.bucket-word[data-word=' + wordId + ']')
+            $wordElement.addClass(self.bucketClass(cIndex))
+          })
+        })
+      })
+    },
+    willAppear () {
+      this.setupData()
+    },
     donePressed () {
       this.finish(this.activityType, this.data)
     }
@@ -188,16 +249,7 @@ export default {
   mounted () {
     var self = this
 
-    this.data.containers.forEach(function (container, cIndex) {
-      container.items.forEach(function (wordSelection) {
-        wordSelection.words.forEach(function (word) {
-          var wordId = word.verse + '-' + word.index
-          var $wordElement = $('.bucket-word[data-word=' + wordId + ']')
-          $wordElement.addClass(self.bucketClass(cIndex))
-          $wordElement[0].dataset.container = cIndex
-        })
-      })
-    })
+    this.setupData()
 
     $('.text-view').scroll(function () {
       clearTimeout($.data(this, 'scrollTimer'))
@@ -278,8 +330,31 @@ export default {
     background-color: rgba(55,55,55,0.5);
   }
 }
+.join-container {
+  z-index: 11;
+}
+.join-button {
+  z-index: 11;
+  padding: 8px;
+  color: @color-deemphasize;
+  background-color: @color-back-raised;
+  font-size: 13px;
+  font-family: 'Arial';
+  display: inline-block;
+  &.left {
+    border-top-right-radius: 6px;
+    padding-right: 12px;
+  }
+  &.right {
+    border-top-left-radius: 6px;
+    padding-left: 12px;
+  }
+  .glyphicon {
+    transform: translateY(2px);
+  }
+}
 .word-viewer-container {
-  padding-top: 10px;
+  padding-bottom: 10px;
   text-align: center;
   #word-viewer {
     opacity: 0;
