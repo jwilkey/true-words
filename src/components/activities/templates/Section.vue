@@ -1,11 +1,11 @@
 <template>
   <div class="section">
-    <div class="section-title">
-      <div class="section-item" :class="{ hidden: !hasTitle() }" @click="editSection($event.target)">
+    <div class="section-title editing">
+      <div class="section-item" @click="editSection($event.target)">
         {{ prefix }}{{ section.title }} <span v-if="section.title" class="word-range">{{ section.rangeDescription() }}</span>
       </div>
 
-      <input class="section-edit" :class="{ hidden: hasTitle() }" type="text" placeholder="type here" :value="section.title" @blur="applySectionEdit(section, $event.target)" />
+      <input class="section-edit" type="text" placeholder="type here" :value="section.title" @blur="applySectionEdit(section, $event.target)" />
 
       <div v-if="allowsSubSections" class="action">
         <div class="action-button" @click="deleteAction(section, index)">
@@ -50,29 +50,26 @@ export default {
     },
     editSection (sectionDiv) {
       if ($(sectionDiv).closest('.section.readonly').length === 0) {
-        $(sectionDiv).hide()
-        var sectionEdit = $(sectionDiv).siblings('.section-edit')
-        sectionEdit.show()
-        sectionEdit.focus()
+        $(sectionDiv).closest('.section-title').addClass('editing')
+        $(sectionDiv).siblings('.section-edit').focus()
       }
     },
     applySectionEdit (section, input) {
       if (input.value.length > 0) {
         section.title = input.value
-        $(input).hide()
-        $(input).siblings('.section-item').show()
+        $(input).closest('.section-title').removeClass('editing')
       }
     },
     deleteSubsection () {
       throw new Error('Delete subsections not implemented')
-    },
-    hasTitle () {
-      return this.section.title.length > 0
     }
   },
   mounted () {
     if ($(this.$el).closest('.subsections').length === 0) {
       $(this.$el).find('.section-title:first').addClass('root')
+    }
+    if (this.section.title.length > 0) {
+      $(this.$el).find('.section-title').removeClass('editing')
     }
     this.$nextTick(function () { images.svgs() })
   }
@@ -81,6 +78,7 @@ export default {
 
 <style lang="less" scoped>
 @import '../../../../static/less/colors.less';
+
 .section {
   font-family: serif;
   .section-title {
@@ -89,6 +87,14 @@ export default {
     border-bottom: solid 1px @color-back-raised;
     padding-top: 5px;
     padding-bottom: 8px;
+    .section-item {
+      display: table-cell;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+    .section-edit {
+      display: none;
+    }
   }
   .section-title.root {
     border-bottom: solid 1px @color-callout;
@@ -96,7 +102,15 @@ export default {
     text-shadow: 1px 1px @color-back-raised2;
     letter-spacing: 1px;
   }
-  input {
+  .section-title.editing {
+    .section-item {
+      display: none;
+    }
+    .section-edit {
+      display: table-cell;
+    }
+  }
+  .section-edit, .temp>input {
     display: table-cell;
     vertical-align: middle;
     width: 100%;
@@ -105,11 +119,6 @@ export default {
     border: none;
     background-color: transparent;
     outline: none;
-  }
-  .section-item {
-    display: table-cell;
-    vertical-align: middle;
-    cursor: pointer;
   }
   .word-range {
     color: @color-deemphasize;
