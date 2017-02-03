@@ -123,6 +123,10 @@ Collection.prototype.isEmpty = function () {
   return this.items.length <= 0
 }
 
+Collection.prototype.clear = function () {
+  this.items = []
+}
+
 // Containers
 function Container (name, itemKind) {
   this.kind = 'container'
