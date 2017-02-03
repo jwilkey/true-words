@@ -1,6 +1,20 @@
 <template>
-  <div class="flex-v">
-    <div class="flex-1">
+  <div class="flex-column vfull">
+    <div id="paraphrase-container" class="flex-zero">
+      <div class="paraphrase-input" contenteditable="true">
+
+      </div>
+      <div class="paraphrase-menu">
+        <button id="paraphrase-collapse" class="btn btn-raised btn-xs" @click="toggleParaphraseCollapse()">
+          <span class="glyphicon glyphicon-triangle-top"></span>
+          <span class="glyphicon glyphicon-triangle-bottom"></span>
+        </button>
+        <p class="paraphrasing-summary muted"></p>
+        <button id="paraphrase-done" class="btn btn-primary btn-xs" @click="doneParaphrasing()">DONE</button>
+      </div>
+    </div>
+
+    <div class="flex-one scrolly content">
       <div class="container">
         <ul class="list-group">
           <li v-for="verse in getCurrentStudy.verses" class="list-group-item verse-container" :data-verse="verse.number" @click="verseSelected($event.target)">
@@ -8,17 +22,16 @@
               <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
             </div>
             <div class="paraphrase">
-              <div class="paraphrase-input" contenteditable="true">
-              </div>
             </div>
           </li>
         </ul>
       </div>
     </div>
 
-    <div class="actionbar-flex">
-      <p class="paraphrasing-summary text-center muted"></p>
-      <button class="btn btn-actionable btn-block" @click="donePressed()">DONE</button>
+    <div class="flex-zero">
+      <div class="bottombar">
+        <button class="btn btn-actionable btn-block" @click="donePressed()">FINISHED</button>
+      </div>
     </div>
 
   </div>
@@ -35,7 +48,8 @@ export default {
   data () {
     return {
       activityType: activities.types.Paraphrase,
-      currentVerse: undefined
+      currentVerse: undefined,
+      paraphrasingVerse: undefined
     }
   },
   computed: {
@@ -44,31 +58,52 @@ export default {
   props: ['finish', 'data'],
   methods: {
     verseSelected (targetNode) {
-      $('.verse-container.selected').removeClass('selected')
-      $('.paraphrasing').removeClass('paraphrasing')
+      if (this.paraphrasingVerse) {
+        return
+      }
+
       var verseContainer = $(targetNode).closest('.verse-container')
-      verseContainer.addClass('selected')
-      var paraphraseInput = verseContainer.find('.paraphrase-input')
+      this.paraphrasingVerse = verseContainer
+      $('.paraphrasing').removeClass('paraphrasing')
+      $('.paraphrase-input').text(verseContainer.find('.paraphrase').text())
+      $('#paraphrase-container').removeClass('collapsed')
+      $('#paraphrase-container').show()
+      $('.paraphrase-input').focus()
       var paraphrasingVerseRange = determineParaphrasingRange(verseContainer)
-      paraphraseInput.focus()
       this.setParaphrasingSummaryLabel(paraphrasingVerseRange)
+      $('.verse-container').addClass('disabled')
+    },
+    doneParaphrasing () {
+      $('#paraphrase-container').hide()
+      var input = $('.paraphrase-input').text()
+      $('.paraphrase-input').text('')
+      $(this.paraphrasingVerse).find('.paraphrase').text(input)
+      this.paraphrasingVerse = undefined
+      $('.paraphrasing').removeClass('paraphrasing')
+      $('.verse-container').removeClass('disabled')
+    },
+    toggleParaphraseCollapse () {
+      $('#paraphrase-container').toggleClass('collapsed')
+      if (!$('#paraphrase-container').hasClass('collapsed')) {
+        $('.paraphrase-input').focus()
+      }
     },
     setParaphrasingSummaryLabel (paraphrasingVerseRange) {
       if (paraphrasingVerseRange.length === 1) {
-        $('.paraphrasing-summary').text('Paraphrasing verse ' + paraphrasingVerseRange[0])
+        $('.paraphrasing-summary').text('Paraphrase v.' + paraphrasingVerseRange[0])
       } else {
         var endVerse = paraphrasingVerseRange[paraphrasingVerseRange.length - 1]
-        $('.paraphrasing-summary').text('Paraphrasing verses ' + paraphrasingVerseRange[0] + '-' + endVerse)
+        $('.paraphrasing-summary').text('Paraphrase vs.' + paraphrasingVerseRange[0] + '-' + endVerse)
       }
     },
     donePressed () {
-      if ($('.paraphrase-input').last().is(':empty')) {
-        this.alert('You should paraphrase all verses.', 'ok')
+      if ($('.paraphrase').last().is(':empty')) {
+        this.alert('You must paraphrase at least the last verse.', 'ok')
       } else {
         var book = this.getCurrentStudy.passage.start.book
         var chapter = this.getCurrentStudy.passage.start.chapter
         var self = this
-        $('.paraphrase-input:not(:empty)').each(function () {
+        $('.paraphrase:not(:empty)').each(function () {
           var verseRange = determineParaphrasingRange($(this).closest('.verse-container'))
           var startVerse = new Verse(book, chapter, verseRange[0])
           var endVerse = new Verse(book, chapter, verseRange[verseRange.length - 1])
@@ -87,8 +122,9 @@ export default {
 
 function determineParaphrasingRange (currentVerseContainer) {
   var range = [currentVerseContainer.data('verse')]
+  currentVerseContainer.addClass('paraphrasing')
   currentVerseContainer.prevAll('.verse-container').each(function () {
-    var pInput = $(this).find('.paraphrase-input')
+    var pInput = $(this).find('.paraphrase')
     if (pInput.text().length > 0) {
       return false
     }
@@ -102,35 +138,88 @@ function determineParaphrasingRange (currentVerseContainer) {
 <style lang="less" scoped>
 @import '../../../static/less/colors.less';
 @import '../../../static/less/app.less';
+@import '../../../static/less/flex.less';
 
-.verse-container {
-  padding: 0px;
-  .paraphrase {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
+#paraphrase-container {
+  display: none;
+  padding: 10px;
+  border-top: solid 2px @color-back-raised2;
+  border-bottom: solid 1px @color-back-raised2;
+  box-shadow: @shadow-long;
+  z-index: 10;
   .paraphrase-input {
-    &:empty {
+    border: solid 1px @color-back-raised2;
+    border-radius: 4px;
+    padding: 3px;
+    margin-bottom: 10px;
+    outline: none;
+  }
+  .paraphrase-menu {
+    display: table;
+    width: 100%;
+    #paraphrase-collapse {
+      display: table-cell;
+      margin-right: 10px;
+      .glyphicon {
+        transform: translateY(2px);
+      }
+      .glyphicon-triangle-bottom {
+        display: none;
+      }
+    }
+    .paraphrasing-summary {
+      display: table-cell;
+      vertical-align: middle;
+      width: 100%;
+      margin-bottom: 0px;
+      font-size: 15px;
+    }
+    #paraphrase-done {
+      display: table-cell;
+    }
+  }
+  &.collapsed {
+    .paraphrase-input {
       display: none;
     }
-    color: @color-text-accent;
-    width: 100%;
-    border-radius: 4px;
-    background-color: transparent;
-    margin-top: 5px;
-    margin-bottom: 12px;
-    padding: 5px;
-    font-size: 16px;
-    outline: none;
-    z-index: -10;
-    &:focus {
-      border-color: @color-actionable;
-      box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 1px 7px @color-actionable;
+    #paraphrase-collapse {
+      .glyphicon-triangle-bottom {
+        display: inherit;;
+      }
+      .glyphicon-triangle-top {
+        display: none;
+      }
     }
   }
-  &.selected {
-    .paraphrase-input {
-      display: block;
+}
+.content {
+  padding-top: 10px;
+}
+.verse-container {
+  padding: 0px;
+  .verse {
+    color: white;
+    background-color: @color-back-raised;
+    padding: 5px;
+    font-size: 18px;
+    transition: background-color 0.5s, padding 0.5s;
+  }
+  .verse:hover {
+    background-color: @color-back-raised2;
+  }
+  .verse-number {
+    color: #999;
+  }
+  .paraphrase {
+    color: @color-deemphasize;
+    padding-left: 5px;
+    padding-right: 5px;
+    margin-top: 5px;
+    margin-bottom: 12px;
+    font-size: 16px;
+    z-index: -10;
+    &:empty {
+      display: none;
     }
   }
   &.selected, &.paraphrasing {
@@ -138,17 +227,12 @@ function determineParaphrasingRange (currentVerseContainer) {
       border-left: solid 2px @color-callout;
     }
   }
-}
-.verse {
-  color: white;
-  background-color: @color-back-raised;
-  padding: 5px;
-  font-size: 18px;
-}
-.verse:hover {
-  background-color: @color-back-raised2;
-}
-.verse-number {
-  color: #999;
+  &.disabled {
+    .verse {
+      background-color: transparent;
+      padding-top: 1px;
+      padding-bottom: 1px;
+    }
+  }
 }
 </style>
