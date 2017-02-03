@@ -7,6 +7,28 @@
   }
 }
 
+.btn-raised {
+  background-color: @color-back-raised;
+  border-color: @color-back-raised;
+  box-shadow: @shadow;
+  &:hover, &:focus {
+    color: white;
+    background-color: @color-back-raised2;
+    border-color: @color-back-raised2;
+    outline: none;
+    box-shadow: @shadow;
+  }
+}
+.btn-raised.alt {
+  background-color: transparent;
+  color: @color-back-raised;
+  font-weight: bolder;
+  letter-spacing: 1px;
+  &:hover {
+    color: @color-text;
+  }
+}
+
 .btn-primary {
   background-color: @color-callout;
   border-color: @color-callout;
