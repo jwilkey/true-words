@@ -57,6 +57,16 @@ export default {
   },
   props: ['finish', 'data'],
   methods: {
+    willAppear () {
+      this.setupData()
+    },
+    setupData () {
+      this.data.collection.items.forEach(function (freeText) {
+        var verse = freeText.passage.end.number
+        var verseContainer = $('.verse-container[data-verse=' + verse + ']')
+        verseContainer.find('.paraphrase').text(freeText.text)
+      })
+    },
     verseSelected (targetNode) {
       if (this.paraphrasingVerse) {
         return
@@ -103,6 +113,7 @@ export default {
         var book = this.getCurrentStudy.passage.start.book
         var chapter = this.getCurrentStudy.passage.start.chapter
         var self = this
+        this.data.collection.clear()
         $('.paraphrase:not(:empty)').each(function () {
           var verseRange = determineParaphrasingRange($(this).closest('.verse-container'))
           var startVerse = new Verse(book, chapter, verseRange[0])
@@ -117,6 +128,7 @@ export default {
   components: {
   },
   mounted () {
+    this.setupData()
   }
 }
 
