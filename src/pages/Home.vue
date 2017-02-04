@@ -34,7 +34,7 @@
 
     <div class="actionbar">
       <div class="pull-left feedback">
-        <a class="muted" @click="feedback()">Feedback</a>
+        <a class="muted" href="mailto:help.truewords@gmail.com?subject=Feedback">Feedback</a>
       </div>
       <div class="pull-right muted user">
         <img v-if="userimage" class="user-img" :src="userimage" />
