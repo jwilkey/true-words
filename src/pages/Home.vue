@@ -60,7 +60,7 @@ export default {
   computed: {
     ...mapGetters(['getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
     shouldShowStudiesEmptyState: function () {
-      return this.getPersistor.isLoggedIn() && this.getStudies.length === 0
+      return this.loaded && this.getPersistor.isLoggedIn() && this.getStudies.length === 0
     },
     username: function () {
       return this.getUser ? this.getUser.name : undefined
@@ -91,22 +91,25 @@ export default {
       this.$router.push('feedback')
     },
     refresh () {
-      this.loaded = false
-      var self = this
-      this.getPersistor.refreshData(function (studies) {
-        self.setStudies(studies)
-        self.loaded = true
-      })
+      console.log('Refreshing data')
+      try {
+        this.loaded = false
+        if (this.getPersistor) {
+          var self = this
+          this.getPersistor.refreshData(function (studies) {
+            self.setStudies(studies)
+            self.loaded = true
+          })
+        }
+      } catch (e) {
+        console.log(e)
+      }
     },
     ...mapActions(['setCurrentStudy', 'setStudies', 'openStudy'])
   },
   store,
   mounted () {
-    if (this.getPersistor) {
-      this.refresh()
-    } else {
-      console.log('no persistor')
-    }
+    this.refresh()
   }
 }
 </script>
