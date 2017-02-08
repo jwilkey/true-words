@@ -2,7 +2,7 @@
   <div id="content" class="container">
     <div class="row">
       <div v-if="words" id="text" class="col-sm-12">
-        <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" @click="selected($event.target)" class="word">{{ word.text }}</span>
+        <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" :data-id="wordId(word)" @click="selected($event.target)" class="word">{{ word.text }}</span>
       </div>
     </div>
   </div>
@@ -26,6 +26,9 @@ export default {
   },
   props: ['delegate'],
   methods: {
+    wordId (word) {
+      return word.verse + '-' + word.index
+    },
     selected (element) {
       var wordIndex = parseInt(element.id.substring(5))
       if (this.selectedWordIndex !== undefined) {
@@ -43,8 +46,21 @@ export default {
         this.selectedWordIndex = wordIndex
       }
       if (this.delegate && this.delegate.onSelect) {
-        this.delegate.onSelect($(element).text(), $(element).data('index'))
+        var attributes = {highlighted: $(element).hasClass('highlighted'), filled: $(element).hasClass('filled')}
+        this.delegate.onSelect($(element).text(), $(element).data('index'), attributes)
       }
+    },
+    setFilled (words) {
+      var self = this
+      words.forEach(function (word) {
+        $('.word[data-id=' + self.wordId(word) + ']').addClass('filled')
+      })
+    },
+    clearFill (words) {
+      var self = this
+      words.forEach(function (word) {
+        $('.word[data-id=' + self.wordId(word) + ']').removeClass('filled')
+      })
     },
     createSelectionRange (element, wordIndex) {
       var previousWord = $('#word-' + this.selectedWordIndex)

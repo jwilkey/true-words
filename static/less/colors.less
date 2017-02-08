@@ -37,6 +37,7 @@
 @shadow: 0px 1px 2px rgba(0, 0, 0, 0.5);
 @shadow-long: 0px 1px 15px rgba(0, 0, 0, 0.9);
 @shadow-light: 0px 1px 2px rgba(200, 200, 200, 0.5);
+@shadow-top: 0px -3px 12px rgba(0, 0, 0, 0.9);
 
 .accent {
   color: @color-text-accent;
@@ -72,4 +73,14 @@
 }
 .green {
   color: @color-highlight-green;
+}
+
+.shadow {
+  box-shadow: @shadow;
+}
+.shadow-light {
+  box-shadow: @shadow-light;
+}
+.shadow-long {
+  box-shadow: @shadow-long;
 }

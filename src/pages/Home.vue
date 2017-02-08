@@ -11,7 +11,7 @@
       </card>
 
       <card title="CONTINUE" subtitle="Choose a study">
-        <div v-if="loaded" v-for="study in getStudies" class="row study" @click="continueStudy(study.id)">
+        <div v-if="loaded" v-for="study in getStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
           <div class="study-label col-xs-12">
             <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
             <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEditLabel() }} <span class="bible">{{ study.bible }}</span></p>
