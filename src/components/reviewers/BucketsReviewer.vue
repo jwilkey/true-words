@@ -95,8 +95,8 @@ export default {
   padding-left: 0px;
   margin-bottom: 0px;
   li {
-    display: inline;
-    border-right: solid 1px @color-back-raised2;
+    display: inline-block;
+    border-right: dotted 1px @color-back-raised2;
     padding-left: 3px;
     padding-right: 5px;
   }
