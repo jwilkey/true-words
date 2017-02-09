@@ -62,6 +62,12 @@ export default {
         $('.word[data-id=' + self.wordId(word) + ']').removeClass('filled')
       })
     },
+    highlightWords (words) {
+      var self = this
+      words.forEach(function (word) {
+        $('.word[data-id=' + self.wordId(word) + ']').addClass('highlighted')
+      })
+    },
     createSelectionRange (element, wordIndex) {
       var previousWord = $('#word-' + this.selectedWordIndex)
       if (wordIndex < this.selectedWordIndex) {

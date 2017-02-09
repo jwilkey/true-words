@@ -136,6 +136,18 @@ export default {
     targetButtonClass () { return this.buttonClasses('target') },
     resultButtonClass () { return this.buttonClasses('result') }
   },
+  watch: {
+    currentActionIndex: function (newValue, oldVal) {
+      if (this.$refs.selectableText) {
+        var words = []
+        if (this.actor) { words = words.concat(this.actor.words) }
+        if (this.target) { words = words.concat(this.target.words) }
+        if (this.result) { words = words.concat(this.result.words) }
+        this.$refs.selectableText.clearHighlight()
+        this.$refs.selectableText.highlightWords(words)
+      }
+    }
+  },
   components: {
     SelectableText
   },
@@ -169,6 +181,7 @@ export default {
     setStep (target) {
       $('.action-components .current').removeClass('current')
       $(target).addClass('current')
+      this.$refs.selectableText.highlightSelection()
       this.$refs.selectableText.clearSelection()
       this.currentStep = target.dataset.step
     },
@@ -206,7 +219,7 @@ export default {
     },
     findSelectedActionEntry (selectedWord) {
       var self = this
-      this.data.collection.items.forEach(function (actionEntry, index) {
+      this.data.collection.items.every(function (actionEntry, index) {
         if (actionEntry.action.matches(selectedWord)) {
           self.currentActionIndex = index
           return false
