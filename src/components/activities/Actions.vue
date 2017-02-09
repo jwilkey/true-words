@@ -21,7 +21,7 @@
       <div class="action-instruction text-center">{{ instructionText }}</div>
       <div class="action-instruction-sublabel text-center">{{ sublabelText }}</div>
 
-      <button v-if="!currentActionIndex && !actionInstruction && !this.data.collection.isEmpty()" class="btn btn-actionable btn-block finished-button" @click="finishedClicked()">FINISHED</button>
+      <button v-if="showFinishButton" class="btn btn-actionable btn-block finished-button" @click="finishedClicked()">FINISHED</button>
 
       <div class="step-actions">
         <div v-if="currentStep === 'action' && actionInstruction">
@@ -116,6 +116,11 @@ export default {
         return 'Who or what ' + targetTense + ' done to?'
       } else if (this.currentStep === 'result' && !this.result) {
         return 'What is the result or purpose of this action?'
+      } else if (this.currentStep === undefined) {
+        if (this.currentActionIndex !== undefined && (this.actor || this.tense || this.target || this.result)) {
+          return 'Edit the actor, tense, target or result'
+        }
+        return 'Optionally, find the actor, tense, target or result'
       }
     },
     sublabelText () {
@@ -129,12 +134,17 @@ export default {
         return 'If present, select the target from the text'
       } else if (this.currentStep === 'result' && !this.result) {
         return 'If present, select the result from the text'
+      } else if (this.currentStep === undefined) {
+        return 'Press one of the above buttons'
       }
     },
     actorButtonClass () { return this.buttonClasses('actor') },
     tenseButtonClass () { return this.buttonClasses('tense') },
     targetButtonClass () { return this.buttonClasses('target') },
-    resultButtonClass () { return this.buttonClasses('result') }
+    resultButtonClass () { return this.buttonClasses('result') },
+    showFinishButton () {
+      return this.currentActionIndex === undefined && !this.actionInstruction && !this.data.collection.isEmpty()
+    }
   },
   watch: {
     currentActionIndex: function (newValue, oldVal) {
@@ -212,6 +222,12 @@ export default {
         this.currentActionEntry.target = words.length > 0 ? new WordSelection(this.selectedWords()) : undefined
       } else if (this.currentStep === 'result') {
         this.currentActionEntry.result = words.length > 0 ? new WordSelection(this.selectedWords()) : undefined
+      } else if (this.currentStep === undefined) {
+        if (attributes.filled) {
+          this.findSelectedActionEntry(words[0])
+        } else {
+          this.closeAction()
+        }
       }
     },
     onMultiSelect (words, range) {
@@ -227,6 +243,8 @@ export default {
         return true
       })
       this.$refs.selectableText.clearSelection()
+      this.currentStep = undefined
+      this.actionInstruction = undefined
     },
     clear (step) {
       switch (step) {
@@ -245,7 +263,7 @@ export default {
 
       this.$refs.selectableText.highlightSelection(true)
       this.$refs.selectableText.fillSelection()
-      this.currentStep = 'actor'
+      this.currentStep = undefined
 
       this.data.collection.add(actionEntry)
       this.currentActionIndex = this.data.collection.items.indexOf(actionEntry)
@@ -291,6 +309,7 @@ export default {
     padding-right: 8px;
     margin-bottom: 0px;
     border-right: solid 1px @color-back-raised2;
+    text-shadow: 1px 0px 3px @color-callout-light;
   }
   .close-action {
     display: table-cell;
@@ -299,6 +318,7 @@ export default {
     padding-right: 8px;
     margin-bottom: 0px;
     border-left: solid 1px @color-back-raised2;
+    text-shadow: 1px 0px 1px @color-actionable;
     &:hover {
       color: @color-actionable;
     }
