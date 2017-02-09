@@ -4,7 +4,7 @@
       <div class="container">
         <div class="actions">
           <div v-for="action in data.collection.items" class="action clearfix">
-            <div class="action-item">
+            <div v-if="action.actor" class="action-item">
               <p class="action-label">ACTOR</p>
               <div>{{action.actor ? action.actor.toString() : '?'}}</div>
             </div>
@@ -12,11 +12,11 @@
               <p class="action-label">ACTION</p>
               <div class="accent">{{action.action ? action.action.toString() : '?'}}</div>
             </div>
-            <div class="action-item">
+            <div v-if="action.target" class="action-item">
               <p class="action-label">TARGET</p>
               <div>{{action.target ? action.target.toString() : '?'}}</div>
             </div>
-            <div class="action-item">
+            <div v-if="action.result" class="action-item">
               <p class="action-label">RESULT</p>
               <div>{{action.result ? action.result.toString() : '?'}}</div>
             </div>
@@ -62,7 +62,7 @@ export default {
   margin-left: auto;
   margin-right: auto;
   .action {
-    padding-bottom: 15px;
+    padding-bottom: 12px;
     .action-item:first-child {
       border-left: solid 2px @color-actionable;
       padding-left: 15px;
@@ -70,15 +70,11 @@ export default {
   }
   .action-item {
     background-color: @color-back-raised;
-    padding: 10px;
-    padding-right: 15px;
+    padding: 5px 8px 5px 8px;
     float: left;
-    border-right: solid 1px @color-deemphasize;
-    border-top-right-radius: 7px;
-    border-bottom-right-radius: 7px;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
-    box-shadow: inset -3px 0px 8px rgba(255, 255, 255, 0.6), 3px 0px 7px #000, inset 2px 0px 5px #000;
+    box-shadow: inset 1px 0px 5px #000;
   }
 }
 .action-label {
