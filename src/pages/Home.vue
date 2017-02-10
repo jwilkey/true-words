@@ -14,7 +14,7 @@
         <div v-if="isSignedIn && isLoadingData">
           <p class="text-center">Loading studies...</p>
         </div>
-        <div v-if="isSignedIn">
+        <div v-if="isSignedIn && !isLoadingData">
           <div v-for="study in getStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
             <div class="study-label col-xs-12">
               <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>

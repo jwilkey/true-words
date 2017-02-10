@@ -13,6 +13,9 @@ export default {
     window.gapi.auth2.init({ client_id: CLIENT_ID, scope: SCOPE })
     .then(callback)
   },
+  signIn () {
+    window.gapi.auth2.getAuthInstance().signIn()
+  },
   isSignedIn () {
     return window.gapi.auth2.getAuthInstance().isSignedIn.get()
   },

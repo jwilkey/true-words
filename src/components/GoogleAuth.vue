@@ -38,7 +38,7 @@ export default {
     },
     signInToDrive () {
       this.setPersistenceStrategy('GOOGLE_DRIVE')
-      window.gapi.auth2.getAuthInstance().signIn()
+      drive.signIn()
     }
   },
   mounted: function () {
