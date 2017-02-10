@@ -1,7 +1,7 @@
 <template>
   <div class="clearfix">
     <div class="text-input-titlebar clearfix">
-      <div class="text-input-title accent">
+      <div class="text-input-title blue">
         {{ title }}
       </div>
       <div class="text-input-done">
@@ -22,7 +22,8 @@ export default {
       this.done(document.getElementById('text-input').textContent)
       document.getElementById('text-input').textContent = ''
     },
-    focus () {
+    focus (optionalText) {
+      document.getElementById('text-input').textContent = optionalText
       document.getElementById('text-input').focus()
     }
   }

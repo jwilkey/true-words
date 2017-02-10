@@ -12,12 +12,24 @@
             </div>
           </li>
         </ul>
+
+        <hr />
+
+        <div v-if="data" class="space-progress">
+          <div v-for="container in data.containers" v-if="container.items.length > 0">
+            <p class="space-title">{{ containerLabels[container.name] }}</p>
+            <div v-for="(item, index) in container.items" class="flex-row">
+              <p class="flex-one space-entry" @click="editEntry(item, container)">{{ item.text }}</p>
+              <img class="flex-zero" src="/static/images/close.svg" @click="deleteEntry(index, container)" />
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="actionbar-flex">
-      <div class="col-xs-12 space-done-button">
-        <button class="btn btn-primary btn-block" @click="finished()">DONE</button>
+      <div v-if="showDoneButton" class="col-xs-12 space-done-button">
+        <button class="btn btn-actionable btn-block" @click="finished()">FINISHED</button>
       </div>
       <div class="col-xs-5c">
         <button class="btn btn-actionable alt btn-block" @click="actionSelected('S')">S</button>
@@ -53,11 +65,26 @@ export default {
       activityType: activities.types.Space,
       currentVerse: undefined,
       textInputTitle: 'Sin to confess',
-      currentSpaceContainer: undefined
+      currentSpaceContainer: undefined,
+      editingEntry: undefined,
+      containerLabels: {
+        S: 'SIN TO CONFESS',
+        P: 'PROMISE TO CLAIM',
+        A: 'ACTION TO TAKE',
+        C: 'COMMAND TO OBEY',
+        E: 'EXAMPLE TO FOLLOW'
+      }
     }
   },
   computed: {
-    ...mapGetters(['getCurrentStudy'])
+    ...mapGetters(['getCurrentStudy']),
+    showDoneButton () {
+      return !this.data.containers[0].isEmpty() ||
+      !this.data.containers[1].isEmpty() ||
+      !this.data.containers[2].isEmpty() ||
+      !this.data.containers[3].isEmpty() ||
+      !this.data.containers[4].isEmpty()
+    }
   },
   components: { TextInput },
   props: ['finish', 'data'],
@@ -68,29 +95,31 @@ export default {
       verseContainer.addClass('selected')
     },
     actionSelected (action) {
-      switch (action) {
-        case 'S': this.textInputTitle = 'SIN TO CONFESS'
-          break
-        case 'P': this.textInputTitle = 'PROMISE TO CLAIM'
-          break
-        case 'A': this.textInputTitle = 'ACTION TO TAKE'
-          break
-        case 'C': this.textInputTitle = 'COMMAND TO OBEY'
-          break
-        case 'E': this.textInputTitle = 'EXAMPLE TO FOLLOW'
-          break
-        default: return
-      }
+      this.textInputTitle = this.containerLabels[action]
       this.currentSpaceContainer = action
       $('.overlay').show()
       this.$refs.textInput.focus()
+    },
+    editEntry (entry, container) {
+      this.textInputTitle = this.containerLabels[container.name]
+      this.currentSpaceContainer = container.name
+      this.editingEntry = entry
+      $('.overlay').show()
+      this.$refs.textInput.focus(entry.text)
+    },
+    deleteEntry (index, container) {
+      container.items.splice(index, 1)
     },
     textInputDone (text) {
       $('.overlay').hide()
       if (text.length > 0) {
         var container = this.data.findContainer(this.currentSpaceContainer)
-        container.add(new FreeText(text, this.getCurrentStudy.passage))
-        $('.space-done-button').show()
+        if (this.editingEntry) {
+          this.editingEntry.text = text
+          this.editingEntry = undefined
+        } else {
+          container.add(new FreeText(text, this.getCurrentStudy.passage))
+        }
       }
     },
     finished () {
@@ -117,6 +146,7 @@ export default {
 
 .verse-container {
   padding: 0px;
+  margin-bottom: 2px !important;
   &.selected {
   }
 }
@@ -132,8 +162,27 @@ export default {
 .verse-number {
   color: #999;
 }
+.space-progress {
+  .space-title {
+    margin-top: 8px;
+    margin-bottom: 0px;
+    color: @color-deemphasize;
+  }
+  .space-entry {
+    margin-bottom: 0px;
+    padding: 5px;
+    border: solid 1px @color-back-raised2;
+    border-radius: 3px;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  img {
+    max-height: 30px;
+    margin-left: 10px;
+    cursor: pointer;
+  }
+}
 .space-done-button {
-  display: none;
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 10px;
