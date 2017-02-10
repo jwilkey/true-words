@@ -7,16 +7,41 @@
 
 <script>
 import Alert from './components/Alert'
+import { mapGetters, mapActions } from 'vuex'
 export default {
   data () {
     return {
-      alertCallback: undefined
+      alertCallback: undefined,
+      isAuthenticated: false,
+      isLoadingPersistedData: false
     }
+  },
+  computed: {
+    ...mapGetters(['getPersistor'])
   },
   components: {
     Alert
   },
   methods: {
+    ...mapActions(['setStudies', 'setUser']),
+    signinCallback (isSignedIn) {
+      this.isAuthenticated = isSignedIn
+      if (isSignedIn) {
+        this.refreshPersistedData()
+      } else {
+        window.location.reload(false)
+      }
+    },
+    refreshPersistedData () {
+      console.log('Refreshing data')
+      var self = this
+      this.isLoadingPersistedData = true
+      this.getPersistor.refreshData(function (studies, user) {
+        self.isLoadingPersistedData = false
+        self.setStudies(studies)
+        self.setUser(user)
+      })
+    }
   }
 }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div id="authorize-div" class="clearfix" style="display: none" @click="signInToDrive(event)">
+  <div id="authorize-div" class="clearfix" @click="signInToDrive(event)">
     <img class="drive-logo" src="../assets/drive.png" />
     <div class="drive-text">
       <p class="drive-connect-label">Save your studies in Google Drive</p>
@@ -26,21 +26,18 @@ export default {
     ...mapActions(['setPersistenceStrategy']),
     checkAuth () {
       var self = this
+      var signinCallback = this.$root.$children[0].signinCallback
       drive.initAuth(function () {
-        window.gapi.auth2.getAuthInstance().isSignedIn.listen(self.updateSigninStatus)
-        self.updateSigninStatus(drive.isSignedIn())
+        window.gapi.auth2.getAuthInstance().isSignedIn.listen(signinCallback)
+        var currentStatus = window.gapi.auth2.getAuthInstance().isSignedIn.get()
+        if (currentStatus) {
+          self.setPersistenceStrategy('GOOGLE_DRIVE')
+          signinCallback(currentStatus)
+        }
       })
     },
-    updateSigninStatus (isSignedIn) {
-      var authorizeDiv = document.getElementById('authorize-div')
-      if (isSignedIn) {
-        this.setPersistenceStrategy('GOOGLE_DRIVE')
-        authorizeDiv.style.display = 'none'
-      } else {
-        authorizeDiv.style.display = 'table'
-      }
-    },
     signInToDrive () {
+      this.setPersistenceStrategy('GOOGLE_DRIVE')
       window.gapi.auth2.getAuthInstance().signIn()
     }
   },

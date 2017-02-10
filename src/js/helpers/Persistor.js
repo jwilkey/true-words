@@ -15,7 +15,10 @@ function Persistor (persistenceStrategy) {
 }
 
 Persistor.prototype.isLoggedIn = function () {
-  return this.persistenceStrategy !== undefined
+  if (this.usingDrive) {
+    return driveToken() !== undefined
+  }
+  return false
 }
 
 Persistor.prototype.refreshAuthorization = function (callback) {
@@ -46,7 +49,12 @@ Persistor.prototype.refreshData = function (onFinish) {
       }
     })
     .fail(function (resp) {
-      window.alert('Failed to load your saved studies from Google Drive')
+      if (resp.status === 401) {
+        window.location.reload(false)
+      } else {
+        if (onFinish) { onFinish() }
+        window.alert('Failed to load your saved studies from Google Drive')
+      }
     })
   }
 }
@@ -106,7 +114,11 @@ Persistor.prototype.addDriveFileForStudy = function (driveFileId, studyId) {
 }
 
 function driveToken () {
-  return window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
+  try {
+    return window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
+  } catch (e) {
+    return undefined
+  }
 }
 
 function driveUser () {

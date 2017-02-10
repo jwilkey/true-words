@@ -59,7 +59,18 @@ Vue.mixin({
       analytics: Analytics
     }
   },
+  computed: {
+    isSignedIn () {
+      return this.$root.$children[0].isAuthenticated
+    },
+    isLoadingData () {
+      return this.$root.$children[0].isLoadingPersistedData
+    }
+  },
   methods: {
+    refreshData () {
+      this.$root.$children[0].refreshPersistedData()
+    },
     alert (message, option) {
       $('#application').addClass('obscure')
       $('#alert-message').text(message)

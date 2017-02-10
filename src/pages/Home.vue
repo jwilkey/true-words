@@ -11,20 +11,22 @@
       </card>
 
       <card title="CONTINUE" subtitle="Choose a study">
-        <div v-if="loaded" v-for="study in getStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
-          <div class="study-label col-xs-12">
-            <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
-            <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEditLabel() }} <span class="bible">{{ study.bible }}</span></p>
-            <div class="col-sm-12 visible-xs nopad-left nopad-right">
-              <p >{{ study.passage.description() }},&nbsp;&nbsp;<span class="muted">{{ study.lastEditLabel() }} ({{ study.bible }})</span></p>
+        <div v-if="isSignedIn && isLoadingData">
+          <p class="text-center">Loading studies...</p>
+        </div>
+        <div v-if="isSignedIn">
+          <div v-for="study in getStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
+            <div class="study-label col-xs-12">
+              <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
+              <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEditLabel() }} <span class="bible">{{ study.bible }}</span></p>
+              <div class="col-sm-12 visible-xs nopad-left nopad-right">
+                <p >{{ study.passage.description() }},&nbsp;&nbsp;<span class="muted">{{ study.lastEditLabel() }} ({{ study.bible }})</span></p>
+              </div>
             </div>
           </div>
         </div>
-        <div v-if="!loaded && getPersistor.isLoggedIn()">
-          <p class="text-center">Loading studies...</p>
-        </div>
         <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
-        <div v-if="!getPersistor.isLoggedIn()" class="row">
+        <div v-if="!isSignedIn" class="row">
           <div class="col-md-6">
             <google-auth class="col-xs-12"></google-auth>
           </div>
@@ -72,11 +74,6 @@ export default {
   components: {
     Card, Titlebar, GoogleAuth
   },
-  watch: {
-    getPersistor: function (newValue, oldVal) {
-      this.refresh()
-    }
-  },
   methods: {
     continueStudy (studyId) {
       var self = this
@@ -90,26 +87,11 @@ export default {
     feedback () {
       this.$router.push('feedback')
     },
-    refresh () {
-      console.log('Refreshing data')
-      try {
-        this.loaded = false
-        if (this.getPersistor) {
-          var self = this
-          this.getPersistor.refreshData(function (studies) {
-            self.setStudies(studies)
-            self.loaded = true
-          })
-        }
-      } catch (e) {
-        console.log(e)
-      }
-    },
     ...mapActions(['setCurrentStudy', 'setStudies', 'openStudy'])
   },
   store,
   mounted () {
-    this.refresh()
+    this.refreshData()
   }
 }
 </script>
