@@ -79,6 +79,7 @@ export default {
       $('#paraphrase-container').removeClass('collapsed')
       $('#paraphrase-container').show()
       $('.paraphrase-input').focus()
+      $('.content').addClass('keyboard')
       var paraphrasingVerseRange = determineParaphrasingRange(verseContainer)
       this.setParaphrasingSummaryLabel(paraphrasingVerseRange)
       $('.verse-container').addClass('disabled')
@@ -91,6 +92,7 @@ export default {
       this.paraphrasingVerse = undefined
       $('.paraphrasing').removeClass('paraphrasing')
       $('.verse-container').removeClass('disabled')
+      $('.content').removeClass('keyboard')
     },
     toggleParaphraseCollapse () {
       $('#paraphrase-container').toggleClass('collapsed')
@@ -206,6 +208,9 @@ function determineParaphrasingRange (currentVerseContainer) {
 }
 .content {
   padding-top: 10px;
+  &.keyboard {
+    padding-bottom: 400px;
+  }
 }
 .verse-container {
   padding: 0px;
