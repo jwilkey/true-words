@@ -22,7 +22,7 @@
         </div>
 
         <div class="passage-actionbar flex-zero">
-          <p class="text-center actionable">{{ actionText }}</p>
+          <p class="text-center passage-instruction">{{ actionText }}</p>
           <button @click="actionPressed()" class="btn btn-lg btn-actionable btn-block" v-if="isPassageSelected">BEGIN</button>
         </div>
       </div>
@@ -178,6 +178,10 @@ export default {
   button {
     letter-spacing: 1px;
   }
+  .passage-instruction {
+    letter-spacing: 0.5px;
+    font-weight: bold;
+  }
 }
 .center-wrapper {
   height: 100%;
@@ -218,6 +222,7 @@ export default {
   padding-top: 1px;
   padding-bottom: 1px;
   font-size: 18px;
+  margin-bottom: 2px !important;
 }
 .verse.selected, .verse.selected:hover {
   background-color: @color-highlight-blue;

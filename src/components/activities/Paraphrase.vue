@@ -209,6 +209,7 @@ function determineParaphrasingRange (currentVerseContainer) {
 }
 .verse-container {
   padding: 0px;
+  margin-bottom: 2px !important;
   .verse {
     color: white;
     background-color: @color-back-raised;
