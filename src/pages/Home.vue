@@ -14,7 +14,7 @@
         <div v-if="isSignedIn && isLoadingData">
           <p class="text-center">Loading studies...</p>
         </div>
-        <div v-if="isSignedIn && !isLoadingData">
+        <div v-if="isSignedIn === true && !isLoadingData">
           <div v-for="study in getStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
             <div class="study-label col-xs-12">
               <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
@@ -26,7 +26,7 @@
           </div>
         </div>
         <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
-        <div v-if="!isSignedIn" class="row">
+        <div v-if="isSignedIn === false" class="row">
           <div class="col-md-6">
             <google-auth class="col-xs-12"></google-auth>
           </div>

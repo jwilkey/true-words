@@ -14,7 +14,7 @@ export default {
     .then(callback)
   },
   signIn () {
-    window.gapi.auth2.getAuthInstance().signIn()
+    return window.gapi.auth2.getAuthInstance().signIn()
   },
   isSignedIn () {
     return window.gapi.auth2.getAuthInstance().isSignedIn.get()

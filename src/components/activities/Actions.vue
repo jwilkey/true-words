@@ -1,6 +1,6 @@
 <template>
   <div class="flex-column vfull">
-    <div class="flex-one scrolly">
+    <div class="flex-one scrolly actions-content">
       <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
     </div>
 
@@ -300,6 +300,9 @@ export default {
 @import '../../../static/less/colors.less';
 @import '../../../static/less/flex.less';
 
+.actions-content {
+  padding-bottom: 30px;
+}
 .action-header {
   display: table;
   .delete-action {

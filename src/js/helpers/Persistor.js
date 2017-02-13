@@ -69,10 +69,17 @@ Persistor.prototype.saveStudy = function (study) {
       mimeType: 'application/json',
       properties: { id: study.id, createdDate: study.date, start: start, end: end, bible: study.bible }
     }
+    var retryCount = 0
     var self = this
     return drive.upload(driveToken(), metadata, study)
     .done(function (file) {
       self.addDriveFileForStudy(file.id, study.id)
+    })
+    .fail(function (resp) {
+      if (resp.status === 401 && retryCount < 1) {
+        retryCount += 1
+        drive.signIn()
+      }
     })
   }
 
@@ -81,7 +88,14 @@ Persistor.prototype.saveStudy = function (study) {
 
 Persistor.prototype.updateStudy = function (study) {
   if (this.usingDrive()) {
+    var retryCount = 0
     return drive.update(driveToken(), this.drive.studies[study.id], study)
+    .fail(function (resp) {
+      if (resp.status === 401 && retryCount < 1) {
+        retryCount += 1
+        drive.signIn()
+      }
+    })
   }
 
   return $.when(console.log('Not logged in - requested to update study.'))

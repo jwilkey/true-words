@@ -112,8 +112,10 @@ export default {
         self.rightMenuItems = ['EDIT']
         self.dismissAlert()
       })
-      .fail(function () {
+      .fail(function (resp) {
+        console.log(resp)
         self.alert('Failed to save your activity. Check your connection and try again.', 'ok')
+        self.analytics.trackEvent('Error', 'saveActivity', resp)
       })
     },
     activityForType (activityType) {
