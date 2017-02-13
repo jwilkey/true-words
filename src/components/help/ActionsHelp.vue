@@ -1,7 +1,21 @@
 <template>
   <div class="container">
-    <div class="clearfix">
+    <div>
+      <strong>What is <i>happening</i> in this passage?</strong>
+      <br />
+      Select action words or phrases to gain a better understanding of important activity in the text.
+      <hr />
+    </div>
+    <div class="actions-help-selectable clearfix">
       <span :key="index" v-for="(word, index) in words" class="word" :class="{ selected: isSelected(index), start: isStart(index), end: isEnd(index) }">{{ word }}</span>
+    </div>
+    <div>
+      To move on to the next action, press the 'DONE' button that appears in the bottom bar after adding an action.
+    </div>
+    <hr />
+    <strong>Optional:</strong>
+    <div>
+      Once you have added a new action you have the option of specifying further details about that action (who or what is doing it, the result or purpose of the action, etc). Use the buttons at the bottom of the screen to select these things.
     </div>
   </div>
 </template>
@@ -10,8 +24,8 @@
 export default {
   data () {
     return {
-      text: 'Tap a word to Select it. Tap another word to Select a phrase. Follow the steps in the action bar at the bottom of the screen, selecting a word/phrase for each step.',
-      words: ['Tap', 'a', 'word', 'to', 'Select', 'it.', 'Tap', 'another', 'word', 'to', 'Select', 'a', 'phrase.', 'Follow', 'the', 'steps', 'in', 'the', 'action', 'bar', 'at', 'the', 'bottom', 'of', 'the', 'screen,', 'selecting', 'a', 'word/phrase', 'for', 'each', 'step.']
+      text: 'Tap a word to Select it. Tap another word to Select a phrase.',
+      words: ['Tap', 'a', 'word', 'to', 'Select', 'it.', 'Tap', 'another', 'word', 'to', 'Select', 'a', 'phrase', '.', 'Once', 'you', 'have', 'an', 'action', 'word/phrase', 'selected', 'press', 'the', 'ADD', 'button']
     }
   },
   components: { },
@@ -75,5 +89,14 @@ export default {
 .help-example {
   color: @color-help-secondary;
   font-style: italic;
+}
+.actions-help-selectable {
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 1px @color-deemphasize;
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-bottom: 8px;
 }
 </style>
