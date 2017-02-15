@@ -44,6 +44,9 @@
           <div id="buckets-clear-button" class="image-button" @click="clearCurrentWordSelection()">
             <img class="svg close-button" src="/static/images/close.svg" />
           </div>
+          <div v-if="showScrollTip" class="scroll-tip">
+            Drag text to scroll
+          </div>
         </div>
         <div class="indicator"></div>
       </div>
@@ -74,13 +77,20 @@ export default {
     return {
       currentWord: undefined,
       currentWordContainer: undefined,
-      activityType: activities.types.PeoplePlacesThings
+      activityType: activities.types.PeoplePlacesThings,
+      textViewNode: undefined,
+      startScrollPosition: undefined,
+      startXPos: undefined,
+      curDown: undefined
     }
   },
   computed: {
     ...mapGetters({ words: 'getCurrentWords' }),
     currentWordAssigned: function () {
       return $('.bucket-word.current').hasClass('red')
+    },
+    showScrollTip () {
+      return !isTouchDevice()
     }
   },
   props: ['finish', 'data'],
@@ -236,6 +246,30 @@ export default {
         })
       })
     },
+    setupTextViewDragging () {
+      if (!isTouchDevice()) {
+        var self = this
+        var $textView = $('.text-view')
+        $textView.on('mousemove', function (e) {
+          if (self.curDown) {
+            $textView.scrollLeft(self.startScrollPosition + (self.startXPos - e.pageX))
+          }
+        })
+
+        $textView.on('mousedown', function (e) {
+          self.startScrollPosition = $textView.scrollLeft()
+          self.startXPos = e.pageX
+          self.curDown = true
+        })
+
+        $textView.on('mouseup', function (e) {
+          self.curDown = false
+          if ($textView.scrollLeft() !== self.startScrollPosition) {
+            $('.scroll-tip').fadeOut()
+          }
+        })
+      }
+    },
     willAppear () {
       this.setupData()
     },
@@ -251,17 +285,22 @@ export default {
 
     this.setupData()
 
-    $('.text-view').scroll(function () {
+    var $textView = $('.text-view')
+    this.textViewNode = $textView[0]
+
+    $textView.scroll(function () {
       clearTimeout($.data(this, 'scrollTimer'))
       $('.indicator').addClass('active')
-      $('.text-view').addClass('scrolling')
+      $textView.addClass('scrolling')
       self.showWordPreview()
       $.data(this, 'scrollTimer', setTimeout(function () {
-        $('.text-view').removeClass('scrolling')
+        $textView.removeClass('scrolling')
         self.hideWordPreview()
         self.determineCurrentWord()
       }, 250))
     })
+
+    self.setupTextViewDragging()
 
     var padding = $(window).width() / 2 - 2
     $('.text-view').css('padding-left', padding + 'px')
@@ -413,5 +452,10 @@ export default {
   padding: 12px;
   box-shadow: @shadow;
   transition: background-color 0.3s;
+}
+.scroll-tip {
+  color: @color-deemphasize-more;
+  text-align: center;
+  margin-top: 8px;
 }
 </style>
