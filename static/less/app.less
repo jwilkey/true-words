@@ -16,6 +16,10 @@
   src: url('/static/fonts/Hiragino.ttc');
 }
 
+.brand-font {
+  font-family: serif;
+}
+
 body {
   color: white;
   font-family: 'Alegreya', serif;
@@ -101,11 +105,18 @@ hr {
   padding-top: 8px;
 }
 
+.bottompad {
+  padding-bottom: 200px;
+}
+
 .bottombar {
   padding: 5px;
   padding-bottom: 8px;
   box-shadow: @shadow-top;
   z-index: 100;
+  background: @color-back;
+  background: linear-gradient(@color-back-raised 0px, @color-back 20px, @color-back);
+  border-top: solid 1px @color-back-raised2;
 }
 
 .actionbar {
