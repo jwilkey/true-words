@@ -1,5 +1,5 @@
 import activities from '../activity'
-import ActivityData, { Section } from '../models/ActivityData'
+import ActivityData, { Section, QuestionAnswer, FreeText } from '../models/ActivityData'
 import { arrayLast } from '../polyfill'
 import { WordRange } from '../bible'
 
@@ -11,6 +11,7 @@ export default {
       case activities.types.Outline: return outlineData(study)
       case activities.types.Paraphrase: return paraphraseData()
       case activities.types.Space: return spaceData()
+      case activities.types.Stewardship: return stewardshipData(study)
       default: throw new Error('No ActivityData for this activity type')
     }
   }
@@ -56,4 +57,23 @@ function spaceData () {
   data.addContainer('C', 'free-text')
   data.addContainer('E', 'free-text')
   return data
+}
+
+function stewardshipData (study) {
+  var data = ActivityData.new()
+  data.initCollection('question-answer')
+  var freeText = new FreeText(undefined, study.passage)
+  data.collection.add(new QuestionAnswer('time', 'What will you spend time doing?', copy(freeText)))
+  data.collection.add(new QuestionAnswer('money', 'For what will you spend money?', copy(freeText)))
+  data.collection.add(new QuestionAnswer('thoughts', 'What attitudes and ideas will you think about?', copy(freeText)))
+  data.collection.add(new QuestionAnswer('people', 'Who will you see and interact with?', copy(freeText)))
+  data.collection.add(new QuestionAnswer('affect-time', 'the way you spend your time?', copy(freeText)))
+  data.collection.add(new QuestionAnswer('affect-money', 'the way you spend your money?', copy(freeText)))
+  data.collection.add(new QuestionAnswer('affect-thoughts', 'the things you feel and think?', copy(freeText)))
+  data.collection.add(new QuestionAnswer('affect-people', 'the way you interact with people?', copy(freeText)))
+  return data
+}
+
+function copy (obj) {
+  return Object.assign({}, obj)
 }

@@ -129,7 +129,12 @@ Persistor.prototype.addDriveFileForStudy = function (driveFileId, studyId) {
 
 function driveToken () {
   try {
-    return window.gapi.auth2.getAuthInstance().currentUser.get().getAuthResponse().access_token
+    var user = window.gapi.auth2.getAuthInstance().currentUser.get()
+    var expiresIn = (user.getAuthResponse().expires_at - new Date().getTime()) / 1000 / 60
+    if (expiresIn < 5) {
+      user.reloadAuthResponse()
+    }
+    return user.getAuthResponse().access_token
   } catch (e) {
     return undefined
   }

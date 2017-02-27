@@ -38,18 +38,21 @@ import Actions from '../components/activities/Actions'
 import Outline from '../components/activities/Outline'
 import Paraphrase from '../components/activities/Paraphrase'
 import Space from '../components/activities/Space'
+import Stewardship from '../components/activities/Stewardship'
 
 import BucketsReviewer from '../components/reviewers/BucketsReviewer'
 import ActionsReviewer from '../components/reviewers/ActionsReviewer'
 import OutlineReviewer from '../components/reviewers/OutlineReviewer'
 import ParaphraseReviewer from '../components/reviewers/ParaphraseReviewer'
 import SpaceReviewer from '../components/reviewers/SpaceReviewer'
+import StewardshipReviewer from '../components/reviewers/StewardshipReviewer'
 
 import ActionsHelp from '../components/help/ActionsHelp'
 import BucketsHelp from '../components/help/BucketsHelp'
 import OutlineHelp from '../components/help/OutlineHelp'
 import ParaphraseHelp from '../components/help/ParaphraseHelp'
 import SpaceHelp from '../components/help/SpaceHelp'
+import StewardshipHelp from '../components/help/StewardshipHelp'
 
 export default {
   data () {
@@ -69,7 +72,7 @@ export default {
     currentHelpView: function () { return this.helpViewForType(this.getCurrentActivity) }
   },
   components: {
-    Titlebar, Menubar, Actions, Buckets, Outline, Paraphrase, Space, BucketsReviewer, ActionsReviewer, OutlineReviewer, ParaphraseReviewer, SpaceReviewer, ActionsHelp, BucketsHelp, OutlineHelp, ParaphraseHelp, SpaceHelp
+    Titlebar, Menubar, Actions, Buckets, Outline, Paraphrase, Space, Stewardship, BucketsReviewer, ActionsReviewer, OutlineReviewer, ParaphraseReviewer, SpaceReviewer, StewardshipReviewer, ActionsHelp, BucketsHelp, OutlineHelp, ParaphraseHelp, SpaceHelp, StewardshipHelp
   },
   methods: {
     ...mapActions(['saveActivity']),
@@ -125,6 +128,7 @@ export default {
         case activities.types.Outline: return 'outline'
         case activities.types.Paraphrase: return 'paraphrase'
         case activities.types.Space: return 'space'
+        case activities.types.Stewardship: return 'stewardship'
         default: return undefined
       }
     },
@@ -135,6 +139,7 @@ export default {
         case activities.types.Outline: return 'outline-reviewer'
         case activities.types.Paraphrase: return 'paraphrase-reviewer'
         case activities.types.Space: return 'space-reviewer'
+        case activities.types.Stewardship: return 'stewardship-reviewer'
         default: return undefined
       }
     },
@@ -145,6 +150,7 @@ export default {
         case activities.types.Outline: return 'outline-help'
         case activities.types.Paraphrase: return 'paraphrase-help'
         case activities.types.Space: return 'space-help'
+        case activities.types.Stewardship: return 'stewardship-help'
         default: return undefined
       }
     }

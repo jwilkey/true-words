@@ -37,6 +37,7 @@ function getPrototype (kind) {
     case 'container': return Container.prototype
     case 'word-selection': return WordSelection.prototype
     case 'free-text': return FreeText.prototype
+    case 'question-answer': return QuestionAnswer.prototype
     case 'action': return Action.prototype
     case 'section': return Section.prototype
     case 'word-range': return WordRange.prototype
@@ -231,6 +232,21 @@ Action.prototype.fromJson = function (json) {
   return new Action(deserialize(0, json.action), json.tense, deserialize(0, json.actor), deserialize(0, json.target), deserialize(0, json.result))
 }
 
+// QuestionAnswer
+function QuestionAnswer (questionId, questionText, freeText) {
+  this.kind = 'question-answer'
+  this.id = uuid()
+  this.questionId = questionId
+  this.questionText = questionText
+  this.freeText = freeText
+}
+
+QuestionAnswer.prototype.fromJson = function (json) {
+  var qa = new QuestionAnswer(json.questionId, json.questionText, deserialize('free-text', json.freeText))
+  qa.id = json.id
+  return qa
+}
+
 // Section
 function Section (title, wordRange) {
   this.kind = 'section'
@@ -267,4 +283,4 @@ function uuid () {
   })
 }
 
-export { WordSelection, FreeText, Action, Section }
+export { WordSelection, FreeText, Action, Section, QuestionAnswer }
