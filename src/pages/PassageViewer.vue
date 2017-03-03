@@ -21,7 +21,7 @@
           </div>
         </div>
 
-        <div class="passage-actionbar flex-zero">
+        <div class="bottombar flex-zero">
           <p class="text-center passage-instruction">{{ actionText }}</p>
           <button @click="actionPressed()" class="btn btn-lg btn-actionable btn-block" v-if="isPassageSelected">BEGIN</button>
         </div>
@@ -169,19 +169,14 @@ export default {
   left: 0;
   right: 0;
   .container {
+    padding-top: 5px;
     padding-left: 0px;
     padding-right: 0px;
   }
 }
-.passage-actionbar {
-  padding: 5px;
-  button {
-    letter-spacing: 1px;
-  }
-  .passage-instruction {
-    letter-spacing: 0.5px;
-    font-weight: bold;
-  }
+.passage-instruction {
+  letter-spacing: 0.5px;
+  font-weight: bold;
 }
 .center-wrapper {
   height: 100%;
@@ -209,9 +204,10 @@ export default {
   color: #ddd;
 }
 .selected-book {
-  font-size: 18px;
+  font-size: 16px;
   background-color: @color-back-raised;
   padding: 5px;
+  padding-bottom: 2px;
   border-radius: 1px;
 }
 .list-group-item.verse {
@@ -221,7 +217,7 @@ export default {
   color: white;
   padding-top: 1px;
   padding-bottom: 1px;
-  font-size: 18px;
+  font-size: 16px;
   margin-bottom: 2px !important;
 }
 .verse.selected, .verse.selected:hover {

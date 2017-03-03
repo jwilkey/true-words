@@ -45,7 +45,7 @@ body {
   padding-top: 55px;
 }
 h1 {
-  font-family: serif;
+  font-family: "Homizio";
   letter-spacing: 3px;
   padding: 15px;
   &:hover {

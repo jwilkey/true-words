@@ -40,20 +40,17 @@ export default {
 }
 .card-header {
   background-color: @color-callout;
-  font-family: serif;
   border-bottom: solid 1px @color-border;
   .card-title {
     color: @color-text-accent;
     border-right: solid 1px @color-border;
     padding: 10px;
-    font-family: 'Alegreya', serif;
     font-size: 18px;
     letter-spacing: 2px;
     margin-right: 15px;
   }
   .card-subtitle {
     color: #fff;
-    font-family: 'Alegreya', serif;
     font-size: 18px;
     padding: 10px;
   }

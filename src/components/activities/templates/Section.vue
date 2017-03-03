@@ -5,7 +5,7 @@
         {{ prefix }}{{ section.title }} <span v-if="section.title" class="word-range">{{ section.rangeDescription() }}</span>
       </div>
 
-      <input class="section-edit" type="text" placeholder="type here" :value="section.title" @blur="applySectionEdit(section, $event.target)" />
+      <input class="section-edit" type="text" placeholder="title" :value="section.title" @blur="applySectionEdit(section, $event.target)" />
 
       <div v-if="allowsSubSections" class="action">
         <div class="action-button" @click="deleteAction(section, index)">
@@ -19,7 +19,7 @@
         <subsection-vue :section="subsection" :allows-sub-sections="false" :delete="deleteSubsection" :prefix="'• '"></subsection-vue>
       </div>
       <div v-if="allowsSubSections" class="temp">
-        <input type="text" placeholder="type a supporting idea (optional)..." @change="addSubSection(section, $event.target)"  />
+        <input type="text" placeholder="supporting idea (optional)..." @change="addSubSection(section, $event.target)"  />
       </div>
     </div>
   </div>
@@ -80,7 +80,6 @@ export default {
 @import '../../../../static/less/colors.less';
 
 .section {
-  font-family: serif;
   .section-title {
     display: table;
     width: 100%;
@@ -98,6 +97,7 @@ export default {
   }
   .section-title.root {
     border-bottom: solid 1px @color-callout;
+    font-family: "Sinkin";
     font-size: 18px;
     text-shadow: 1px 1px @color-back-raised2;
     letter-spacing: 1px;

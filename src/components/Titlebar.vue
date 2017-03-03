@@ -70,8 +70,7 @@ export default {
 @import '../../static/less/common.less';
 
 .title {
-  font-family: serif;
-  letter-spacing: 3px;
+  font-family: 'SinkinThin';
 }
 .titlebar {
   height: @titlebar-height;

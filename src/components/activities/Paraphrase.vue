@@ -190,6 +190,7 @@ function determineParaphrasingRange (currentVerseContainer) {
     }
     #paraphrase-done {
       display: table-cell;
+      letter-spacing: 0.5px;
     }
   }
   &.collapsed {
@@ -219,7 +220,6 @@ function determineParaphrasingRange (currentVerseContainer) {
     color: white;
     background-color: @color-back-raised;
     padding: 5px;
-    font-size: 18px;
     transition: background-color 0.5s, padding 0.5s;
   }
   .verse:hover {
@@ -234,7 +234,6 @@ function determineParaphrasingRange (currentVerseContainer) {
     padding-right: 5px;
     margin-top: 5px;
     margin-bottom: 12px;
-    font-size: 16px;
     z-index: -10;
     &:empty {
       display: none;

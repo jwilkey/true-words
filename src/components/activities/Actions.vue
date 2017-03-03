@@ -331,8 +331,8 @@ export default {
     vertical-align: middle;
     width: 100%;
     font-size: 18px;
-    font-family: serif;
-    text-shadow: 1px 1px 2px @color-deemphasize;
+    font-family: 'Sinkin';
+    text-shadow: 1px 1px 2px @color-highlight-blue;
     padding: 8px;
     text-align: center;
     margin-bottom: 0px;
