@@ -70,9 +70,14 @@ export default {
 @import '../../static/less/common.less';
 
 .title {
-  font-family: 'SinkinThin';
+  font-family: 'HomizioLight';
+  font-size: 18px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
 }
 .titlebar {
+  display: table;
   height: @titlebar-height;
   position: fixed;
   top: 0;
@@ -115,7 +120,6 @@ export default {
       text-align: center;
       padding: 10px;
       min-width: 35px;
-      box-shadow: @shadow;
       cursor: pointer;
       letter-spacing: 1px;
     }
