@@ -15,18 +15,29 @@ function Persistor (persistenceStrategy) {
 }
 
 Persistor.prototype.isLoggedIn = function () {
-  if (this.usingDrive) {
+  if (this.usingDrive()) {
     return driveToken() !== undefined
   }
   return false
 }
 
-Persistor.prototype.refreshAuthorization = function (callback) {
-  if (this.usingDrive) {
-    drive.initAuth(callback)
+Persistor.prototype.isSessionExpired = function () {
+  if (this.usingDrive()) {
+    return drive.isSignedIn() && (driveToken() === undefined)
   }
-  // no persistenceStrategy
-  callback(undefined)
+  return false
+}
+
+Persistor.prototype.signOut = function () {
+  if (this.usingDrive()) {
+    drive.signOut()
+  }
+}
+
+Persistor.prototype.refreshAuthorization = function () {
+  if (this.usingDrive()) {
+    drive.signIn()
+  }
 }
 
 Persistor.prototype.refreshData = function (onFinish) {
@@ -69,17 +80,10 @@ Persistor.prototype.saveStudy = function (study) {
       mimeType: 'application/json',
       properties: { id: study.id, createdDate: study.date, start: start, end: end, bible: study.bible }
     }
-    var retryCount = 0
     var self = this
     return drive.upload(driveToken(), metadata, study)
     .done(function (file) {
       self.addDriveFileForStudy(file.id, study.id)
-    })
-    .fail(function (resp) {
-      if (resp.status === 401 && retryCount < 1) {
-        retryCount += 1
-        drive.signIn()
-      }
     })
   }
 
@@ -88,14 +92,7 @@ Persistor.prototype.saveStudy = function (study) {
 
 Persistor.prototype.updateStudy = function (study) {
   if (this.usingDrive()) {
-    var retryCount = 0
     return drive.update(driveToken(), this.drive.studies[study.id], study)
-    .fail(function (resp) {
-      if (resp.status === 401 && retryCount < 1) {
-        retryCount += 1
-        drive.signIn()
-      }
-    })
   }
 
   return $.when(console.log('Not logged in - requested to update study.'))
@@ -131,7 +128,10 @@ function driveToken () {
   try {
     var user = window.gapi.auth2.getAuthInstance().currentUser.get()
     var expiresIn = (user.getAuthResponse().expires_at - new Date().getTime()) / 1000 / 60
-    if (expiresIn < 5) {
+    if (expiresIn < 0) {
+      return undefined
+    }
+    if (expiresIn < 10) {
       user.reloadAuthResponse()
     }
     return user.getAuthResponse().access_token

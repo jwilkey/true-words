@@ -5,6 +5,9 @@ export default {
   setPersistenceStrategy (context, persistenceStrategy) {
     context.commit('SET_PERSISTANCE_STRATEGY', persistenceStrategy)
   },
+  setAuthenticated ({ commit }, isAuthenticated) {
+    commit('SET_IS_AUTHENTICATED', isAuthenticated)
+  },
   setUser ({ commit }, user) {
     commit('SET_USER', user)
   },

@@ -42,7 +42,6 @@ router.beforeEach((to, from, next) => {
       next('/')
       return
     }
-    store.getters.getPersistor.refreshAuthorization(function (result) { })
   }
   next()
 })

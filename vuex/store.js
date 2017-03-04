@@ -14,6 +14,7 @@ Vue.use(Vuex)
 export const state = {
   page: 'home',
   persistor: new Persistence.Persistor(),
+  isAuthenticated: false,
   user: {},
   currentBible: 'ESV',
   studies: [],
@@ -27,6 +28,9 @@ export const state = {
 export const mutations = {
   SET_PERSISTANCE_STRATEGY (state, persistenceStrategy) {
     state.persistor = new Persistence.Persistor(persistenceStrategy)
+  },
+  SET_IS_AUTHENTICATED (state, isAuthed) {
+    state.isAuthenticated = isAuthed
   },
   SET_USER (state, user) {
     state.user = user

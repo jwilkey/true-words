@@ -16,6 +16,9 @@ export default {
   signIn () {
     return window.gapi.auth2.getAuthInstance().signIn()
   },
+  signOut () {
+    return window.gapi.auth2.getAuthInstance().signOut()
+  },
   isSignedIn () {
     return window.gapi.auth2.getAuthInstance().isSignedIn.get()
   },

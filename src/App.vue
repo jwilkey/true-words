@@ -2,30 +2,37 @@
   <div>
     <router-view id="application"></router-view>
     <alert></alert>
+    <reauthorize-modal v-if="isSessionExpired" :on-reauth="didReauthorize"></reauthorize-modal>
   </div>
 </template>
 
 <script>
 import Alert from './components/Alert'
+import ReauthorizeModal from './components/ReauthorizeModal'
 import { mapGetters, mapActions } from 'vuex'
+
 export default {
   data () {
     return {
       alertCallback: undefined,
-      isAuthenticated: false,
-      isLoadingPersistedData: false
+      isLoadingPersistedData: false,
+      isSessionExpired: false,
+      sessionTimer: undefined
     }
   },
   computed: {
-    ...mapGetters(['getPersistor'])
+    ...mapGetters(['getPersistor', 'isAuthenticated'])
   },
   components: {
-    Alert
+    Alert, ReauthorizeModal
   },
   methods: {
-    ...mapActions(['setStudies', 'setUser']),
+    ...mapActions(['setStudies', 'setAuthenticated', 'setUser']),
+    didReauthorize () {
+      this.isSessionExpired = false
+    },
     signinCallback (isSignedIn) {
-      this.isAuthenticated = isSignedIn
+      this.setAuthenticated(isSignedIn)
       if (isSignedIn) {
         this.refreshPersistedData()
       } else {
@@ -42,6 +49,15 @@ export default {
         self.isLoadingPersistedData = false
       })
     }
+  },
+  mounted () {
+    var self = this
+    window.clearInterval(this.sessionTimer)
+    this.sessionTimer = window.setInterval(() => {
+      if (self.getPersistor.isSessionExpired()) {
+        self.isSessionExpired = true
+      }
+    }, 10 * 1000)
   }
 }
 </script>

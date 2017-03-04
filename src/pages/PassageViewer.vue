@@ -169,7 +169,7 @@ export default {
   left: 0;
   right: 0;
   .container {
-    padding-top: 5px;
+    padding-top: 10px;
     padding-left: 0px;
     padding-right: 0px;
   }
