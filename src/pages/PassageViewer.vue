@@ -6,18 +6,21 @@
         <button type="button" @click="bookNavSelected()" class="btn btn-default off">{{ bible.bookName(bookIdentifier) }} {{ chapter }}</button>
         <button type="button" @click="chapterForward()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
       </div>
+      <div slot="right">
+        <span class="verses-style glyphicon glyphicon-align-center" @click="toggleTextStyle()"></span>
+      </div>
     </titlebar>
 
     <div id="passage-viewer">
       <div class="flex-column vfull">
         <div class="flex-one scrolly">
           <div class="container">
-            <ul class="list-group">
+            <div class="verses">
               <h1 class="text-center muted" v-if="!verses">Loading...</h1>
-              <li v-for="verse in verses" class="list-group-item verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
+              <div v-for="verse in verses" class="verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
                 <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
-              </li>
-            </ul>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -91,6 +94,11 @@ export default {
     },
     goBack () {
       this.$router.back()
+    },
+    toggleTextStyle () {
+      $('.verses').toggleClass('inline')
+      $('.verses-style').toggleClass('glyphicon-align-center')
+      $('.verses-style').toggleClass('glyphicon-list')
     },
     isSelected (verse) {
       if (this.bookIdentifier && this.chapter) {
@@ -169,9 +177,7 @@ export default {
   left: 0;
   right: 0;
   .container {
-    padding-top: 10px;
-    padding-left: 0px;
-    padding-right: 0px;
+    padding: 14px 0px 50px 0px;
   }
 }
 .passage-instruction {
@@ -210,27 +216,48 @@ export default {
   padding-bottom: 2px;
   border-radius: 1px;
 }
-.list-group-item.verse {
-  background-color: @color-back-raised;
-}
-.verse {
-  color: white;
-  padding-top: 1px;
-  padding-bottom: 1px;
-  font-size: 16px;
-  margin-bottom: 2px !important;
-}
-.verse.selected, .verse.selected:hover {
-  background-color: @color-highlight-blue;
-  color: @color-back;
-  .verse-number {
-    color: @color-callout-light;
+.verses {
+  .verse {
+    background-color: @color-back-raised;
+    color: white;
+    padding: 1px 10px 1px 10px;
+    font-size: 18px;
+    margin-bottom: 2px;
+    transition: background-color 0.3s;
   }
-}
-.verse:hover {
-  background-color: @color-back-raised2;
-}
-.verse-number {
-  color: #999;
+  .verse.selected, .verse.selected:hover {
+    background-color: @color-highlight-blue;
+    color: @color-back;
+    .verse-number {
+      color: @color-callout-light;
+    }
+  }
+  .verse:hover {
+    background-color: @color-back-raised2;
+  }
+  .verse-number {
+    color: #999;
+  }
+  &.inline {
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: @color-back;
+    .verse {
+      display: inline;
+      background-color: transparent;
+      padding: 0px 7px 0px 0px;
+      margin-bottom: 0px;
+      &.selected, &.selected:hover {
+        color: @color-highlight-blue;
+        background-color: transparent;
+        .verse-number {
+          color: @color-deemphasize;
+        }
+      }
+    }
+    .verse-number {
+      font-size: 14px;
+    }
+  }
 }
 </style>

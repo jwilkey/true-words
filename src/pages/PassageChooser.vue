@@ -128,10 +128,12 @@ export default {
 }
 .book-name {
   background-color: @color-back-raised;
-  padding: 5px;
+  padding: 7px 5px 7px 5px;
   text-align: center;
   border-radius: 2px;
   box-shadow: @shadow;
+  font-size: 18px;
+  cursor: pointer;
 }
 .book-name:hover {
   background-color: @color-back-raised2;
@@ -139,8 +141,9 @@ export default {
 .selected-book {
   font-size: 18px;
   background-color: @color-back-raised;
-  padding: 5px;
+  padding: 7px 5px 7px 5px;
   border-radius: 1px;
+  letter-spacing: 2px;
 }
 .chapter {
   display: inline-block;
@@ -169,6 +172,7 @@ export default {
   text-align: center;
   font-size: 18px;
   box-shadow: @shadow;
+  cursor: pointer;
 }
 .chapter-label:hover {
   background-color: @color-back-raised2;

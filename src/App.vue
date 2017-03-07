@@ -44,6 +44,7 @@ export default {
       var self = this
       this.isLoadingPersistedData = true
       this.getPersistor.refreshData(function (studies, user) {
+        console.log(studies.length + ' studies loaded')
         self.setStudies(studies)
         self.setUser(user)
         self.isLoadingPersistedData = false
