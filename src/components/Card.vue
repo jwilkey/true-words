@@ -39,10 +39,10 @@ export default {
   }
 }
 .card-header {
-  background-color: @color-callout;
   border-bottom: solid 1px @color-border;
+  background-color: @color-callout;
   .card-title {
-    color: @color-text-accent;
+    color: @color-text;
     border-right: solid 1px @color-border;
     padding: 10px;
     font-size: 18px;
@@ -50,7 +50,7 @@ export default {
     margin-right: 15px;
   }
   .card-subtitle {
-    color: #fff;
+    color: @color-text;
     font-size: 18px;
     padding: 10px;
   }

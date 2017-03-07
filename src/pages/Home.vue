@@ -24,8 +24,15 @@
               </div>
             </div>
           </div>
+          <div v-if="getStudies.length <= 0" class="muted flex-row">
+            <div class="flex-one">
+              <i>No studies found</i>
+            </div>
+            <div class="flex-zero">
+              <a class="refresh-studies" @click="refreshData()">reload</a>
+            </div>
+          </div>
         </div>
-        <div v-if="shouldShowStudiesEmptyState" class="muted"><i>You have not begun any studies</i></div>
         <div v-if="isSignedIn === false" class="row">
           <div class="col-md-6">
             <google-auth class="col-xs-12"></google-auth>
@@ -61,9 +68,6 @@ export default {
   },
   computed: {
     ...mapGetters(['getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
-    shouldShowStudiesEmptyState: function () {
-      return this.loaded && this.getPersistor.isLoggedIn() && this.getStudies.length === 0
-    },
     username: function () {
       return this.getUser ? this.getUser.name : undefined
     },
@@ -164,6 +168,10 @@ body {
   p {
     margin: 0px;
   }
+}
+.refresh-studies {
+  color: @color-highlight-blue;
+  cursor: pointer;
 }
 .feedback {
   padding-left: 10px;

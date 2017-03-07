@@ -2,7 +2,7 @@
   <div class="">
     <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
-    <div class="passage-label">
+    <div class="passage-label brand-font">
       {{ getCurrentStudy.passage.description() }}
     </div>
 

@@ -73,6 +73,7 @@ export default {
       padding: 20px;
       text-align: center;
       max-width: 400px;
+      margin: auto;
       border-radius: 4px;
       box-shadow: @shadow-long;
     }
