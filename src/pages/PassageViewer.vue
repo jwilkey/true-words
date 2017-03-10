@@ -7,20 +7,25 @@
         <button type="button" @click="chapterForward()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
       </div>
       <div slot="right">
-        <span class="verses-style glyphicon glyphicon-align-center" @click="toggleTextStyle()"></span>
+        <span class="verses-style glyphicon" :class="readingModeButtonClass" @click="toggleTextStyle()"></span>
       </div>
     </titlebar>
 
     <div id="passage-viewer">
       <div class="flex-column vfull">
-        <div class="flex-one scrolly">
+        <div class="flex-one scrolly viewer">
           <div class="container">
-            <div class="verses">
+            <div class="verses" :class="{loading: loading, inline: readingMode === 'inline'}">
               <h1 class="text-center muted" v-if="!verses">Loading...</h1>
               <div v-for="verse in verses" class="verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
                 <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
               </div>
             </div>
+          </div>
+
+          <div class="navigation">
+            <button @click="chapterBack()" class="btn btn-navigate">PREV</button>
+            <button @click="chapterForward()" class="btn btn-navigate">NEXT</button>
           </div>
         </div>
 
@@ -49,8 +54,13 @@ export default {
       chapter: undefined,
       verses: undefined,
       startingVerse: undefined,
-      endingVerse: undefined
+      endingVerse: undefined,
+      readingMode: 'list',
+      loading: false
     }
+  },
+  components: {
+    Titlebar
   },
   computed: {
     ...mapGetters(['getCurrentBible']),
@@ -74,31 +84,38 @@ export default {
         })
         return a
       }
+    },
+    readingModeButtonClass: function () {
+      return this.readingMode === 'list' ? ['glyphicon-align-center'] : ['glyphicon-list']
     }
   },
-  props: [],
-  components: {
-    Titlebar
-  },
-  mounted () {
-    this.bookIdentifier = this.$route.query.book || 'MATTHEW'
-    this.chapter = parseInt(this.$route.query.chapter) || 1
+  watch: {
+    chapter: function (value) {
+      if (this.bookIdentifier !== undefined && value > 0) {
+        this.loadVerses()
+      }
+    },
+    bookIdentifier: function (value) {
+      if (this.chapter !== undefined) {
+        this.loadVerses()
+      }
+    }
   },
   methods: {
     loadVerses () {
       var self = this
+      this.loading = true
       bibleLoader.load(this.bookIdentifier, this.chapter, this.getCurrentBible, function (json) {
         self.verses = json
-        $('html, body').animate({ scrollTop: 0 }, 'slow')
+        self.loading = false
+        $('.viewer').animate({ scrollTop: 0 }, 'slow')
       })
     },
     goBack () {
       this.$router.back()
     },
     toggleTextStyle () {
-      $('.verses').toggleClass('inline')
-      $('.verses-style').toggleClass('glyphicon-align-center')
-      $('.verses-style').toggleClass('glyphicon-list')
+      this.readingMode = this.readingMode === 'list' ? 'inline' : 'list'
     },
     isSelected (verse) {
       if (this.bookIdentifier && this.chapter) {
@@ -150,17 +167,9 @@ export default {
     },
     ...mapActions(['createNewStudy'])
   },
-  watch: {
-    chapter: function (value) {
-      if (this.bookIdentifier !== undefined && value > 0) {
-        this.loadVerses()
-      }
-    },
-    bookIdentifier: function (value) {
-      if (this.chapter !== undefined) {
-        this.loadVerses()
-      }
-    }
+  mounted () {
+    this.bookIdentifier = this.$route.query.book || 'MATTHEW'
+    this.chapter = parseInt(this.$route.query.chapter) || 1
   }
 }
 </script>
@@ -176,8 +185,27 @@ export default {
   bottom: 0;
   left: 0;
   right: 0;
-  .container {
+  .viewer {
     padding: 14px 0px 50px 0px;
+    .container {
+      padding: 2px;
+    }
+  }
+  .navigation {
+    text-align: center;
+    padding-top: 10px;
+    .btn-navigate {
+      background-color: transparent;
+      color: @color-back-raised2;
+      border: none;
+      border-radius: 0px;
+      &:hover {
+        color: @color-deemphasize;
+      }
+      &:first-child {
+        border-right: solid 1px @color-back-raised2;
+      }
+    }
   }
 }
 .passage-instruction {
@@ -217,6 +245,10 @@ export default {
   border-radius: 1px;
 }
 .verses {
+  transition: opacity 0.5s;
+  &.loading {
+    opacity: 0.5;
+  }
   .verse {
     background-color: @color-back-raised;
     color: white;
