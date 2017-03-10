@@ -24,12 +24,20 @@ export default {
   },
   fetchFiles (authToken, query) {
     var url = api('/drive/v3/files?spaces=appDataFolder&fields=files(id,appProperties,properties,modifiedTime)&q=' + query)
-    return $.ajax({
+    var requestConfig = {
       type: 'GET',
       url: url,
       beforeSend: function (request) {
         request.setRequestHeader('Authorization', 'Bearer ' + authToken)
       }
+    }
+    return $.ajax(requestConfig)
+    .then(function (data) {
+      if (data.files && data.files.length === 0) {
+        // sometimes Google returns a false empty list
+        return $.ajax(requestConfig)
+      }
+      return data
     })
   },
   upload (authToken, metadata, jsonContent) {
