@@ -13,6 +13,7 @@ import PassageChooser from './pages/PassageChooser'
 import PassageViewer from './pages/PassageViewer'
 import Activities from './pages/Activities'
 import Activity from './pages/Activity'
+import Reader from './components/prepare/Reader'
 
 var $ = require('jquery')
 window.jQuery = window.$ = $
@@ -29,6 +30,7 @@ const routes = [
   { path: '/viewpassage', component: PassageViewer, name: 'PassageViewer' },
   { path: '/activities', component: Activities, name: 'Activities' },
   { path: '/activity', component: Activity, name: 'Activity' },
+  { path: '/reader', component: Reader, name: 'Reader' },
   { path: '*', redirect: '/', name: 'RedirectHome' }
 ]
 
@@ -37,7 +39,7 @@ const router = new VueRouter({
 })
 
 router.beforeEach((to, from, next) => {
-  if (['/activity', '/activities'].indexOf(to.path) !== -1) {
+  if (['/activity', '/activities', '/reader'].indexOf(to.path) !== -1) {
     if (store.getters.getCurrentStudy === undefined) {
       next('/')
       return

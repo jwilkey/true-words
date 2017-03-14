@@ -12,6 +12,15 @@
         <hr />
       </div>
 
+      <div class="stage-heading"><span class="stage-title">PREPARE</span></div>
+      <table>
+        <tbody>
+          <tr @click="goToReaderView()">
+            <td>Read the text</td>
+          </tr>
+        </tbody>
+      </table>
+
       <div class="stage-heading"><span class="stage-title">OBSERVE</span><span class="stage-subtitle">What does it say?</span></div>
       <table>
         <tbody>
@@ -68,6 +77,9 @@ export default {
     ...mapGetters(['getCurrentStudy', 'getPersistor'])
   },
   methods: {
+    goToReaderView () {
+      this.$router.push('/reader')
+    },
     activitySelected: function (type) {
       if (this.isEnabled(type)) {
         this.setCurrentActivity(type)
