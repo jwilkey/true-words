@@ -1,6 +1,10 @@
 <template>
-  <div class="container help-content">
+  <div class="help-content">
     <div class="clearfix">
+      <div class="video-help embed-responsive embed-responsive-16by9">
+        <iframe src="https://www.youtube.com/embed/KNV93v4ey20?rel=0" frameborder="0" allowfullscreen></iframe>
+      </div>
+
       <p>Place words from the passage in 1 of 3 buckets/categories: People, Places, or Things.</p>
       <div class="help-buckets">
         <div class="third back-orange">PEOPLE</div>
@@ -33,6 +37,10 @@ export default {
 
 <style lang="less" scoped>
 @import '../../../static/less/colors.less';
+
+.video-help {
+  margin-bottom: 20px;
+}
 .help-buckets {
   margin-top: 10px;
   margin-bottom: 10px;

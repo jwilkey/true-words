@@ -26,7 +26,7 @@ function ActivityManager () {
   this.interpretationActivities = [ActivityType.Outline, ActivityType.Paraphrase] // [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms]
   this.applicationActivities = [ActivityType.Space, ActivityType.Stewardship]
   this.activities = [
-    new Activity('PPT', 'observation', 'People, Places & Things', 'Nouns', true),
+    new Activity('PPT', 'observation', 'People, Places & Things', 'People-Places-Things', true),
     new Activity('ACTIONS', 'observation', 'Actions', 'Actions', true),
     new Activity('CAUSEEFFECT', 'observation', 'Cause & Effect', 'Cause & Effect', false),
 
