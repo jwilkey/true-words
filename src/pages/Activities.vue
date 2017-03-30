@@ -18,6 +18,9 @@
           <tr @click="goToReaderView()">
             <td>Read the text</td>
           </tr>
+          <tr @click="goToHymnView()">
+            <td>Hymns</td>
+          </tr>
         </tbody>
       </table>
 
@@ -79,6 +82,10 @@ export default {
   methods: {
     goToReaderView () {
       this.$router.push('/reader')
+    },
+    goToHymnView () {
+      var passage = encodeURIComponent(this.getCurrentStudy.passage.description())
+      this.$router.push(`/hymns?passage=${passage}`)
     },
     activitySelected: function (type) {
       if (this.isEnabled(type)) {

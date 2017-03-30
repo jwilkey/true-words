@@ -14,6 +14,7 @@ import PassageViewer from './pages/PassageViewer'
 import Activities from './pages/Activities'
 import Activity from './pages/Activity'
 import Reader from './components/prepare/Reader'
+import Hymns from './components/prepare/Hymns'
 
 var $ = require('jquery')
 window.jQuery = window.$ = $
@@ -31,6 +32,7 @@ const routes = [
   { path: '/activities', component: Activities, name: 'Activities' },
   { path: '/activity', component: Activity, name: 'Activity' },
   { path: '/reader', component: Reader, name: 'Reader' },
+  { path: '/hymns', component: Hymns, name: 'Hymns' },
   { path: '*', redirect: '/', name: 'RedirectHome' }
 ]
 
