@@ -80,7 +80,7 @@ export default {
   mounted () {
     this.passage = this.$route.query.passage
     const self = this
-    $.get(`http://www.hymnary.org/api/scripture?reference=${this.passage}`)
+    $.get(`https://www.hymnary.org/api/scripture?reference=${this.passage}`)
     .done(function (data) {
       self.hymns = data
     })
