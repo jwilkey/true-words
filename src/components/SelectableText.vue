@@ -1,26 +1,32 @@
 <template>
   <div id="content" class="container">
-    <div class="row">
-      <div v-if="words" id="text" class="col-sm-12">
+    <div class="row clearfix">
+      <div v-if="words" id="text" class="col-sm-12 clearfix">
         <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" :data-id="wordId(word)" @click="selected($event.target)" class="word">{{ word.text }}</span>
       </div>
     </div>
+    <touchpad v-if="selectedElement" id="touchpad" :on-move="onTouchpadMove" :on-tap="onTouchpadTap" :on-double-tap="onTouchpadDoubleTap"></touchpad>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import $ from 'jquery'
+import Touchpad from './common/Touchpad'
 
 export default {
   data () {
     return {
+      allowsMultipleSelection: true,
       selectedWordIndex: undefined,
       selectionStartIndex: undefined,
       selectionEndIndex: undefined,
+      selectedElement: undefined,
+      currentSelectionIndex: 0,
       initialSelection: undefined
     }
   },
+  components: { Touchpad },
   computed: {
     ...mapGetters({words: 'getCurrentWords'})
   },
@@ -30,6 +36,19 @@ export default {
       return word.verse + '-' + word.index
     },
     selected (element) {
+      this.allowsMultipleSelection ? this.handleMultiSelection(element) : this.handleSingleSelection(element)
+    },
+    handleMultiSelection (element) {
+      if (element.dataset.selection) {
+        var $selection = $(`.word[data-selection="${element.dataset.selection}"]`)
+        this.unfill($selection)
+        $selection.addClass('selected')
+      } else {
+        $(element).addClass('selected')
+      }
+      this.selectedElement = element
+    },
+    handleSingleSelection (element) {
       var wordIndex = parseInt(element.id.substring(5))
       if (this.selectedWordIndex !== undefined) {
         if (this.selectionStartIndex && this.selectionEndIndex) {
@@ -50,16 +69,20 @@ export default {
         this.delegate.onSelect($(element).text(), $(element).data('index'), attributes)
       }
     },
+    registerSelection () {
+      this.currentSelectionIndex += 1
+      $('.selected').attr('data-selection', this.currentSelectionIndex)
+    },
     setFilled (words) {
       var self = this
       words.forEach(function (word) {
-        $('.word[data-id=' + self.wordId(word) + ']').addClass('filled')
+        self.fill($('.word[data-id=' + self.wordId(word) + ']'))
       })
     },
     clearFill (words) {
       var self = this
       words.forEach(function (word) {
-        $('.word[data-id=' + self.wordId(word) + ']').removeClass('filled')
+        self.unfill($('.word[data-id=' + self.wordId(word) + ']'))
       })
     },
     highlightWords (words) {
@@ -129,8 +152,18 @@ export default {
         this.resetSelectedIndexes()
       }
     },
+    fill ($elements) {
+      $elements.addClass('filled')
+      if ($elements.length > 1) {
+        $elements.first().addClass('fill-start')
+        $elements.last().addClass('fill-end')
+      }
+    },
+    unfill ($elements) {
+      $elements.removeClass('filled fill-start fill-end')
+    },
     fillSelection (maintainSelection) {
-      $('.selected').addClass('filled')
+      this.fill($('.selected'))
       if (maintainSelection === undefined || !maintainSelection) {
         $('.selected').removeClass('selected')
         this.resetSelectedIndexes()
@@ -140,39 +173,77 @@ export default {
       $('.word').removeClass('highlighted')
     },
     clearSelection () {
-      $('.word').removeClass('selected start end')
+      $('.selected').removeAttr('data-selection')
+      $('.selected').removeClass('selected start end')
       this.resetSelectedIndexes()
     },
     reset () {
-      $('.word').removeClass('highlighted filled selected start end')
+      $('.word').removeClass('highlighted selected start end')
+      this.unfill($('.word'))
       this.resetSelectedIndexes()
     },
     resetSelectedIndexes () {
       this.selectedWordIndex = undefined
       this.selectionStartIndex = undefined
       this.selectionEndIndex = undefined
+    },
+    onTouchpadMove (direction) {
+      switch (direction) {
+        case 'RIGHT':
+          var $nextWord = $('.selected').next('.word')
+          if (!$nextWord.hasClass('filled')) {
+            $nextWord.addClass('selected')
+          }
+          break
+        case 'LEFT':
+          $('.selected').last().removeClass('selected')
+          break
+        case 'UP':
+          var $prevWord = $('.selected').prev('.word')
+          if (!$prevWord.hasClass('filled')) {
+            $prevWord.addClass('selected')
+          }
+          break
+        case 'DOWN':
+          $('.selected').first().removeClass('selected')
+          break
+        default: return
+      }
+    },
+    onTouchpadTap () {
+      this.registerSelection()
+      this.fillSelection()
+      this.selectedElement = undefined
+    },
+    onTouchpadDoubleTap () {
+      this.clearSelection()
+      this.selectedElement = undefined
     }
-  },
-  mounted () {
-    $('#content').on('touchstart mousedown', this.onTouchStart)
-    $('#content').on('touchmove mousemove', this.onTouchMove)
-    $('#content').on('touchend touchleave mouseup mouseleave', this.onTouchEnd)
   }
 }
-
-// function getPoint (e) {
-//   return {
-//     x: e.pageX ? e.pageX : e.originalEvent.pageX,
-//     y: e.pageY ? e.pageY : e.originalEvent.pageY
-//   }
-// }
-// function getElement (point) {
-//   return document.elementFromPoint(point.x, point.y)
-// }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
 @import '../../static/less/words.less';
+@import '../../static/less/flex.less';
+
+#content {
+  position: relative;
+  height: 100%;
+}
+.row {
+  height: 100%;
+}
+#text {
+  height: 100%;
+}
+#touchpad {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 1px 0px 10px @color-highlight-blue;
+}
 </style>

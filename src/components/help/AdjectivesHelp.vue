@@ -1,0 +1,100 @@
+<template>
+  <div class="container">
+    <div>
+      <strong>What is <i>described</i> in this passage?</strong>
+      <br />
+      Select adjectives or descriptive phrases to better understand the details of the text.
+      <hr />
+    </div>
+    <div class="actions-help-selectable clearfix">
+      <span :key="index" v-for="(word, index) in words" class="word" :class="{ selected: isSelected(index), start: isStart(index), end: isEnd(index) }">{{ word }}</span>
+    </div>
+    <div>
+      When you are finished selective adjectives, press the 'FINISHED' button.
+    </div>
+    <div>
+      Once you are finished selecting adjectives, you will be asked to identify who/what is being described for each word.
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data () {
+    return {
+      text: 'Tap a word to Select it. Tap another word to Select a phrase.',
+      words: ['Tap', 'a', 'word', 'to', 'Select', 'it.', 'Tap', 'another', 'word', 'to', 'Select', 'a', 'phrase', '.', 'Once', 'you', 'have', 'a', 'descriptive', 'word/phrase', 'selected', 'press', 'the', 'ADD', 'button']
+    }
+  },
+  components: { },
+  props: [],
+  computed: { },
+  methods: {
+    isSelected: function (index) {
+      return [4, 10, 11, 12].indexOf(index) !== -1
+    },
+    isStart: function (index) {
+      return index === 10
+    },
+    isEnd: function (index) {
+      return index === 12
+    }
+  }
+}
+</script>
+
+<style lang="less" scoped>
+@import '../../../static/less/colors.less';
+.word {
+  float: left;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  padding: 2px;
+  padding-left: 1px;
+  padding-right: 1px;
+  border: solid 1px transparent;
+  cursor: pointer;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+.word.selected {
+  background-color: @color-highlight-blue;
+  color: @color-back;
+  word-wrap: normal;
+  padding: 2px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-radius: 0px;
+  border-right: solid 1px @color-back-raised2;
+  border-left: solid 1px @color-back-raised2;
+  border-top: solid 1px @color-back-raised2;
+  border-bottom: solid 1px @color-back-raised2;
+  &.start {
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+    border-left: solid 1px @color-back-raised2;
+  }
+  &.end {
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+    border-right: solid 1px @color-back-raised2;
+  }
+}
+.help-example {
+  color: @color-help-secondary;
+  font-style: italic;
+}
+.actions-help-selectable {
+  background-color: white;
+  padding: 5px;
+  border-radius: 4px;
+  box-shadow: 1px 1px 1px @color-deemphasize;
+  margin-left: -5px;
+  margin-right: -5px;
+  margin-bottom: 8px;
+}
+</style>

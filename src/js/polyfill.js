@@ -16,6 +16,21 @@ function isTouchDevice () {
   return 'ontouchstart' in window || ieCheck
 }
 
+export function isEventSupported (eventName) {
+  var TAGNAMES = {
+    'select': 'input', 'change': 'input', 'submit': 'form', 'reset': 'form', 'error': 'img', 'load': 'img', 'abort': 'img'
+  }
+  var el = document.createElement(TAGNAMES[eventName] || 'div')
+  eventName = 'on' + eventName
+  var isSupported = (eventName in el)
+  if (!isSupported) {
+    el.setAttribute(eventName, 'return')
+    isSupported = typeof el[eventName] === 'function'
+  }
+  el = null
+  return isSupported
+}
+
 function arrayLast (arr) {
   if (arr !== undefined && arr.length > 0) {
     return arr[arr.length - 1]

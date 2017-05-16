@@ -229,13 +229,9 @@ export default {
 
 .btn-default {
   background-color: @color-back-raised;
-  color: #fff;
+  color: @color-text;
   border-color: @color-back;
   box-shadow: @shadow;
-}
-.instruction-label {
-  text-align: center;
-  color: #ddd;
 }
 .selected-book {
   font-size: 16px;
@@ -251,7 +247,7 @@ export default {
   }
   .verse {
     background-color: @color-back-raised;
-    color: white;
+    color: @color-text;
     padding: 1px 10px 1px 10px;
     font-size: 18px;
     margin-bottom: 2px;

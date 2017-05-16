@@ -1,6 +1,7 @@
 var ActivityType = {
   PeoplePlacesThings: 'PPT',
   Actions: 'ACTIONS',
+  Adjectives: 'ADJECTIVES',
   CauseEffect: 'CAUSEEFFECT',
 
   Outline: 'OUTLINE',
@@ -22,12 +23,13 @@ function Activity (id, category, title, subtitle, enabled) {
 }
 
 function ActivityManager () {
-  this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions] // , ActivityType.CauseEffect
+  this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions, ActivityType.Adjectives] // , ActivityType.CauseEffect
   this.interpretationActivities = [ActivityType.Outline, ActivityType.Paraphrase] // [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms]
   this.applicationActivities = [ActivityType.Space, ActivityType.Stewardship]
   this.activities = [
     new Activity('PPT', 'observation', 'People, Places & Things', 'People-Places-Things', true),
     new Activity('ACTIONS', 'observation', 'Actions', 'Actions', true),
+    new Activity('ADJECTIVES', 'observation', 'Adjectives', 'Adjectives', true),
     new Activity('CAUSEEFFECT', 'observation', 'Cause & Effect', 'Cause & Effect', false),
 
     new Activity('KEYWORDS', 'interpretation', 'Key Words', 'Key Words', false),
