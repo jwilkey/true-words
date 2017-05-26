@@ -295,4 +295,4 @@ function uuid () {
   })
 }
 
-export { WordSelection, FreeText, Action, Section, QuestionAnswer }
+export { WordSelection, FreeText, Action, Adjective, Section, QuestionAnswer }

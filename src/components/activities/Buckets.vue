@@ -168,16 +168,6 @@ export default {
         $('.indicator').removeClass('active')
       })
     },
-    bucketClass (bucketIndex) {
-      if (bucketIndex === 0) {
-        return 'orange'
-      } else if (bucketIndex === 1) {
-        return 'purple'
-      } else if (bucketIndex === 2) {
-        return 'red'
-      }
-      return ''
-    },
     joinLeft () {
       $('.current:first').prev().addClass('current')
     },
@@ -193,6 +183,16 @@ export default {
         }
       }).get()
       return new WordSelection(selectedWords)
+    },
+    bucketClass (bucketIndex) {
+      if (bucketIndex === 0) {
+        return 'orange'
+      } else if (bucketIndex === 1) {
+        return 'purple'
+      } else if (bucketIndex === 2) {
+        return 'red'
+      }
+      return ''
     },
     assignToBucket (bucketIndex) {
       var self = this

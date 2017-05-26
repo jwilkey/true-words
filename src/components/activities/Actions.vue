@@ -276,7 +276,7 @@ export default {
       if (this.data && this.$refs.selectableText) {
         var self = this
         this.data.collection.items.forEach(function (actionEntry) {
-          self.$refs.selectableText.setFilled(actionEntry.action.words)
+          self.$refs.selectableText.setSelected(actionEntry.action.words)
         })
       }
     },

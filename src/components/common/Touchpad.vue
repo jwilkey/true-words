@@ -1,6 +1,5 @@
 <template>
   <div class="touchpad">
-    <p>{{ totalDeltaX }} - {{ totalDeltaY }} ___ {{ tapCount }}</p>
   </div>
 </template>
 
