@@ -37,7 +37,6 @@ export default {
       mode: 'start',
       selection: undefined,
       selectionDelegate: {
-        onSelect: undefined,
         onFocus: undefined,
         onChange: undefined
       },
@@ -80,9 +79,6 @@ export default {
     },
     selectedWords () {
       return this.$refs.selectableText.selectedWords()
-    },
-    onSelect (word, index, attributes) {
-      this.selection = this.selectedWords()
     },
     onSelectionChange (wordSelection, operation) {
       if (this.isMode('detailing')) {
@@ -153,7 +149,6 @@ export default {
     }
   },
   mounted () {
-    this.selectionDelegate.onSelect = this.onSelect
     this.selectionDelegate.onChange = this.onSelectionChange
     this.selectionDelegate.onFocus = this.onSelectionFocus
     this.setupData()
@@ -202,9 +197,6 @@ export default {
     text-shadow: 1px 0px 1px black;
     padding: 7px 10px;
     cursor: pointer;
-    .hint {
-      font-size: 14px;
-    }
     &:hover {
       background-color: @color-actionable-focus;
     }
@@ -220,23 +212,6 @@ export default {
   padding: 2px 4px;
   border-radius: 4px;
   text-shadow: 1px 0px 1px black;
-}
-
-.actionable-panel {
-  display: table;
-  width: 100%;
-  min-height: 80px;
-  background-color: @color-actionable;
-  background: linear-gradient(@color-actionable-focus 0px, @color-actionable 20px, @color-actionable);
-  .actionable-label {
-    display: table-cell;
-    width: 100%;
-    vertical-align: middle;
-    text-align: center;
-    font-size: 24px;
-    text-shadow: 1px 0px 1px rgba(50,50,50,0.8);
-    letter-spacing: 1px;
-  }
 }
 
 </style>

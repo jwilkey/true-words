@@ -88,3 +88,19 @@ export function arrayRemove (arr, item) {
     arr.splice(index, 1)
   }
 }
+
+export function ConditionalArray (condition, value) {
+  this.items = []
+  this.and(condition, value)
+}
+
+ConditionalArray.prototype.and = function (condition, value) {
+  if (condition) {
+    this.items.push(value)
+  }
+  return this
+}
+
+ConditionalArray.prototype.toArray = function () {
+  return this.items
+}
