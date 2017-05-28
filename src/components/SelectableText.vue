@@ -40,9 +40,9 @@ export default {
     wordId (word) {
       return word.verse + '-' + word.index
     },
-    broadcastChange (wordSelection) {
+    broadcastChange (wordSelection, operation) {
       if (this.delegate && this.delegate.onChange) {
-        this.delegate.onChange(wordSelection)
+        this.delegate.onChange(wordSelection, operation)
       }
     },
     focused (element) {
@@ -158,18 +158,22 @@ export default {
         default: return
       }
     },
-    onTouchpadTap () {
+    focusedWords () {
       const self = this
-      var words = $('#selectable-text .word.focused').toArray().map(el => self.words[el.dataset.index])
+      return $('#selectable-text .word.focused').toArray().map(el => self.words[el.dataset.index])
+    },
+    onTouchpadTap () {
+      var words = this.focusedWords()
       this.registerSelection()
       this.fillSelection()
       this.focusedElement = undefined
-      this.broadcastChange(new WordSelection(words))
+      this.broadcastChange(new WordSelection(words), 'SELECT')
     },
     onTouchpadDoubleTap () {
+      var words = this.focusedWords()
       this.clearSelection()
       this.focusedElement = undefined
-      this.broadcastChange()
+      this.broadcastChange(new WordSelection(words), 'DESELECT')
     }
   }
 }

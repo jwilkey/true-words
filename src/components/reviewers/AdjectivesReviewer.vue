@@ -2,7 +2,10 @@
   <div v-if="data !== undefined" class="flex-v">
     <div class="flex-1">
       <div class="container" :class="{collapsed: hidePairings}">
-        <button class="hide-show" @click="hidePairings = !hidePairings"><i class="fa fa-eye-slash"></i></button>
+        <button class="hide-show" @click="hidePairings = !hidePairings">
+          <i v-if="hidePairings" class="fa fa-eye"></i>
+          <i v-else class="fa fa-eye-slash"></i>
+        </button>
         <div v-for="adjective in data.collection.items" class="adjective-item">
           <span class="adjective">{{ adjectiveText(adjective.wordSelection) }}</span>
           <span v-if="adjective.target" class="target">{{ targetText(adjective.target) }}</span>

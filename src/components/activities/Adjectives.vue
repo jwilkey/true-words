@@ -6,7 +6,7 @@
 
     <div class="flex-zero bottombar">
       <p v-if="isMode('start')" class="instruction">Select an adjective</p>
-      <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn btn-primary"><span class="glyphicon glyphicon-question-sign"></span> How to select...</button>
+      <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn btn-primary"><i class="fa fa-question-circle-o"></i> How to select...</button>
       <button v-if="isMode('selected')" @click="nextPressed" class="btn btn-actionable btn-block">NEXT</button>
 
       <div v-if="isMode('detailing')">
@@ -84,13 +84,21 @@ export default {
     onSelect (word, index, attributes) {
       this.selection = this.selectedWords()
     },
-    onSelectionChange (wordSelection) {
+    onSelectionChange (wordSelection, operation) {
       if (this.isMode('detailing')) {
         this.$refs.selectableText.clearFill(wordSelection.words)
         this.adjectives[this.detailingAdjectiveIndex].target = wordSelection
         this.highlighCurrentAdjective()
-      } else {
+      } else if (operation === 'SELECT') {
         this.data.collection.items.push(new Adjective(wordSelection))
+      } else if (operation === 'DESELECT') {
+        this.adjectives.every((adj, i) => {
+          if (adj.wordSelection.equals(wordSelection)) {
+            this.data.collection.items.splice(i, 1)
+            return false
+          }
+          return true
+        })
       }
     },
     onSelectionFocus (isFocused) {

@@ -190,6 +190,10 @@ WordSelection.prototype.fromJson = function (json) {
   return undefined
 }
 
+WordSelection.prototype.equals = function (other) {
+  return JSON.stringify(this) === JSON.stringify(other)
+}
+
 WordSelection.prototype.matches = function (query) {
   if (query.hasOwnProperty('text')) {
     return this.words.find(function (w) {
