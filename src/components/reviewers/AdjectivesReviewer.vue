@@ -6,8 +6,10 @@
           <i v-if="hidePairings" class="fa fa-eye"></i>
           <i v-else class="fa fa-eye-slash"></i>
         </button>
+        <div class="spacer"> </div>
         <div v-for="adjective in data.collection.items" class="adjective-item">
           <span class="adjective">{{ adjectiveText(adjective.wordSelection) }}</span>
+          <i v-if="adjective.target" class="fa fa-angle-right"></i>
           <span v-if="adjective.target" class="target">{{ targetText(adjective.target) }}</span>
         </div>
         <div v-if="hidePairings" class="shader"></div>
@@ -84,6 +86,9 @@ export default {
   float: left;
   border: solid 1px @color-back-raised2;
   border-radius: 3px;
+  i {
+    color: @color-highlight-red;
+  }
 }
 .adjective, .target {
   padding: 4px;
@@ -116,6 +121,11 @@ export default {
   height: 15px;
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
   z-index: 100;
+}
+.spacer {
+  float:right;
+  width:25px;
+  height:36px;
 }
 
 .adjective-words {

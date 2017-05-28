@@ -4,7 +4,7 @@
       <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
     </div>
 
-    <div class="flex-zero bottombar">
+    <div class="flex-zero bottombar noselect">
       <p v-if="isMode('start')" class="instruction">Select an adjective</p>
       <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn btn-primary"><i class="fa fa-question-circle-o"></i> How to select...</button>
       <button v-if="isMode('selected')" @click="nextPressed" class="btn btn-actionable btn-block">NEXT</button>
