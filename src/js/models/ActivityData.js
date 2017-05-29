@@ -39,6 +39,7 @@ function getPrototype (kind) {
     case 'free-text': return FreeText.prototype
     case 'question-answer': return QuestionAnswer.prototype
     case 'action': return Action.prototype
+    case 'adjective': return Adjective.prototype
     case 'section': return Section.prototype
     case 'word-range': return WordRange.prototype
     default: return undefined
@@ -189,6 +190,10 @@ WordSelection.prototype.fromJson = function (json) {
   return undefined
 }
 
+WordSelection.prototype.equals = function (other) {
+  return JSON.stringify(this) === JSON.stringify(other)
+}
+
 WordSelection.prototype.matches = function (query) {
   if (query.hasOwnProperty('text')) {
     return this.words.find(function (w) {
@@ -230,6 +235,17 @@ function Action (action, tense, actor, target, result) {
 
 Action.prototype.fromJson = function (json) {
   return new Action(deserialize(0, json.action), json.tense, deserialize(0, json.actor), deserialize(0, json.target), deserialize(0, json.result))
+}
+
+// Adjective
+function Adjective (wordSelection, target) {
+  this.kind = 'adjective'
+  this.wordSelection = wordSelection
+  this.target = target
+}
+
+Adjective.prototype.fromJson = function (json) {
+  return new Adjective(deserialize(0, json.wordSelection), deserialize(0, json.target))
 }
 
 // QuestionAnswer
@@ -283,4 +299,4 @@ function uuid () {
   })
 }
 
-export { WordSelection, FreeText, Action, Section, QuestionAnswer }
+export { WordSelection, FreeText, Action, Adjective, Section, QuestionAnswer }

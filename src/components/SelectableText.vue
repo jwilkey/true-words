@@ -1,24 +1,35 @@
 <template>
   <div id="content" class="container">
-    <div class="row">
-      <div v-if="words" id="text" class="col-sm-12">
-        <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" :data-id="wordId(word)" @click="selected($event.target)" class="word">{{ word.text }}</span>
+    <div class="row clearfix">
+      <div v-if="words" id="selectable-text" class="col-sm-12 clearfix">
+        <span :key="index" v-for="(word, index) in words" :id="'word-' + index" :data-index="index" :data-id="wordId(word)" @click="focused($event.target)" class="word">{{ word.text }}</span>
       </div>
     </div>
+    <touchpad v-if="focusedElement" id="touchpad" :on-move="onTouchpadMove" :on-tap="onTouchpadTap" :on-double-tap="onTouchpadDoubleTap"></touchpad>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import $ from 'jquery'
+import Touchpad from './common/Touchpad'
+import { WordSelection } from '../js/models/ActivityData'
+import { scrollToView } from '../js/polyfill'
 
 export default {
   data () {
     return {
-      selectedWordIndex: undefined,
-      selectionStartIndex: undefined,
-      selectionEndIndex: undefined,
+      focusedElement: undefined,
+      currentSelectionIndex: 0,
       initialSelection: undefined
+    }
+  },
+  components: { Touchpad },
+  watch: {
+    focusedElement (value) {
+      if (this.delegate && this.delegate.onFocus) {
+        this.delegate.onFocus(value !== undefined)
+      }
     }
   },
   computed: {
@@ -29,150 +40,170 @@ export default {
     wordId (word) {
       return word.verse + '-' + word.index
     },
-    selected (element) {
-      var wordIndex = parseInt(element.id.substring(5))
-      if (this.selectedWordIndex !== undefined) {
-        if (this.selectionStartIndex && this.selectionEndIndex) {
-          this.adjustSelectionRange(element, wordIndex)
-        } else if (wordIndex === this.selectedWordIndex) {
-          $(element).removeClass('selected')
-          this.resetSelectedIndexes
-        } else {
-          this.createSelectionRange(element, wordIndex)
-        }
-        this.cleanUpSelectionRange(element, wordIndex)
-      } else {
-        $(element).addClass('selected')
-        this.selectedWordIndex = wordIndex
-      }
-      if (this.delegate && this.delegate.onSelect) {
-        var attributes = {highlighted: $(element).hasClass('highlighted'), filled: $(element).hasClass('filled')}
-        this.delegate.onSelect($(element).text(), $(element).data('index'), attributes)
+    broadcastChange (wordSelection, operation) {
+      if (this.delegate && this.delegate.onChange) {
+        this.delegate.onChange(wordSelection, operation)
       }
     },
-    setFilled (words) {
+    focused (element) {
+      if (element.dataset.selection) {
+        var $selection = $(`.word[data-selection="${element.dataset.selection}"]`)
+        this.unfill($selection)
+        $selection.addClass('focused')
+      } else {
+        $(element).addClass('focused')
+      }
+      this.focusedElement = element
+    },
+    registerSelection () {
+      this.currentSelectionIndex += 1
+      $('.focused').attr('data-selection', this.currentSelectionIndex)
+    },
+    setSelected (words) {
+      this.currentSelectionIndex += 1
       var self = this
-      words.forEach(function (word) {
-        $('.word[data-id=' + self.wordId(word) + ']').addClass('filled')
+      words.forEach(word => {
+        var $wordElement = $('.word[data-id=' + self.wordId(word) + ']')
+        self.fill($wordElement)
+        $wordElement.attr('data-selection', this.currentSelectionIndex)
       })
     },
     clearFill (words) {
       var self = this
-      words.forEach(function (word) {
-        $('.word[data-id=' + self.wordId(word) + ']').removeClass('filled')
+      words.forEach(word => {
+        var $elements = $('.word[data-id=' + self.wordId(word) + ']')
+        self.unfill($elements)
+        $elements.removeAttr('data-selection')
       })
     },
     highlightWords (words) {
       var self = this
-      words.forEach(function (word) {
-        $('.word[data-id=' + self.wordId(word) + ']').addClass('highlighted')
+      words.forEach(word => {
+        $(`.word[data-id=${self.wordId(word)}]`).addClass('highlighted')
       })
     },
-    createSelectionRange (element, wordIndex) {
-      var previousWord = $('#word-' + this.selectedWordIndex)
-      if (wordIndex < this.selectedWordIndex) {
-        $(element).addClass('start selected')
-        previousWord.addClass('end selected')
-        this.selectionStartIndex = wordIndex
-        this.selectionEndIndex = this.selectedWordIndex
-      }
-      if (wordIndex > this.selectedWordIndex) {
-        $(element).addClass('end selected')
-        previousWord.addClass('start selected')
-        this.selectionStartIndex = this.selectedWordIndex
-        this.selectionEndIndex = wordIndex
-      }
-    },
-    adjustSelectionRange (element, wordIndex) {
-      if (wordIndex < this.selectionStartIndex) {
-        $('.start.selected').removeClass('start')
-        $(element).addClass('start selected')
-        this.selectionStartIndex = wordIndex
-      } else if (wordIndex === this.selectionStartIndex) {
-        $(element).nextUntil(':not(.selected)').addBack().removeClass('selected start end')
-        this.resetSelectedIndexes()
-      } else if (wordIndex < this.selectionEndIndex) {
-        $('.end.selected').removeClass('end selected')
-        $(element).addClass('end selected')
-        this.selectionEndIndex = wordIndex
-      } else if (wordIndex > this.selectionEndIndex) {
-        $('.end.selected').removeClass('end selected')
-        $(element).addClass('end selected')
-        this.selectionEndIndex = wordIndex
-      }
-    },
-    cleanUpSelectionRange (element, wordIndex) {
-      $('.selected.start').nextUntil('.selected.end').addClass('selected')
-      $('.selected.end').nextUntil(':not(.selected)').removeClass('selected')
-      if (this.selectionStartIndex !== undefined && this.selectionEndIndex !== undefined && (this.selectionStartIndex === this.selectionEndIndex)) {
-        this.selectedWordIndex = wordIndex
-        this.selectionStartIndex = undefined
-        this.selectionEndIndex = undefined
-        $(element).removeClass('start end')
-      }
-    },
     selectedText () {
-      return $('.selected').map(function () {
+      return $('.focused').map(function () {
         return $.trim($(this).text())
       }).get().join(' ')
     },
     selectedWords () {
-      var self = this
-      return $('.selected').map(function () {
-        return self.words[this.dataset.index]
-      }).get()
+      var wordSelections = []
+      const self = this
+      for (var i = 1; i <= this.currentSelectionIndex; i++) {
+        var words = $(`.word[data-selection="${i}"]`)
+        .map((i, el) => self.words[el.dataset.index]).get()
+        if (words.length > 0) {
+          wordSelections.push(new WordSelection(words))
+        }
+      }
+      return wordSelections
     },
     highlightSelection (maintainSelection) {
-      $('.selected').addClass('highlighted')
+      $('.focused').addClass('highlighted')
       if (maintainSelection === undefined || !maintainSelection) {
-        $('.selected').removeClass('selected')
-        this.resetSelectedIndexes()
+        $('.focused').removeClass('focused')
       }
     },
+    fill ($elements) {
+      $elements.addClass('filled')
+      if ($elements.length > 1) {
+        $elements.first().addClass('fill-start')
+        $elements.last().addClass('fill-end')
+      }
+    },
+    unfill ($elements) {
+      $elements.removeClass('filled fill-start fill-end')
+    },
     fillSelection (maintainSelection) {
-      $('.selected').addClass('filled')
+      this.fill($('.focused'))
       if (maintainSelection === undefined || !maintainSelection) {
-        $('.selected').removeClass('selected')
-        this.resetSelectedIndexes()
+        $('.focused').removeClass('focused')
       }
     },
     clearHighlight () {
       $('.word').removeClass('highlighted')
     },
     clearSelection () {
-      $('.word').removeClass('selected start end')
-      this.resetSelectedIndexes()
+      $('.focused').removeAttr('data-selection')
+      $('.focused').removeClass('focused start end')
+    },
+    scrollTo (words) {
+      scrollToView($(`.word[data-id=${this.wordId(words[0])}]`), $('#selectable-text'))
     },
     reset () {
-      $('.word').removeClass('highlighted filled selected start end')
-      this.resetSelectedIndexes()
+      $('.word').removeClass('highlighted focused start end')
+      this.unfill($('.word'))
     },
-    resetSelectedIndexes () {
-      this.selectedWordIndex = undefined
-      this.selectionStartIndex = undefined
-      this.selectionEndIndex = undefined
+    onTouchpadMove (direction) {
+      switch (direction) {
+        case 'RIGHT':
+          var $nextWord = $('.focused').next('.word')
+          if (!$nextWord.hasClass('filled')) {
+            $nextWord.addClass('focused')
+          }
+          break
+        case 'LEFT':
+          $('.focused').last().removeClass('focused').removeAttr('data-selection')
+          break
+        case 'UP':
+          var $prevWord = $('.focused').prev('.word')
+          if (!$prevWord.hasClass('filled')) {
+            $prevWord.addClass('focused')
+          }
+          break
+        case 'DOWN':
+          $('.focused').first().removeClass('focused').removeAttr('data-selection')
+          break
+        default: return
+      }
+    },
+    focusedWords () {
+      const self = this
+      return $('#selectable-text .word.focused').toArray().map(el => self.words[el.dataset.index])
+    },
+    onTouchpadTap () {
+      var words = this.focusedWords()
+      this.registerSelection()
+      this.fillSelection()
+      this.focusedElement = undefined
+      this.broadcastChange(new WordSelection(words), 'SELECT')
+    },
+    onTouchpadDoubleTap () {
+      var words = this.focusedWords()
+      this.clearSelection()
+      this.focusedElement = undefined
+      this.broadcastChange(new WordSelection(words), 'DESELECT')
     }
-  },
-  mounted () {
-    $('#content').on('touchstart mousedown', this.onTouchStart)
-    $('#content').on('touchmove mousemove', this.onTouchMove)
-    $('#content').on('touchend touchleave mouseup mouseleave', this.onTouchEnd)
   }
 }
-
-// function getPoint (e) {
-//   return {
-//     x: e.pageX ? e.pageX : e.originalEvent.pageX,
-//     y: e.pageY ? e.pageY : e.originalEvent.pageY
-//   }
-// }
-// function getElement (point) {
-//   return document.elementFromPoint(point.x, point.y)
-// }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
 @import '../../static/less/words.less';
+@import '../../static/less/flex.less';
+@import '../../static/less/common.less';
+
+#content {
+  position: relative;
+  height: 100%;
+}
+.row {
+  height: 100%;
+}
+#selectable-text {
+  height: 100%;
+  padding-top: 3px;
+  padding-bottom: 10px;
+}
+#touchpad {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  box-shadow: inset 0px 0px 3px 4px @color-highlight-blue;
+  opacity: 0.7;
+}
 </style>

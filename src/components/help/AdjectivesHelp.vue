@@ -1,12 +1,12 @@
 <template>
   <div class="container">
     <div>
-      <strong>What is <i>happening</i> in this passage?</strong>
+      <strong>What is <i>described</i> in this passage?</strong>
       <br />
-      Select action words or phrases to gain a better understanding of important activity in the text.
+      Select adjectives or descriptive phrases to better understand the details of the text.
     </div>
     <hr />
-    <p><strong><span class="step-label">Step 1</span> Select actions</strong></p>
+    <p><strong><span class="step-label">Step 1</span> Select adjectives</strong></p>
     <hr />
     <div>
       <p>Tap a word to <span class="word-highlight">highlight</span> it.</p>
@@ -18,10 +18,10 @@
       <p>Click <span class="btn btn-actionable help-action">NEXT</span> to move on to Step 2</p>
     </div>
     <hr />
-    <p><strong><span class="step-label">Step 2</span> Add detail to actions (optional)</strong></p>
+    <p><strong><span class="step-label">Step 2</span> Add detail to adjectives (optional)</strong></p>
     <hr />
     <div>
-       Select details about an action (who or what is doing it, the result or purpose of the action, etc). Use the <span class="btn btn-raised2 help-action-tab">buttons</span> at the bottom of the screen to select these things. Press <span class="btn btn-actionable help-action">DONE</span> when you are finished selecting targets, or to skip this step.
+       In the same way as you selected each adjective, optionally select the target of each adjective (who or what the word is describing). Press <span class="btn btn-actionable help-action">DONE</span> when you are finished selecting targets, or to skip this step.
     </div>
   </div>
 </template>
@@ -32,8 +32,6 @@ export default {
     return {
     }
   },
-  components: { },
-  props: [],
   computed: { },
   methods: {
   }
@@ -56,12 +54,5 @@ export default {
 .help-action {
   padding: 2px 5px;
   color: white;
-}
-.help-action-tab {
-  background-color: @color-back;
-  color: @color-text;
-  padding: 1px 5px;
-  margin: none;
-  border-color: @color-back-raised2;
 }
 </style>

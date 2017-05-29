@@ -8,6 +8,7 @@ export default {
     switch (activityType) {
       case activities.types.PeoplePlacesThings: return peoplePlacesThingsData()
       case activities.types.Actions: return actionsData()
+      case activities.types.Adjectives: return adjectivesData()
       case activities.types.Outline: return outlineData(study)
       case activities.types.Paraphrase: return paraphraseData()
       case activities.types.Space: return spaceData()
@@ -26,6 +27,12 @@ function peoplePlacesThingsData () {
 }
 
 function actionsData () {
+  var data = ActivityData.new()
+  data.initCollection('map')
+  return data
+}
+
+function adjectivesData () {
   var data = ActivityData.new()
   data.initCollection('map')
   return data

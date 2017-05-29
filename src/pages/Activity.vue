@@ -35,6 +35,7 @@ import Menubar from '../components/Menubar'
 
 import Buckets from '../components/activities/Buckets'
 import Actions from '../components/activities/Actions'
+import Adjectives from '../components/activities/Adjectives'
 import Outline from '../components/activities/Outline'
 import Paraphrase from '../components/activities/Paraphrase'
 import Space from '../components/activities/Space'
@@ -42,13 +43,15 @@ import Stewardship from '../components/activities/Stewardship'
 
 import BucketsReviewer from '../components/reviewers/BucketsReviewer'
 import ActionsReviewer from '../components/reviewers/ActionsReviewer'
+import AdjectivesReviewer from '../components/reviewers/AdjectivesReviewer'
 import OutlineReviewer from '../components/reviewers/OutlineReviewer'
 import ParaphraseReviewer from '../components/reviewers/ParaphraseReviewer'
 import SpaceReviewer from '../components/reviewers/SpaceReviewer'
 import StewardshipReviewer from '../components/reviewers/StewardshipReviewer'
 
-import ActionsHelp from '../components/help/ActionsHelp'
 import BucketsHelp from '../components/help/BucketsHelp'
+import ActionsHelp from '../components/help/ActionsHelp'
+import AdjectivesHelp from '../components/help/AdjectivesHelp'
 import OutlineHelp from '../components/help/OutlineHelp'
 import ParaphraseHelp from '../components/help/ParaphraseHelp'
 import SpaceHelp from '../components/help/SpaceHelp'
@@ -72,7 +75,7 @@ export default {
     currentHelpView: function () { return this.helpViewForType(this.getCurrentActivity) }
   },
   components: {
-    Titlebar, Menubar, Actions, Buckets, Outline, Paraphrase, Space, Stewardship, BucketsReviewer, ActionsReviewer, OutlineReviewer, ParaphraseReviewer, SpaceReviewer, StewardshipReviewer, ActionsHelp, BucketsHelp, OutlineHelp, ParaphraseHelp, SpaceHelp, StewardshipHelp
+    Titlebar, Menubar, Actions, Buckets, Adjectives, Outline, Paraphrase, Space, Stewardship, BucketsReviewer, ActionsReviewer, AdjectivesReviewer, OutlineReviewer, ParaphraseReviewer, SpaceReviewer, StewardshipReviewer, ActionsHelp, BucketsHelp, AdjectivesHelp, OutlineHelp, ParaphraseHelp, SpaceHelp, StewardshipHelp
   },
   methods: {
     ...mapActions(['saveActivity']),
@@ -125,6 +128,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets'
         case activities.types.Actions: return 'actions'
+        case activities.types.Adjectives: return 'adjectives'
         case activities.types.Outline: return 'outline'
         case activities.types.Paraphrase: return 'paraphrase'
         case activities.types.Space: return 'space'
@@ -136,6 +140,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets-reviewer'
         case activities.types.Actions: return 'actions-reviewer'
+        case activities.types.Adjectives: return 'adjectives-reviewer'
         case activities.types.Outline: return 'outline-reviewer'
         case activities.types.Paraphrase: return 'paraphrase-reviewer'
         case activities.types.Space: return 'space-reviewer'
@@ -147,6 +152,7 @@ export default {
       switch (activityType) {
         case activities.types.PeoplePlacesThings: return 'buckets-help'
         case activities.types.Actions: return 'actions-help'
+        case activities.types.Adjectives: return 'adjectives-help'
         case activities.types.Outline: return 'outline-help'
         case activities.types.Paraphrase: return 'paraphrase-help'
         case activities.types.Space: return 'space-help'

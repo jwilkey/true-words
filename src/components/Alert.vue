@@ -90,6 +90,7 @@ export default {
       font-size: 18px;
       letter-spacing: 0.5px;
       #alert-message {
+        font-size: 18px;
         text-align: center;
       }
       p {

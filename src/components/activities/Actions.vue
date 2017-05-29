@@ -5,63 +5,38 @@
     </div>
 
     <div class="flex-zero bottombar">
-      <div v-if="this.currentActionIndex !== undefined" class="action-header">
-        <a class="delete-action" @click="deleteAction()">DELETE</a>
-        <p class="action-title">{{ action.toString() }}</p>
-        <a class="close-action" @click="closeAction()">DONE</a>
-      </div>
+      <p v-if="isMode('start')" class="instruction">Select an action</p>
 
-      <div v-if="this.action" class="action-components flex-row">
-        <button data-step="actor" @click="setStep($event.target)" class="btn alt" :class="actorButtonClass">Actor</button>
-        <button data-step="tense" @click="setStep($event.target)" class="btn alt" :class="tenseButtonClass">Tense</button>
-        <button data-step="target" @click="setStep($event.target)" class="btn alt" :class="targetButtonClass">Target</button>
-        <button data-step="result" @click="setStep($event.target)" class="btn alt" :class="resultButtonClass">Result</button>
-      </div>
+      <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn btn-primary"><i class="fa fa-question-circle-o"></i> How to select...</button>
 
-      <div class="action-instruction text-center">{{ instructionText }}</div>
-      <div class="action-instruction-sublabel text-center">{{ sublabelText }}</div>
+      <button v-if="isMode('selected')" @click="beginDetailing" class="btn btn-actionable btn-block">NEXT</button>
 
-      <button v-if="showFinishButton" class="btn btn-actionable btn-block finished-button" @click="finishedClicked()">FINISHED</button>
+      <div v-if="isMode('detailing')" class="actions-detail">
 
-      <div class="step-actions">
-        <div v-if="currentStep === 'action' && actionInstruction">
-          <button class="btn btn-actionable alt btn-block action-add-button" @click="actionSelected()">ADD</button>
+        <div v-if="this.currentActionIndex !== undefined" class="action-header">
+          <i class="delete-action fa fa-trash-o" @click="deleteAction()"></i>
+          <p class="action-title">{{ action.toString() }}</p>
+          <p class="step-value">{{ stepValue }}</p>
         </div>
 
-        <div v-if="currentStep === 'actor' && actor" class="flex-row">
-          <p class="flex-one">{{ this.actor.toString() }}</p>
-          <a class="clear-step flex-zero" @click="clear('actor')">Clear selection</a>
+        <div v-if="this.action" class="action-components flex-row">
+          <button @click="currentStep = 'actor'" class="btn btn-raised2 alt" :class="buttonClasses('actor')"><i class="fa fa-check-circle-o" />Actor</button>
+          <button @click="currentStep = 'tense'" class="btn btn-raised2 alt" :class="buttonClasses('tense')"><i class="fa fa-check-circle-o" />Tense</button>
+          <button @click="currentStep = 'target'" class="btn btn-raised2 alt" :class="buttonClasses('target')"><i class="fa fa-check-circle-o" />Target</button>
+          <button @click="currentStep = 'result'" class="btn btn-raised2 alt" :class="buttonClasses('result')"><i class="fa fa-check-circle-o" />Result</button>
         </div>
 
-        <div v-if="currentStep === 'tense'" id="tense-selector" class="container-fluid">
-          <div class="row">
-            <div class="tense-button col-xs-4">
-              <button class="btn btn-actionable btn-block" :class="{alt: this.tense !== 'past'}" @click="tenseSelected('past', $event.target)">
-                <strong>PAST</strong>
-              </button>
-            </div>
-            <div class="tense-button col-xs-4">
-              <button class="btn btn-actionable btn-block" :class="{alt: this.tense !== 'present'}" @click="tenseSelected('present', $event.target)">
-                <strong>PRESENT</strong>
-              </button>
-            </div>
-            <div class="tense-button col-xs-4">
-              <button class="btn btn-actionable btn-block" :class="{alt: this.tense !== 'future'}" @click="tenseSelected('future', $event.target)">
-                <strong>FUTURE</strong>
-              </button>
-            </div>
+        <div class="action-instruction text-center">{{ instructionText }}</div>
+
+        <div class="step-actions">
+          <div v-if="currentStep === 'tense'" id="tense-selector" class="flex-row">
+            <button class="btn btn-actionable" :class="{alt: this.tense !== 'past'}" @click="tenseSelected('past')">PAST</button>
+            <button class="btn btn-actionable" :class="{alt: this.tense !== 'present'}" @click="tenseSelected('present')">PRESENT</button>
+            <button class="btn btn-actionable" :class="{alt: this.tense !== 'future'}" @click="tenseSelected('future')">FUTURE</button>
           </div>
         </div>
 
-        <div v-if="currentStep === 'target' && target" class="flex-row">
-          <p class="flex-one">{{ this.target.toString() }}</p>
-          <a class="clear-step flex-zero" @click="clear('target')">Clear selection</a>
-        </div>
-
-        <div v-if="currentStep === 'result' && result" class="flex-row">
-          <p class="flex-one">{{ this.result.toString() }}</p>
-          <a class="clear-step flex-zero" @click="clear('result')">Clear selection</a>
-        </div>
+        <selector-bar :next="nextAction" :previous="previousAction" click-title="DONE" :click="finishedPressed"></selector-bar>
       </div>
     </div>
   </div>
@@ -69,233 +44,201 @@
 
 <script>
 import SelectableText from '../SelectableText'
+import SelectorBar from '../common/SelectorBar'
 import { mapGetters } from 'vuex'
-import $ from 'jquery'
-import { WordSelection, Action } from '../../js/models/ActivityData'
+import { Action } from '../../js/models/ActivityData'
 import activities from '../../js/activity'
+import { ConditionalArray } from '../../js/polyfill'
 
 export default {
   data () {
     return {
-      currentActionIndex: undefined,
+      currentActionIndex: 0,
       currentStep: 'action',
-      pastTenseQualifiers: ['would have', 'had been', 'had', 'did', 'was', 'were'],
-      presentTenseQualifiers: ['is', 'am', 'do', 'does', 'are'],
-      futureTenseQualifiers: ['will have', 'will'],
-      pastTenseHint: '',
-      presentTenseHint: '',
-      futureTenseHint: '',
-      actionInstruction: undefined,
+      isSelecting: false,
+      finishedSelecting: false,
       selectionDelegate: {
-        onSelect: undefined,
-        onMultiSelect: undefined
+        onFocus: undefined,
+        onChange: undefined
       }
     }
   },
   props: ['finish', 'data'],
   computed: {
     ...mapGetters({words: 'getCurrentWords'}),
-    currentActionEntry () { return this.data.collection.items[this.currentActionIndex] },
-    action () { return this.currentActionEntry ? this.currentActionEntry.action : undefined },
-    tense () { return this.currentActionEntry ? this.currentActionEntry.tense : undefined },
-    actor () { return this.currentActionEntry ? this.currentActionEntry.actor : undefined },
-    target () { return this.currentActionEntry ? this.currentActionEntry.target : undefined },
-    result () { return this.currentActionEntry ? this.currentActionEntry.result : undefined },
+    actions () { return this.data.collection.items },
+    currentAction () { return this.actions[this.currentActionIndex] },
+    action () { return this.currentAction ? this.currentAction.action : undefined },
+    tense () { return this.currentAction ? this.currentAction.tense : undefined },
+    actor () { return this.currentAction ? this.currentAction.actor : undefined },
+    target () { return this.currentAction ? this.currentAction.target : undefined },
+    result () { return this.currentAction ? this.currentAction.result : undefined },
+    isCompletedSelectableStep () {
+      const selectableSteps = ['actor', 'target', 'result']
+      return selectableSteps.includes(this.currentStep) && this[this.currentStep] !== undefined
+    },
+    stepValue () {
+      return this[this.currentStep] ? this[this.currentStep].toString() : ''
+    },
     instructionText () {
-      if (this.currentStep === 'action') {
-        return this.actionInstruction || 'Select an action'
-      } else if (this.currentStep === 'tense') {
-        return ''
-      } else if (this.currentStep === 'actor' && !this.actor) {
+      if (this.currentStep === 'actor' && !this.actor) {
         var tensified = this.tense === 'past' ? 'did'
         : ((this.tense) === 'future' ? 'will do' : 'does')
-        return 'Who or what ' + tensified + ' this?'
+        return 'Select who or what ' + tensified + ' this?'
       } else if (this.currentStep === 'target' && !this.target) {
         var targetTense = this.tense === 'past' ? 'Was this'
         : ((this.tense) === 'future' ? 'will this be' : 'is this')
-        return 'Who or what ' + targetTense + ' done to?'
+        return 'Select who or what ' + targetTense + ' done to?'
       } else if (this.currentStep === 'result' && !this.result) {
-        return 'What is the result or purpose of this action?'
+        return 'Select the result or purpose of this action?'
       } else if (this.currentStep === undefined) {
         if (this.currentActionIndex !== undefined && (this.actor || this.tense || this.target || this.result)) {
           return 'Edit the actor, tense, target or result'
         }
         return 'Optionally, find the actor, tense, target or result'
       }
-    },
-    sublabelText () {
-      if (this.currentStep === 'action') {
-        return ''
-      } else if (this.currentStep === 'tense') {
-        return ''
-      } else if (this.currentStep === 'actor' && !this.actor) {
-        return 'If present, select the actor from the text'
-      } else if (this.currentStep === 'target' && !this.target) {
-        return 'If present, select the target from the text'
-      } else if (this.currentStep === 'result' && !this.result) {
-        return 'If present, select the result from the text'
-      } else if (this.currentStep === undefined) {
-        return 'Press one of the above buttons'
-      }
-    },
-    actorButtonClass () { return this.buttonClasses('actor') },
-    tenseButtonClass () { return this.buttonClasses('tense') },
-    targetButtonClass () { return this.buttonClasses('target') },
-    resultButtonClass () { return this.buttonClasses('result') },
-    showFinishButton () {
-      return this.currentActionIndex === undefined && !this.actionInstruction && !this.data.collection.isEmpty()
+      return ''
     }
   },
   watch: {
     currentActionIndex: function (newValue, oldVal) {
       if (this.$refs.selectableText) {
-        var words = []
-        if (this.actor) { words = words.concat(this.actor.words) }
-        if (this.target) { words = words.concat(this.target.words) }
-        if (this.result) { words = words.concat(this.result.words) }
-        this.$refs.selectableText.clearHighlight()
-        this.$refs.selectableText.highlightWords(words)
+        this.highlighCurrentAction()
       }
+      this.currentStep = 'actor'
     }
   },
   components: {
-    SelectableText
+    SelectableText, SelectorBar
   },
   methods: {
-    buttonClasses (step) {
-      var classes = step === this.currentStep ? ['current'] : []
-      switch (step) {
-        case 'actor': this.actor ? classes.push('btn-actionable') : classes.push('btn-raised2')
-          break
-        case 'tense': this.tense ? classes.push('btn-actionable') : classes.push('btn-raised2')
-          break
-        case 'target': this.target ? classes.push('btn-actionable') : classes.push('btn-raised2')
-          break
-        case 'result': this.result ? classes.push('btn-actionable') : classes.push('btn-raised2')
-          break
-        default:
+    isMode (mode) {
+      switch (mode) {
+        case 'detailing': return this.finishedSelecting
+        case 'selecting': return this.isSelecting
+        case 'start': return !this.isSelecting && this.actions.length === 0
+        case 'selected': return !this.isSelecting && !this.finishedSelecting && this.actions.length > 0
+        default: return false
       }
-      return classes
+    },
+    buttonClasses (step) {
+      return new ConditionalArray(this[step] !== undefined, 'completed')
+      .and(step === this.currentStep, 'current')
+      .toArray()
     },
     deleteAction () {
-      this.$refs.selectableText.clearFill(this.currentActionEntry.action.words)
-      this.data.collection.items.splice(this.currentActionIndex, 1)
-      this.closeAction()
+      this.setAlertCallback(this.confirmDeleteAction)
+      this.alert(`Are you sure you want to delete this Action, "${this.currentAction.action.toString()}", and all of its values (actor, target, etc.)?`, 'confirm')
     },
-    closeAction () {
-      this.currentActionIndex = undefined
-      this.currentStep = 'action'
-      this.$refs.selectableText.clearSelection()
-      this.$refs.selectableText.clearHighlight()
-    },
-    setStep (target) {
-      $('.action-components .current').removeClass('current')
-      $(target).addClass('current')
-      this.$refs.selectableText.highlightSelection()
-      this.$refs.selectableText.clearSelection()
-      this.currentStep = target.dataset.step
-    },
-    updateActionInstruction () {
-      if (!this.$refs.selectableText) {
-        return undefined
+    confirmDeleteAction (response) {
+      if (response === 'yes') {
+        this.$refs.selectableText.clearFill(this.currentAction.action.words)
+        this.data.collection.items.splice(this.currentActionIndex, 1)
+        this.currentActionIndex = 0
+        this.currentStep = 'action'
+        if (this.actions.length === 0) { this.finishedSelecting = false }
+        this.highlighCurrentAction()
       }
-      switch (this.selectedWords().length) {
-        case 0: return undefined
-        case 1: return 'Complete your selection or press ADD to continue'
-        default: return 'Press ADD to continue'
+      this.dismissAlert()
+    },
+    onSelectionFocus (isFocused) {
+      this.isSelecting = isFocused
+    },
+    onSelectionChange (wordSelection, operation) {
+      if (this.isMode('detailing')) {
+        this.$refs.selectableText.clearFill(wordSelection.words)
+        switch (this.currentStep) {
+          case 'actor': this.currentAction.actor = wordSelection
+            break
+          case 'target': this.currentAction.target = wordSelection
+            break
+          case 'result': this.currentAction.result = wordSelection
+            break
+          default: return
+        }
+        this.highlighCurrentAction()
+      } else if (operation === 'SELECT') {
+        this.data.collection.add(new Action(wordSelection))
+      } else if (operation === 'DESELECT') {
+        this.actions.every((action, i) => {
+          if (action.action.equals(wordSelection)) {
+            this.data.collection.items.splice(i, 1)
+            return false
+          }
+          return true
+        })
       }
-    },
-    selectedWords () {
-      return this.$refs.selectableText.selectedWords()
-    },
-    onSelect (word, index, attributes) {
-      var words = this.selectedWords()
-      if (this.currentStep === 'action') {
-        if (attributes.filled) {
-          this.findSelectedActionEntry(words[0])
-        } else {
-          this.actionInstruction = this.updateActionInstruction()
-        }
-      } else if (this.currentStep === 'actor') {
-        this.currentActionEntry.actor = words.length > 0 ? new WordSelection(this.selectedWords()) : undefined
-      } else if (this.currentStep === 'target') {
-        this.currentActionEntry.target = words.length > 0 ? new WordSelection(this.selectedWords()) : undefined
-      } else if (this.currentStep === 'result') {
-        this.currentActionEntry.result = words.length > 0 ? new WordSelection(this.selectedWords()) : undefined
-      } else if (this.currentStep === undefined) {
-        if (attributes.filled) {
-          this.findSelectedActionEntry(words[0])
-        } else {
-          this.closeAction()
-        }
-      }
-    },
-    onMultiSelect (words, range) {
-      this.onSelect(words.join(' '), range[0])
-    },
-    findSelectedActionEntry (selectedWord) {
-      var self = this
-      this.data.collection.items.every(function (actionEntry, index) {
-        if (actionEntry.action.matches(selectedWord)) {
-          self.currentActionIndex = index
-          return false
-        }
-        return true
-      })
-      this.$refs.selectableText.clearSelection()
-      this.currentStep = undefined
-      this.actionInstruction = undefined
     },
     clear (step) {
       switch (step) {
-        case 'actor': this.currentActionEntry.actor = undefined
+        case 'actor': this.currentAction.actor = undefined
           break
-        case 'target': this.currentActionEntry.target = undefined
+        case 'target': this.currentAction.target = undefined
           break
-        case 'result': this.currentActionEntry.result = undefined
+        case 'result': this.currentAction.result = undefined
           break
         default:
       }
       this.$refs.selectableText.clearSelection()
     },
-    actionSelected () {
-      var actionEntry = new Action(new WordSelection(this.selectedWords()), this.tense, this.actor, this.target, this.result)
-
-      this.$refs.selectableText.highlightSelection(true)
-      this.$refs.selectableText.fillSelection()
-      this.currentStep = undefined
-
-      this.data.collection.add(actionEntry)
-      this.currentActionIndex = this.data.collection.items.indexOf(actionEntry)
-      this.actionInstruction = undefined
-    },
     tenseSelected (tense) {
-      this.currentActionEntry.tense = tense
+      this.currentAction.tense = tense
+    },
+    helpSelectingPressed () {
+      this.alert('Swipe right to extend the end of your selection\nSwipe left to decrease the end of your selection.\nSwipe up to extend the beginning of your selection\nSwipe down to decrease the beginning. \nTap once to finish selecting. \nTap twice to remove selection.', 'ok')
+    },
+    beginDetailing () {
+      this.currentStep = 'actor'
+      this.finishedSelecting = true
+      this.highlighCurrentAction()
+    },
+    highlighCurrentAction () {
+      var words = []
+      if (this.action) { words = words.concat(this.action.words) }
+      if (this.actor) { words = words.concat(this.actor.words) }
+      if (this.target) { words = words.concat(this.target.words) }
+      if (this.result) { words = words.concat(this.result.words) }
+      this.$refs.selectableText.clearHighlight()
+      this.$refs.selectableText.highlightWords(words)
+      this.$refs.selectableText.scrollTo(this.currentAction.action.words)
+    },
+    nextAction () {
+      if (this.currentActionIndex === this.actions.length - 1) {
+        this.currentActionIndex = 0
+      } else {
+        this.currentActionIndex += 1
+      }
+    },
+    previousAction () {
+      if (this.currentActionIndex === 0) {
+        this.currentActionIndex = this.actions.length - 1
+      } else {
+        this.currentActionIndex -= 1
+      }
     },
     setupData () {
       if (this.data && this.$refs.selectableText) {
         var self = this
         this.data.collection.items.forEach(function (actionEntry) {
-          self.$refs.selectableText.setFilled(actionEntry.action.words)
+          self.$refs.selectableText.setSelected(actionEntry.action.words)
         })
       }
     },
     willAppear () {
       this.setupData()
     },
-    finishedClicked () {
+    finishedPressed () {
       this.finish(activities.types.Actions, this.data)
     }
   },
   mounted () {
-    this.selectionDelegate.onSelect = this.onSelect
-    this.selectionDelegate.onMultiSelect = this.onMultiSelect
+    this.selectionDelegate.onChange = this.onSelectionChange
+    this.selectionDelegate.onFocus = this.onSelectionFocus
     this.setupData()
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less">
 @import '../../../static/less/colors.less';
 @import '../../../static/less/flex.less';
@@ -306,25 +249,14 @@ export default {
 .action-header {
   display: table;
   .delete-action {
+    color: @color-highlight-red;
     display: table-cell;
     vertical-align: middle;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 0 10px;
     margin-bottom: 0px;
     border-right: solid 1px @color-back-raised2;
-    text-shadow: 1px 0px 3px @color-callout-light;
-  }
-  .close-action {
-    display: table-cell;
-    vertical-align: middle;
-    padding-left: 8px;
-    padding-right: 8px;
-    margin-bottom: 0px;
-    border-left: solid 1px @color-back-raised2;
-    text-shadow: 1px 0px 1px @color-actionable;
-    &:hover {
-      color: @color-actionable;
-    }
+    font-size: 20px;
+    cursor: pointer;
   }
   .action-title {
     display: table-cell;
@@ -332,10 +264,18 @@ export default {
     width: 100%;
     font-size: 18px;
     font-family: 'Sinkin';
-    text-shadow: 1px 1px 2px @color-highlight-blue;
     padding: 8px;
-    text-align: center;
     margin-bottom: 0px;
+  }
+  .step-value {
+    color: @color-highlight-green;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 8px;
+    border-left: solid 1px @color-back-raised2;
+    font-size: 18px;
+    min-width: 30px;
+    text-align: center;
   }
 }
 .action-instruction {
@@ -358,6 +298,7 @@ export default {
   margin: 0px;
 }
 .step-actions {
+  padding-bottom: 8px;
   p {
     margin-bottom: 0;
   }
@@ -377,16 +318,27 @@ export default {
     flex: 1;
     margin-left: 2px;
     margin-right: 2px;
+    i {
+      margin-right: 2px;
+      color: @color-highlight-green;
+      display: none;
+    }
     &:focus, &:hover {
       background-color: transparent;
       box-shadow: none;
     }
+    &.completed {
+      i {
+        display: inline;
+      }
+    }
     &.current {
-      background-color: @color-back-raised2;
+      background-color: @color-back-raised;
+      border-color: @color-highlight-blue;
     }
   }
   .cancel-button {
-    border-left: solid 1px @color-back-raised2;
+    border-left: solid 1px @color-back-raised;
     padding-top: 2px;
     padding-right: 4px;
     padding-left: 8px;
@@ -407,14 +359,18 @@ export default {
 .action-items {
   color: @color-deemphasize;
 }
-#tense-selector {
-  button strong {
-    color: @color-text-accent;
-    letter-spacing: 2px;
+.step-selection {
+  padding: 10px;
+  p {
+    font-size: 18px;
   }
 }
-.tense-button {
-  padding-left: 5px;
-  padding-right: 5px;
+#tense-selector {
+  padding-bottom: 11px;
+  button {
+    .flex-one;
+    letter-spacing: 2px;
+    margin: 0 5px;
+  }
 }
 </style>
