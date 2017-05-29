@@ -19,7 +19,7 @@
   -ms-user-select: none;
   user-select: none;
 }
-.word.selected {
+.word.focused {
   background-color: @color-highlight-blue;
   color: @color-back;
   word-wrap: normal;
@@ -53,4 +53,12 @@
 }
 .word.filled {
   background-color: @color-callout;
+  &.fill-start {
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+  }
+  &.fill-end {
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+  }
 }
