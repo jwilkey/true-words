@@ -4,16 +4,24 @@
       <strong>What is <i>described</i> in this passage?</strong>
       <br />
       Select adjectives or descriptive phrases to better understand the details of the text.
-      <hr />
     </div>
-    <div class="actions-help-selectable clearfix">
-      <span :key="index" v-for="(word, index) in words" class="word" :class="{ selected: isSelected(index), start: isStart(index), end: isEnd(index) }">{{ word }}</span>
-    </div>
+    <hr />
+    <p><strong><span class="step-label">Step 1</span> Select adjectives</strong></p>
+    <hr />
     <div>
-      When you are finished selective adjectives, press the 'FINISHED' button.
+      <p>Tap a word to <span class="word-highlight">highlight</span> it.</p>
+      <p><strong>Swipe <i class="fa fa-arrow-circle-right"/> right</strong> or <strong><i class="fa fa-arrow-circle-up"/> up</strong> to extend your highlight</p>
+      <p><strong>Swipe <i class="fa fa-arrow-circle-left"/> left</strong> or <strong><i class="fa fa-arrow-circle-down"/> down</strong> to lessen your highlight</p>
+      <p><strong><i class="fa fa-hand-o-down"/> Tap once</strong> to complete your selection.</p>
+      <p><strong><i class="fa fa-hand-o-down"/> <i class="fa fa-hand-o-down"/> Tap twice</strong> to delete your selection.</p>
+      <br />
+      <p>Click <span class="btn btn-actionable help-action">NEXT</span> to move on to Step 2</p>
     </div>
+    <hr />
+    <p><strong><span class="step-label">Step 2</span> Add detail to adjectives (optional)</strong></p>
+    <hr />
     <div>
-      Once you are finished selecting adjectives, you will be asked to identify who/what is being described for each word.
+       In the same way as you selected each adjective, optionally select the target of each adjective (who or what the word is describing). Press <span class="btn btn-actionable help-action">DONE</span> when you are finished selecting targets, or to skip this step.
     </div>
   </div>
 </template>
@@ -22,79 +30,29 @@
 export default {
   data () {
     return {
-      text: 'Tap a word to Select it. Tap another word to Select a phrase.',
-      words: ['Tap', 'a', 'word', 'to', 'Select', 'it.', 'Tap', 'another', 'word', 'to', 'Select', 'a', 'phrase', '.', 'Once', 'you', 'have', 'a', 'descriptive', 'word/phrase', 'selected', 'press', 'the', 'ADD', 'button']
     }
   },
-  components: { },
-  props: [],
   computed: { },
   methods: {
-    isSelected: function (index) {
-      return [4, 10, 11, 12].indexOf(index) !== -1
-    },
-    isStart: function (index) {
-      return index === 10
-    },
-    isEnd: function (index) {
-      return index === 12
-    }
   }
 }
 </script>
 
 <style lang="less" scoped>
 @import '../../../static/less/colors.less';
-.word {
-  float: left;
-  margin-top: 2px;
-  margin-bottom: 2px;
-  padding: 2px;
-  padding-left: 1px;
-  padding-right: 1px;
-  border: solid 1px transparent;
-  cursor: pointer;
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -khtml-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-.word.selected {
-  background-color: @color-highlight-blue;
-  color: @color-back;
-  word-wrap: normal;
-  padding: 2px;
-  padding-left: 5px;
-  padding-right: 5px;
-  border-radius: 0px;
-  border-right: solid 1px @color-back-raised2;
-  border-left: solid 1px @color-back-raised2;
-  border-top: solid 1px @color-back-raised2;
-  border-bottom: solid 1px @color-back-raised2;
-  &.start {
-    border-bottom-left-radius: 6px;
-    border-top-left-radius: 6px;
-    border-left: solid 1px @color-back-raised2;
-  }
-  &.end {
-    border-bottom-right-radius: 6px;
-    border-top-right-radius: 6px;
-    border-right: solid 1px @color-back-raised2;
-  }
-}
-.help-example {
-  color: @color-help-secondary;
-  font-style: italic;
-}
-.actions-help-selectable {
-  background-color: white;
-  padding: 5px;
+.step-label {
+  background-color: @color-help;
+  padding: 4px 8px;
   border-radius: 4px;
-  box-shadow: 1px 1px 1px @color-deemphasize;
-  margin-left: -5px;
-  margin-right: -5px;
-  margin-bottom: 8px;
+  color: @color-text;
+}
+.word-highlight {
+  background-color: @color-highlight-blue;
+  padding: 3px 5px;
+  border-radius: 3px;
+}
+.help-action {
+  padding: 2px 5px;
+  color: white;
 }
 </style>
