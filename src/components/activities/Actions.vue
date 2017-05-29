@@ -14,8 +14,9 @@
       <div v-if="isMode('detailing')" class="actions-detail">
 
         <div v-if="this.currentActionIndex !== undefined" class="action-header">
+          <i class="delete-action fa fa-trash-o" @click="deleteAction()"></i>
           <p class="action-title">{{ action.toString() }}</p>
-          <a class="delete-action" @click="deleteAction()">DELETE</a>
+          <p class="step-value">{{ stepValue }}</p>
         </div>
 
         <div v-if="this.action" class="action-components flex-row">
@@ -26,14 +27,8 @@
         </div>
 
         <div class="action-instruction text-center">{{ instructionText }}</div>
-        <div class="action-instruction-sublabel text-center">{{ sublabelText }}</div>
 
         <div class="step-actions">
-          <div v-if="isCompletedSelectableStep" class="flex-row step-selection">
-            <p class="flex-one">{{ stepValue }}</p>
-            <a class="clear-step flex-zero" @click="clear(currentStep)">Clear selection</a>
-          </div>
-
           <div v-if="currentStep === 'tense'" id="tense-selector" class="flex-row">
             <button class="btn btn-actionable" :class="{alt: this.tense !== 'past'}" @click="tenseSelected('past')">PAST</button>
             <button class="btn btn-actionable" :class="{alt: this.tense !== 'present'}" @click="tenseSelected('present')">PRESENT</button>
@@ -83,36 +78,24 @@ export default {
       return selectableSteps.includes(this.currentStep) && this[this.currentStep] !== undefined
     },
     stepValue () {
-      return this[this.currentStep].toString()
+      return this[this.currentStep] ? this[this.currentStep].toString() : ''
     },
     instructionText () {
       if (this.currentStep === 'actor' && !this.actor) {
         var tensified = this.tense === 'past' ? 'did'
         : ((this.tense) === 'future' ? 'will do' : 'does')
-        return 'Who or what ' + tensified + ' this?'
+        return 'Select who or what ' + tensified + ' this?'
       } else if (this.currentStep === 'target' && !this.target) {
         var targetTense = this.tense === 'past' ? 'Was this'
         : ((this.tense) === 'future' ? 'will this be' : 'is this')
-        return 'Who or what ' + targetTense + ' done to?'
+        return 'Select who or what ' + targetTense + ' done to?'
       } else if (this.currentStep === 'result' && !this.result) {
-        return 'What is the result or purpose of this action?'
+        return 'Select the result or purpose of this action?'
       } else if (this.currentStep === undefined) {
         if (this.currentActionIndex !== undefined && (this.actor || this.tense || this.target || this.result)) {
           return 'Edit the actor, tense, target or result'
         }
         return 'Optionally, find the actor, tense, target or result'
-      }
-      return ''
-    },
-    sublabelText () {
-      if (this.currentStep === 'actor' && !this.actor) {
-        return 'If present, select the actor from the text'
-      } else if (this.currentStep === 'target' && !this.target) {
-        return 'If present, select the target from the text'
-      } else if (this.currentStep === 'result' && !this.result) {
-        return 'If present, select the result from the text'
-      } else if (this.currentStep === undefined) {
-        return 'Press one of the above buttons'
       }
       return ''
     }
@@ -144,11 +127,19 @@ export default {
       .toArray()
     },
     deleteAction () {
-      this.$refs.selectableText.clearFill(this.currentAction.action.words)
-      this.data.collection.items.splice(this.currentActionIndex, 1)
-      this.currentActionIndex = 0
-      this.currentStep = 'action'
-      if (this.actions.length === 0) { this.finishedSelecting = false }
+      this.setAlertCallback(this.confirmDeleteAction)
+      this.alert(`Are you sure you want to delete this Action, "${this.currentAction.action.toString()}", and all of its values (actor, target, etc.)?`, 'confirm')
+    },
+    confirmDeleteAction (response) {
+      if (response === 'yes') {
+        this.$refs.selectableText.clearFill(this.currentAction.action.words)
+        this.data.collection.items.splice(this.currentActionIndex, 1)
+        this.currentActionIndex = 0
+        this.currentStep = 'action'
+        if (this.actions.length === 0) { this.finishedSelecting = false }
+        this.highlighCurrentAction()
+      }
+      this.dismissAlert()
     },
     onSelectionFocus (isFocused) {
       this.isSelecting = isFocused
@@ -261,11 +252,11 @@ export default {
     color: @color-highlight-red;
     display: table-cell;
     vertical-align: middle;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding: 0 10px;
     margin-bottom: 0px;
-    border-left: solid 1px @color-back-raised2;
-    text-shadow: 1px 0px 3px @color-callout-light;
+    border-right: solid 1px @color-back-raised2;
+    font-size: 20px;
+    cursor: pointer;
   }
   .action-title {
     display: table-cell;
@@ -275,6 +266,16 @@ export default {
     font-family: 'Sinkin';
     padding: 8px;
     margin-bottom: 0px;
+  }
+  .step-value {
+    color: @color-highlight-green;
+    display: table-cell;
+    vertical-align: middle;
+    padding: 0 8px;
+    border-left: solid 1px @color-back-raised2;
+    font-size: 18px;
+    min-width: 30px;
+    text-align: center;
   }
 }
 .action-instruction {
