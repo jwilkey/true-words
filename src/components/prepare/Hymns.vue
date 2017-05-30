@@ -1,22 +1,27 @@
 <template>
   <div>
-    <titlebar :title="passage" :left-items="['back']" :on-back="goBack"></titlebar>
+    <titlebar :title="'HYMNS'" :left-items="['back']" :on-back="goBack"></titlebar>
 
     <div class="container">
+      <p class="inspired-by">Inspired by {{ passage }}</p>
+      <p v-if="isLoading" class="hymns-loading"><i class="fa fa-circle-o-notch fa-spin"/> Loading</p>
+      <div v-if="error">
+        Error loading hymns...
+      </div>
       <p v-if="hymns.length === 0" class="text-center">no hymns found for this passage</p>
 
       <div v-if="selectedHymn === undefined" class="list-group hymns">
-        <a v-for="hymn in hymns" @click="hymnSelected(hymn)" class="list-group-item">
+        <div v-for="hymn in hymns" @click="hymnSelected(hymn)" class="list-group-item">
           <span class="badge">{{ hymn["scripture references"] }}</span>
           <p class="title">{{ hymn.title }}</p>
           <p class="author">{{ hymn.author}}</p>
-        </a>
+        </div>
       </div>
 
       <div v-if="selectedHymn !== undefined" class="hymn-text">
         <div class="hymn-header">
           <div class="action-button" @click="closeHymn()">
-            <img class="svg close-button" src="/static/images/close.svg" />
+            <i class="fa fa-chevron-left"></i>
           </div>
           <p class="title">{{ selectedHymn.title }}</p>
           <p class="author">{{ selectedHymn.author}}</p>
@@ -27,7 +32,8 @@
         <div class="text">
           {{ text }}
         </div>
-        <button class="btn btn-primary btn-block" @click="closeHymn()">DONE</button>
+        <br />
+        <button class="btn btn-primary btn-block" @click="closeHymn()">BACK TO HYMNS</button>
       </div>
     </div>
   </div>
@@ -40,10 +46,12 @@ import $ from 'jquery'
 export default {
   data () {
     return {
+      isLoading: true,
       passage: '',
       hymns: {},
       selectedHymn: undefined,
-      text: ''
+      text: '',
+      error: undefined
     }
   },
   components: {
@@ -80,9 +88,15 @@ export default {
   mounted () {
     this.passage = this.$route.query.passage
     const self = this
-    $.get(`https://www.hymnary.org/api/scripture?reference=${this.passage}`)
-    .done(function (data) {
+    $.get(`https://hymnary.org/api/scripture?reference=${this.passage}`)
+    .done(data => {
       self.hymns = data
+    })
+    .fail(err => {
+      self.error = err
+    })
+    .always(() => {
+      self.isLoading = false
     })
   }
 }
@@ -93,8 +107,33 @@ export default {
 @import '../../../static/less/colors.less';
 @import '../../../static/less/flex.less';
 
+.inspired-by {
+  color: @color-deemphasize;
+  font-size: 18px;
+  text-align: center;
+  border-bottom: solid 1px @color-back-raised2;
+  padding-bottom: 10px;
+}
+.hymns-loading {
+  text-align: center;
+  font-size: 20px;
+  color: @color-highlight-blue;
+  margin-top: 30px;
+}
 .author {
   color: @color-deemphasize;
+}
+.hymns {
+  p {
+    margin: 0px;
+  }
+  .list-group-item {
+    border-bottom: solid 1px @color-back-raised2;
+    cursor: pointer;
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+    }
+  }
 }
 .hymn-text {
   white-space: pre-line;
@@ -109,6 +148,11 @@ export default {
       vertical-align: middle;
       width: 30px;
       height: 30px;
+      color: @color-deemphasize;
+      cursor: pointer;
+      &:hover {
+        border-right: solid 2px @color-deemphasize;
+      }
     }
     .title, .author {
       text-align: center;
