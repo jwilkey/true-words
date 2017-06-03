@@ -10,8 +10,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import $ from 'jquery'
-import drive from '../js/helpers/DriveHelper'
+import driveAuth from '../js/helpers/drive-auth-helper'
 
 export default {
   data () {
@@ -24,29 +23,16 @@ export default {
   },
   methods: {
     ...mapActions(['setPersistenceStrategy']),
-    checkAuth () {
-      var self = this
-      var signinCallback = this.$root.$children[0].signinCallback
-      drive.initAuth(function () {
-        window.gapi.auth2.getAuthInstance().isSignedIn.listen(signinCallback)
-        var currentStatus = window.gapi.auth2.getAuthInstance().isSignedIn.get()
-        if (currentStatus) {
-          self.setPersistenceStrategy('GOOGLE_DRIVE')
-          signinCallback(currentStatus)
-        }
-      })
-    },
     signInToDrive () {
       this.setPersistenceStrategy('GOOGLE_DRIVE')
-      drive.signIn()
+      driveAuth.signIn()
     }
   },
   mounted: function () {
-    $.holdReady(true)
-    var self = this
-    $.getScript('https://apis.google.com/js/api.js', function () {
-      $.holdReady(false)
-      window.gapi.load('auth2', self.checkAuth)
+    const self = this
+    var signinListener = this.$root.$children[0].signinCallback
+    driveAuth.checkAuth(signinListener, () => {
+      self.setPersistenceStrategy('GOOGLE_DRIVE')
     })
   }
 }

@@ -1,4 +1,5 @@
 import drive from './DriveHelper'
+import driveAuth from './drive-auth-helper'
 import Studies from '../models/Study'
 import { Bible, Verse } from '../bible'
 import $ from 'jquery'
@@ -23,20 +24,20 @@ Persistor.prototype.isLoggedIn = function () {
 
 Persistor.prototype.isSessionExpired = function () {
   if (this.usingDrive()) {
-    return drive.isSignedIn() && (driveToken() === undefined)
+    return driveAuth.isSignedIn() && (driveToken() === undefined)
   }
   return false
 }
 
 Persistor.prototype.signOut = function () {
   if (this.usingDrive()) {
-    drive.signOut()
+    driveAuth.signOut()
   }
 }
 
 Persistor.prototype.refreshAuthorization = function () {
   if (this.usingDrive()) {
-    drive.signIn()
+    driveAuth.signIn()
   }
 }
 

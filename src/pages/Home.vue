@@ -11,8 +11,8 @@
       </card>
 
       <card title="CONTINUE" subtitle="Choose a study">
-        <div v-if="isSignedIn && isLoadingData">
-          <p class="text-center">Loading studies...</p>
+        <div v-if="isSignedIn && isLoadingData" class="loading-view">
+          <p class="text-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></p>
         </div>
         <div v-if="isSignedIn === true && !isLoadingData">
           <div v-for="study in getStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
@@ -33,10 +33,10 @@
             </div>
           </div>
         </div>
-        <div v-if="isSignedIn === false" class="row">
-          <div class="col-md-6">
-            <google-auth class="col-xs-12"></google-auth>
-          </div>
+        <div v-if="isSignedIn === false" class="sign-in-view">
+            <p>You are not signed in.</p>
+            <p>Sign in to save your studies.</p>
+            <router-link to="Login?referrer=Home" class="btn btn-raised2 btn-lg">SIGN IN</router-link>
         </div>
       </card>
     </div>
@@ -56,9 +56,9 @@
 <script>
 import Titlebar from '../components/Titlebar'
 import GoogleAuth from '../components/GoogleAuth'
-import store from '../../vuex/store'
 import Card from '../components/Card'
 import { mapGetters, mapActions } from 'vuex'
+import driveAuth from '../js/helpers/drive-auth-helper'
 
 export default {
   data () {
@@ -79,6 +79,7 @@ export default {
     Card, Titlebar, GoogleAuth
   },
   methods: {
+    ...mapActions(['setPersistenceStrategy', 'setCurrentStudy', 'setStudies', 'openStudy']),
     continueStudy (studyId) {
       var self = this
       this.alert('LOADING...')
@@ -91,10 +92,16 @@ export default {
     feedback () {
       this.$router.push('feedback')
     },
-    ...mapActions(['setCurrentStudy', 'setStudies', 'openStudy'])
+    checkAuth () {
+      const self = this
+      var signinListener = this.$root.$children[0].signinCallback
+      driveAuth.checkAuth(signinListener, () => {
+        self.setPersistenceStrategy('GOOGLE_DRIVE')
+      })
+    }
   },
-  store,
   mounted () {
+    this.checkAuth()
     this.refreshData()
   }
 }
@@ -133,6 +140,9 @@ body {
   &:last-child {
     border-left: solid 1px @color-back;
   }
+}
+.loading-view {
+  color: @color-highlight-blue;
 }
 .user-img {
   height: 20px;
@@ -178,5 +188,18 @@ body {
 }
 .user {
   padding-right: 10px;
+}
+.sign-in-view {
+  text-align: center;
+  a {
+    min-width: 300px;
+    max-width: 400px;
+    margin-top: 10px;;
+  }
+  p {
+    margin-bottom: 3px;
+    text-align: center;
+    color: @color-deemphasize;
+  }
 }
 </style>

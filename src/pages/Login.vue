@@ -1,9 +1,16 @@
 <template>
   <div>
-    <titlebar title="LOGIN" :left-items="['close']" :on-close="closePressed"></titlebar>
+    <titlebar title="SIGN IN" :left-items="['close']" :on-close="closePressed"></titlebar>
 
     <div class="container">
-      <google-auth></google-auth>
+      <google-auth v-if="!isAuthenticated"></google-auth>
+
+      <div v-if="isAuthenticated" class="text-center">
+        <p class="user-name">Hello {{ username }}!</p>
+        <img v-if="userimage" class="user-photo" :src="userimage" />
+        <hr />
+        <p class="redirect-helper">If you are not automatically redirected <router-link to="Home">click here</router-link></p>
+      </div>
     </div>
   </div>
 </template>
@@ -20,18 +27,29 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getPersistor', 'getStudies'])
+    ...mapGetters(['isAuthenticated', 'getUser', 'getPersistor', 'getStudies']),
+    username: function () {
+      return this.getUser ? this.getUser.name : undefined
+    },
+    userimage: function () {
+      return this.getUser ? this.getUser.imageUrl : undefined
+    }
   },
   watch: {
     getPersistor: function (newPersistor, oldVal) {
-      if (newPersistor.isLoggedIn()) {
+      if (newPersistor && newPersistor.isLoggedIn()) {
         var self = this
         this.existingStudies.forEach(function (study) {
           newPersistor.saveStudy(study).done(function () {
             self.getStudies.push(study)
           })
         })
-        this.closePressed()
+      }
+    },
+    isAuthenticated (authenticated) {
+      const self = this
+      if (authenticated) {
+        setTimeout(self.closePressed, 2000)
       }
     }
   },
@@ -40,7 +58,8 @@ export default {
   },
   methods: {
     closePressed () {
-      this.$router.replace(this.$route.query.referrer)
+      var referrer = this.$route.query.referrer || '/'
+      this.$router.replace(referrer)
     }
   },
   mounted () {
@@ -49,7 +68,7 @@ export default {
 }
 </script>
 
-<style lang="less">
+<style lang="less" scoped>
 @import '../../static/less/colors.less';
 body {
   padding-top: 55px;
@@ -61,6 +80,27 @@ h1 {
   &:hover {
     background-color: @color-back-raised;
     color: @color-selection1;
+  }
+}
+.user-name {
+  text-align: center;
+  font-size: 20px;
+  margin-top: 40px;
+}
+.user-photo {
+  margin: 25px 0px;
+  width: 100px;
+  height: 100px;
+  border-radius: 6px;
+  box-shadow: 1px 1px 8px rgba(0, 0, 0, 0.5);
+  transition: height 0.7s, width 0.7s, opacity 0.7s;
+}
+.redirect-helper {
+  font-size: 13px;
+  color: @color-deemphasize;
+  margin-top: 40px;
+  a {
+    color: @color-highlight-blue;
   }
 }
 </style>
