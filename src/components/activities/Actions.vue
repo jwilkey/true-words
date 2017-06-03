@@ -20,10 +20,10 @@
         </div>
 
         <div v-if="this.action" class="action-components flex-row">
-          <button @click="currentStep = 'actor'" class="btn btn-raised2 alt" :class="buttonClasses('actor')"><i class="fa fa-check-circle-o" />Actor</button>
-          <button @click="currentStep = 'tense'" class="btn btn-raised2 alt" :class="buttonClasses('tense')"><i class="fa fa-check-circle-o" />Tense</button>
-          <button @click="currentStep = 'target'" class="btn btn-raised2 alt" :class="buttonClasses('target')"><i class="fa fa-check-circle-o" />Target</button>
-          <button @click="currentStep = 'result'" class="btn btn-raised2 alt" :class="buttonClasses('result')"><i class="fa fa-check-circle-o" />Result</button>
+          <button @click="currentStep = 'actor'" class="btn btn-raised2 alt" :class="buttonClasses('actor')">Actor</button>
+          <button @click="currentStep = 'tense'" class="btn btn-raised2 alt" :class="buttonClasses('tense')">Tense</button>
+          <button @click="currentStep = 'target'" class="btn btn-raised2 alt" :class="buttonClasses('target')">Target</button>
+          <button @click="currentStep = 'result'" class="btn btn-raised2 alt" :class="buttonClasses('result')">Result</button>
         </div>
 
         <div class="action-instruction text-center">{{ instructionText }}</div>
@@ -86,7 +86,7 @@ export default {
         : ((this.tense) === 'future' ? 'will do' : 'does')
         return 'Select who or what ' + tensified + ' this?'
       } else if (this.currentStep === 'target' && !this.target) {
-        var targetTense = this.tense === 'past' ? 'Was this'
+        var targetTense = this.tense === 'past' ? 'this was'
         : ((this.tense) === 'future' ? 'will this be' : 'is this')
         return 'Select who or what ' + targetTense + ' done to?'
       } else if (this.currentStep === 'result' && !this.result) {
@@ -314,23 +314,19 @@ export default {
   padding-top: 8px;
   padding-bottom: 8px;
   margin-bottom: 8px;
+  width: 100%;
+  overflow: hidden;
   .btn {
     flex: 1;
     margin-left: 2px;
     margin-right: 2px;
-    i {
-      margin-right: 2px;
-      color: @color-highlight-green;
-      display: none;
-    }
     &:focus, &:hover {
       background-color: transparent;
       box-shadow: none;
     }
     &.completed {
-      i {
-        display: inline;
-      }
+      border-bottom-color: @color-highlight-green !important;
+      border-bottom-width: 2px;
     }
     &.current {
       background-color: @color-back-raised;
