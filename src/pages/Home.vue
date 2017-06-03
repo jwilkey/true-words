@@ -41,11 +41,11 @@
       </card>
     </div>
 
-    <div class="actionbar">
+    <div class="actionbar home-bottom">
       <div class="pull-left feedback">
         <a class="muted" href="mailto:help.truewords@gmail.com?subject=Feedback">Feedback</a>
       </div>
-      <div class="pull-right muted user">
+      <div class="pull-right muted user" @click="userPressed">
         <img v-if="userimage" class="user-img" :src="userimage" />
         {{ username }}
       </div>
@@ -79,7 +79,7 @@ export default {
     Card, Titlebar, GoogleAuth
   },
   methods: {
-    ...mapActions(['setPersistenceStrategy', 'setCurrentStudy', 'setStudies', 'openStudy']),
+    ...mapActions(['setPersistenceStrategy', 'getPersistor', 'setCurrentStudy', 'setStudies', 'openStudy']),
     continueStudy (studyId) {
       var self = this
       this.alert('LOADING...')
@@ -88,6 +88,16 @@ export default {
         self.analytics.trackEvent('ContinueStudy', 'click', self.getCurrentStudy.passage.description())
       })
       .always(self.dismissAlert)
+    },
+    userPressed () {
+      const self = this
+      this.setAlertCallback(confirmation => {
+        if (confirmation === 'yes') {
+          self.getPersistor.signOut()
+        }
+        self.dismissAlert()
+      })
+      this.alert('Sign out?', 'confirm')
     },
     feedback () {
       this.$router.push('feedback')
@@ -183,11 +193,11 @@ body {
   color: @color-highlight-blue;
   cursor: pointer;
 }
-.feedback {
-  padding-left: 10px;
-}
-.user {
-  padding-right: 10px;
+.home-bottom {
+  padding: 10px;
+  .user {
+    cursor: pointer;
+  }
 }
 .sign-in-view {
   text-align: center;
