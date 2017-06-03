@@ -18,7 +18,7 @@
             <div class="verses" :class="{loading: loading, inline: readingMode === 'inline'}">
               <h1 class="text-center muted" v-if="!verses">Loading...</h1>
               <div v-for="verse in verses" class="verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
-                <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+                <span class="verse-number">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
               </div>
             </div>
           </div>
@@ -265,6 +265,9 @@ export default {
   }
   .verse-number {
     color: #999;
+    padding-right: 2px;
+    vertical-align: super;
+    font-size: 12px !important;
   }
   &.inline {
     padding-left: 10px;
