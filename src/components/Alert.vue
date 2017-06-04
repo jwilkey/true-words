@@ -5,12 +5,12 @@
         <p id="alert-message"></p>
         <button id="ok-alert-button" class="btn btn-block btn-alert" @click="dismissAlert()">OK</button>
 
-        <div class="row">
+        <div class="row alert-confirm">
           <div class="col-xs-6">
-            <button id="yes-alert-button" class="btn btn-block btn-alert col-xs-6" @click="confirmYes()">YES</button>
+            <button id="yes-alert-button" class="btn btn-alert btn-block" @click="confirmYes()">YES</button>
           </div>
           <div class="col-xs-6">
-            <button id="no-alert-button" class="btn btn-block btn-alert alt col-xs-6" @click="confirmNo()">NO</button>
+            <button id="no-alert-button" class="btn btn-alert alt btn-block" @click="confirmNo()">NO</button>
           </div>
         </div>
       </div>
@@ -108,6 +108,11 @@ export default {
         &:hover {
           background-color: @color-highlight-blue;
           color: @color-help;
+        }
+      }
+      .alert-confirm {
+        .col-xs-6 {
+          padding: 8px;
         }
       }
     }
