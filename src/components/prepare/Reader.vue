@@ -12,7 +12,7 @@
           <div class="container">
             <div class="verses" :class="{inline: readingMode === 'inline'}">
               <div v-for="verse in getCurrentStudy.verses" class="verse" :data-verse="verse.number">
-                <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+                <span class="verse-number">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
               </div>
             </div>
           </div>
@@ -105,6 +105,9 @@ export default {
   }
   .verse-number {
     color: #999;
+    padding-right: 2px;
+    vertical-align: super;
+    font-size: 12px !important;
   }
   &.inline {
     padding-left: 10px;
@@ -115,9 +118,6 @@ export default {
       background-color: transparent;
       padding: 0px 7px 0px 0px;
       margin-bottom: 0px;
-    }
-    .verse-number {
-      font-size: 14px;
     }
   }
 }

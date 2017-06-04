@@ -16,7 +16,7 @@
         <div class="flex-one scrolly viewer">
           <div class="container">
             <div class="verses" :class="{loading: loading, inline: readingMode === 'inline'}">
-              <h1 class="text-center muted" v-if="!verses">Loading...</h1>
+              <h1 class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></h1>
               <div v-for="verse in verses" class="verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
                 <span class="verse-number">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
               </div>
