@@ -60,7 +60,7 @@ export default {
   left: 0;
   right: 0;
   background-color: rgba(0,0,0,0.4);
-  #ok-alert-button, #yes-alert-button, #no-alert-button {
+  #ok-alert-button, .alert-confirm {
     display: none;
   }
   &.ok-alert {
@@ -69,7 +69,7 @@ export default {
     }
   }
   &.confirm-alert {
-    #yes-alert-button, #no-alert-button {
+    .alert-confirm {
       display: inherit;
     }
   }
