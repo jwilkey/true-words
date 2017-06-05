@@ -15,7 +15,8 @@
           <p class="text-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></p>
         </div>
         <div v-if="isSignedIn === true && !isLoadingData">
-          <div v-for="study in getStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
+          <p v-if="manyStudies" class="recent-studies-label">RECENT STUDIES <span class="studies-count">{{ getStudies.length }} TOTAL</span></p>
+          <div v-for="study in recentStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
             <div class="study-label col-xs-12">
               <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
               <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEditLabel() }} <span class="bible">{{ study.bible }}</span></p>
@@ -24,6 +25,7 @@
               </div>
             </div>
           </div>
+          <router-link to="Studies" v-if="manyStudies" class="btn btn-primary btn-block">ALL STUDIES</router-link>
           <div v-if="getStudies.length <= 0" class="muted flex-row">
             <div class="flex-one">
               <i>No studies found</i>
@@ -68,11 +70,17 @@ export default {
   },
   computed: {
     ...mapGetters(['getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
-    username: function () {
+    manyStudies () {
+      return this.getStudies.length > 3
+    },
+    username () {
       return this.getUser ? this.getUser.name : undefined
     },
-    userimage: function () {
+    userimage () {
       return this.getUser ? this.getUser.imageUrl : undefined
+    },
+    recentStudies () {
+      return this.manyStudies ? this.getStudies.slice(0, 3) : this.getStudies
     }
   },
   components: {
@@ -159,6 +167,15 @@ body {
   width: 20px;
   margin-right: 8px;
   border-radius: 5px;
+}
+
+.recent-studies-label {
+  color: @color-deemphasize;
+  .studies-count {
+    margin-left: 5px;
+    padding-left: 5px;
+    border-left: solid 2px @color-back-raised2;
+  }
 }
 .study {
   padding-left: 10px;

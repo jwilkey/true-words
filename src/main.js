@@ -11,6 +11,7 @@ import Home from './pages/Home'
 import BibleChooser from './pages/BibleChooser'
 import PassageChooser from './pages/PassageChooser'
 import PassageViewer from './pages/PassageViewer'
+import Studies from './pages/Studies'
 import Activities from './pages/Activities'
 import Activity from './pages/Activity'
 import Reader from './components/prepare/Reader'
@@ -29,6 +30,7 @@ const routes = [
   { path: '/bible_chooser', component: BibleChooser, name: 'BibleChooser' },
   { path: '/choosepassage', component: PassageChooser, name: 'PassageChooser' },
   { path: '/viewpassage', component: PassageViewer, name: 'PassageViewer' },
+  { path: '/studies', component: Studies, name: 'Studies' },
   { path: '/activities', component: Activities, name: 'Activities' },
   { path: '/activity', component: Activity, name: 'Activity' },
   { path: '/reader', component: Reader, name: 'Reader' },
