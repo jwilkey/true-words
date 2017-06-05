@@ -44,7 +44,6 @@
 <script>
 import Titlebar from '../Titlebar'
 import YoutubePlayer from '../YoutubePlayer'
-import { scrollToView } from '../../js/polyfill'
 import $ from 'jquery'
 
 export default {
@@ -107,12 +106,6 @@ export default {
             description: v.snippet.description
           }
         })
-        self.$nextTick(() => {
-          var results = $('.video-result')
-          if (results.length > 2) {
-            scrollToView(results.eq(2), $('.video-results'))
-          }
-        })
       })
       .fail(err => {
         self.vids = err
@@ -166,6 +159,7 @@ export default {
   margin-bottom: 20px;
 }
 .video-results {
+  overflow: hidden;
   .video-result {
     border-bottom: solid 2px @color-back-raised2;
     margin-bottom: 5px;
