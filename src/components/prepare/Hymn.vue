@@ -2,7 +2,7 @@
   <div>
     <titlebar :title="'HYMN'" :left-items="['back']" :on-back="goBack"></titlebar>
 
-    <div class="container">
+    <div class="container" :class="{blur: videoId}">
       <div class="hymn-text">
         <div class="hymn-header">
           <p class="title">{{ title }}</p>
@@ -29,13 +29,13 @@
           <p class="video-description">{{ video.description }}</p>
         </div>
       </div>
+    </div>
 
-      <div class="video-embed" v-if="videoId">
-        <div class="video-close" @click="videoId = undefined">
-          <i class="fa fa-close"></i> CLOSE
-        </div>
-        <youtube-player :video-id="videoId"></youtube-player>
+    <div class="video-embed" v-if="videoId">
+      <div class="video-close" @click="videoId = undefined">
+        <i class="fa fa-close"></i> CLOSE
       </div>
+      <youtube-player :video-id="videoId"></youtube-player>
     </div>
   </div>
 </template>
