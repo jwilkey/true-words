@@ -21,7 +21,8 @@
         </div>
       </div>
 
-      <button class="btn btn-raised2 btn-block search-button" @click="fetchVideos(title)">SEARCH VIDEOS <i v-if="isLoadingVideos" class="fa fa-circle-o-notch fa-spin"></i></button>
+      <hr />
+
       <div class="video-results">
         <div v-for="video in videos" class="video-result clearfix" @click="videoId = video.id">
           <img :src="video.thumbnail" />
@@ -121,6 +122,7 @@ export default {
   },
   mounted () {
     this.loadHymn()
+    this.fetchVideos(this.title)
   }
 }
 </script>
