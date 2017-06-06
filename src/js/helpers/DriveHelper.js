@@ -33,7 +33,6 @@ export default {
       beforeSend: function (request) {
         request.setRequestHeader('Authorization', 'Bearer ' + authToken)
         request.setRequestHeader('Content-Type', 'multipart/related; boundary="-------314159265358979323846"')
-        request.setRequestHeader('Content-Length', data.length)
       },
       data: data
     })
@@ -46,7 +45,6 @@ export default {
       beforeSend: function (request) {
         request.setRequestHeader('Authorization', 'Bearer ' + authToken)
         request.setRequestHeader('Content-Type', 'application/json')
-        request.setRequestHeader('Content-Length', data.length)
       },
       data: data
     })

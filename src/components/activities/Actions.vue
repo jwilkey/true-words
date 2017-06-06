@@ -198,8 +198,10 @@ export default {
       if (this.actor) { words = words.concat(this.actor.words) }
       if (this.target) { words = words.concat(this.target.words) }
       if (this.result) { words = words.concat(this.result.words) }
+      this.$refs.selectableText.muteSelectedWords()
       this.$refs.selectableText.clearHighlight()
       this.$refs.selectableText.highlightWords(words)
+      this.$refs.selectableText.unmuteWords(this.action.words)
       this.$refs.selectableText.scrollTo(this.currentAction.action.words)
     },
     nextAction () {
