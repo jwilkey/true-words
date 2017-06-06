@@ -250,11 +250,13 @@ export default {
 }
 .action-header {
   display: table;
+  width: 100%;
   .delete-action {
     color: @color-highlight-red;
     display: table-cell;
     vertical-align: middle;
-    padding: 0 10px;
+    width: 40px;
+    padding: 0 12px;
     margin-bottom: 0px;
     border-right: solid 1px @color-back-raised2;
     font-size: 20px;
@@ -263,21 +265,21 @@ export default {
   .action-title {
     display: table-cell;
     vertical-align: middle;
-    width: 100%;
     font-size: 18px;
     font-family: 'Sinkin';
     padding: 8px;
     margin-bottom: 0px;
+    white-space: nowrap;
   }
   .step-value {
-    color: @color-highlight-green;
+    width: 100%;
     display: table-cell;
     vertical-align: middle;
-    padding: 0 8px;
+    padding: 8px;
     border-left: solid 1px @color-back-raised2;
     font-size: 18px;
     min-width: 30px;
-    text-align: center;
+    text-align: right;
   }
 }
 .action-instruction {
