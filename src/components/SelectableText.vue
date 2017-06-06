@@ -68,6 +68,18 @@ export default {
         $wordElement.attr('data-selection', this.currentSelectionIndex)
       })
     },
+    muteSelectedWords () {
+      $('.filled').addClass('mute-filled')
+      $('.filled').removeClass('filled')
+    },
+    unmuteWords (words) {
+      var self = this
+      words.forEach(word => {
+        var $elements = $('.word[data-id=' + self.wordId(word) + ']')
+        $elements.removeClass('mute-filled')
+        $elements.addClass('filled')
+      })
+    },
     clearFill (words) {
       var self = this
       words.forEach(word => {

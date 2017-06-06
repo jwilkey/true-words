@@ -104,8 +104,10 @@ export default {
       this.alert('Swipe right to extend the end of your selection\nSwipe left to decrease the end of your selection.\nSwipe up to extend the beginning of your selection\nSwipe down to decrease the beginning. \nTap once to finish selecting. \nTap twice to remove selection.', 'ok')
     },
     highlighCurrentAdjective () {
+      this.$refs.selectableText.muteSelectedWords()
       this.$refs.selectableText.clearHighlight()
       this.$refs.selectableText.highlightWords(this.currentAdjective.words)
+      this.$refs.selectableText.unmuteWords(this.currentAdjective.words)
       if (this.currentTarget) {
         this.$refs.selectableText.highlightWords(this.currentTarget.words)
       }

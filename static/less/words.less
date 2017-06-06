@@ -39,6 +39,18 @@
     border-right: solid 1px @color-back-raised2;
   }
 }
+.word.mute-filled {
+  border: solid 1px @color-callout;
+  box-shadow: inset 0px 0px 2px 1px @color-highlight-red;
+  &.fill-start {
+    border-bottom-left-radius: 6px;
+    border-top-left-radius: 6px;
+  }
+  &.fill-end {
+    border-bottom-right-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+}
 .word.highlighted {
   border-radius: 0px;
   border: solid 1px @color-highlight-blue;
