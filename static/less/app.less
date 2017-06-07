@@ -49,7 +49,7 @@ h2 {
   color: #eee;
 }
 a {
-  color: @color-button-hover-text;
+  color: @color-text;
   &:hover {
     color: @color-callout;
     text-decoration: none;
@@ -84,19 +84,19 @@ hr {
 }
 
 ::-webkit-input-placeholder { /* Chrome/Opera/Safari */
-  color: @color-input-placeholder;
+  color: @color-deemphasize;
   font-style: italic;
 }
 ::-moz-placeholder { /* Firefox 19+ */
-  color: @color-input-placeholder;
+  color: @color-deemphasize;
   font-style: italic;
 }
 :-ms-input-placeholder { /* IE 10+ */
-  color: @color-input-placeholder;
+  color: @color-deemphasize;
   font-style: italic;
 }
 :-moz-placeholder { /* Firefox 18- */
-  color: @color-input-placeholder;
+  color: @color-deemphasize;
   font-style: italic;
 }
 
@@ -201,6 +201,6 @@ hr {
   height: 100%;
   cursor: pointer;
   circle, line {
-    stroke: @color-callout-light;
+    stroke: @color-highlight-red;
   }
 }
