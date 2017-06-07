@@ -10,7 +10,7 @@
             </div>
             <div class="action-item">
               <p class="action-label">ACTION</p>
-              <div class="accent">{{action.action ? action.action.toString() : '?'}}</div>
+              <div class="blue">{{action.action ? action.action.toString() : '?'}}</div>
             </div>
             <div v-if="action.target" class="action-item">
               <p class="action-label">TARGET</p>

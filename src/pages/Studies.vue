@@ -62,14 +62,14 @@ export default {
   }
 }
 .study-label {
-  background-color: @color-back-raised2;
+  background-color: @color-back-raised;
   box-shadow: @shadow;
   border: solid 1px transparent;
   border-left: solid 3px transparent;
   padding: 10px;
   padding-left: 5px;
   &:hover {
-    border-left: solid 3px @color-selection1;
+    border-left: solid 3px @color-callout-light;
     cursor: pointer;
   }
   p {

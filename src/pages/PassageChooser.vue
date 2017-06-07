@@ -120,7 +120,7 @@ export default {
 }
 .testament:not(.active)>a:hover {
   background-color: transparent;
-  color: @color-button-hover-text !important;
+  color: @color-text !important;
   border-color: @color-callout-light;
 }
 .book {

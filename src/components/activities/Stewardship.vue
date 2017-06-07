@@ -30,7 +30,7 @@
 
     <div class="flex-zero bottombar clearfix">
       <div v-if="mode === 'context'">
-        <button class="btn btn-actionable btn-block" @click="contextQuestionsFinished()">NEXT</button>
+        <button class="btn btn-primary btn-block" @click="contextQuestionsFinished()">NEXT</button>
       </div>
 
       <div v-if="mode === 'text'">
@@ -40,9 +40,9 @@
           <div class="user-input" contenteditable="true"></div>
         </div>
         <transition name="fade">
-          <button v-if="currentStep !== 'time'" class="btn btn-xs btn-actionable alt pull-left" @click="previousStep()">PREVIOUS</button>
+          <button v-if="currentStep !== 'time'" class="btn btn-xs btn-primary alt pull-left" @click="previousStep()">PREVIOUS</button>
         </transition>
-        <button class="btn btn-xs btn-actionable alt pull-right" @click="nextPressed()">{{ nextButtonText }}</button>
+        <button class="btn btn-xs btn-primary alt pull-right" @click="nextPressed()">{{ nextButtonText }}</button>
       </div>
     </div>
   </div>

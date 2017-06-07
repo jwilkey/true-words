@@ -55,7 +55,7 @@
       </table>
 
       <div class="delete-view">
-        <button class="btn btn-primary alt" @click="deletePressed()">DELETE STUDY</button>
+        <button class="btn" @click="deletePressed()">DELETE STUDY</button>
       </div>
     </div>
   </div>
@@ -179,6 +179,9 @@ table {
     tr {
       border-bottom: solid 1px @color-back-raised;
       cursor: pointer;
+      &:hover {
+        border-bottom: solid 1px @color-callout-light;
+      }
       td {
         padding: 10px;
       }
@@ -193,11 +196,13 @@ table {
   float: right;
   padding: 10px;
   margin-top: 20px;
-}
-.warning {
-  color: @color-warning;
-  border: solid 1px @color-warning;
-  border-radius: 4px;
-  padding: 8px;
+  button {
+    color: @color-highlight-red;
+    background-color: transparent;
+    border: solid 2px @color-highlight-red;
+    &:hover {
+      box-shadow: inset 1px 0px 5px 2px @color-highlight-red;
+    }
+  }
 }
 </style>

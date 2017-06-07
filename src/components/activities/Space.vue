@@ -29,22 +29,22 @@
 
     <div class="actionbar-flex">
       <div v-if="showDoneButton" class="col-xs-12 space-done-button">
-        <button class="btn btn-actionable btn-block" @click="finished()">FINISHED</button>
+        <button class="btn btn-primary btn-block" @click="finished()">FINISHED</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-actionable alt btn-block" @click="actionSelected('S')">S</button>
+        <button class="btn btn-primary alt btn-block" @click="actionSelected('S')">S</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-actionable alt btn-block" @click="actionSelected('P')">P</button>
+        <button class="btn btn-primary alt btn-block" @click="actionSelected('P')">P</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-actionable alt btn-block" @click="actionSelected('A')">A</button>
+        <button class="btn btn-primary alt btn-block" @click="actionSelected('A')">A</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-actionable alt btn-block" @click="actionSelected('C')">C</button>
+        <button class="btn btn-primary alt btn-block" @click="actionSelected('C')">C</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-actionable alt btn-block" @click="actionSelected('E')">E</button>
+        <button class="btn btn-primary alt btn-block" @click="actionSelected('E')">E</button>
       </div>
     </div>
 

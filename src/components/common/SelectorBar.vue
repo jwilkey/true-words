@@ -35,19 +35,19 @@ export default {
 }
 .finish-button {
   padding: 7px 10px;
-  background-color: @color-actionable;
+  background-color: @color-callout-light;
   text-shadow: 1px 0px 1px black;
   margin: 0 3px;
   font-weight: bolder;
   letter-spacing: 1.5px;
   cursor: pointer;
   &:hover {
-    background-color: @color-actionable-focus;
+    color: @color-callout;
   }
 }
 .navigate-adjective {
   min-width: 90px;
-  background-color: @color-actionable;
+  background-color: @color-callout-light;
   text-shadow: 1px 0px 1px black;
   padding: 7px 10px;
   cursor: pointer;
@@ -55,7 +55,7 @@ export default {
     font-size: 14px;
   }
   &:hover {
-    background-color: @color-actionable-focus;
+    color: @color-callout;
   }
 }
 </style>

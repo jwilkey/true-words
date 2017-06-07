@@ -59,7 +59,7 @@
     </div>
 
     <div id="buckets-action" class="actionbar-flex">
-      <button class="btn-lg btn-actionable btn-block" @click="donePressed()">DONE</button>
+      <button class="btn-lg btn-clear btn-block" @click="donePressed()">DONE</button>
     </div>
   </div>
 </template>
@@ -324,7 +324,7 @@ export default {
   }
 }
 .bucket {
-  border: solid 1px @color-border;
+  border: solid 1px @color-back;
   text-align: center;
   letter-spacing: 2px;
   font-size: 19px;
@@ -443,15 +443,6 @@ export default {
   max-width: 30px;
   margin: auto;
   margin-top: 10px;
-}
-.word {
-  color: @color-back;
-  background-color: @color-selection1;
-  font-size: 20px;
-  border-radius: 4px;
-  padding: 12px;
-  box-shadow: @shadow;
-  transition: background-color 0.3s;
 }
 .scroll-tip {
   color: @color-deemphasize-more;

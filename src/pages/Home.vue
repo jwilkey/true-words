@@ -142,15 +142,16 @@ body {
   padding-bottom: 50px;
 }
 .testament-button {
+  color: @color-text;
   padding: 23px 5px 20px 5px;
   border-bottom: solid 2px transparent;
   float: left;
   width: 50%;
   letter-spacing: 1px;
   &:hover {
-    color: @color-button-hover-text;
+    color: @color-text;
     text-decoration: none;
-    border-bottom: solid 2px @color-selection1;
+    border-bottom: solid 2px @color-callout-light;
   }
   &:first-child {
     border-right: solid 1px @color-back;
@@ -192,14 +193,13 @@ body {
   }
 }
 .study-label {
-  background-color: @color-back-raised2;
-  box-shadow: @shadow;
-  border: solid 1px transparent;
-  border-left: solid 3px transparent;
+  border-bottom: solid 2px @color-back-raised2;
+  border-left: solid 2px @color-back-raised2;
   padding: 10px;
-  padding-left: 5px;
+  padding-left: 8px;
+  transition: border-left 0.5s;
   &:hover {
-    border-left: solid 3px @color-selection1;
+    border-left: solid 3px @color-callout-light;
     cursor: pointer;
   }
   p {

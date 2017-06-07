@@ -73,15 +73,6 @@ export default {
 body {
   padding-top: 55px;
 }
-h1 {
-  font-family: serif;
-  letter-spacing: 3px;
-  padding: 15px;
-  &:hover {
-    background-color: @color-back-raised;
-    color: @color-selection1;
-  }
-}
 .user-name {
   text-align: center;
   font-size: 20px;

@@ -49,7 +49,7 @@ export default {
   width: 33.33333%;
   float: left;
   color: white;
-  border: solid 1px @color-border;
+  border: solid 1px @color-back;
   text-align: center;
   letter-spacing: 2px;
   font-size: 19px;
@@ -57,7 +57,7 @@ export default {
 .back-dark {
   background-color: @color-back-raised;
   color: white;
-  border: solid 1px @color-border;
+  border: solid 1px @color-back;
   text-align: center;
   letter-spacing: 2px;
   font-size: 19px;

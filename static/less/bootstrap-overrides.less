@@ -1,5 +1,5 @@
 .btn {
-  font-size: 16px;
+  font-size: 17px;
   letter-spacing: 1px;
   &:focus {
     outline: none;
@@ -33,7 +33,7 @@
   border-color: @color-back-raised2;
   box-shadow: @shadow;
   &:hover, &:focus {
-    color: white;
+    color: @color-text;
     background-color: @color-back-raised2;
     border-color: @color-back-raised2;
     outline: none;
@@ -47,22 +47,24 @@
   letter-spacing: 1px;
   &:hover {
     color: @color-text;
+    background-color: @color-callout;
   }
 }
 
 .btn-primary {
-  background-color: @color-callout;
-  border-color: @color-callout;
+  background-color: @color-callout-light;
+  border-color: @color-callout-light;
   box-shadow: @shadow;
   &:hover {
     background-color: @color-callout-light;
-    border-color: @color-callout;
+    border-color: @color-callout-light;
+    color: @color-callout;
     outline: none;
   }
 }
 .btn-primary.alt {
   background-color: transparent;
-  color: @color-callout-light;
+  color: @color-text;
   font-weight: bolder;
   letter-spacing: 1px;
   &:hover {
@@ -70,32 +72,20 @@
   }
 }
 .btn-primary.disabled, .btn-primary.disabled:hover {
-  background-color: @color-disabled-button;
-  color: @color-disabled-button-text;
+  background-color: @color-text;
+  color: @color-back;
   border-color: transparent;
 }
 
-.btn-actionable {
-  background-color: @color-actionable;
-  border-color: @color-actionable;
-  text-shadow: 1px 0px 1px rgba(50,50,50,0.8);
-  letter-spacing: 1px;
-}
-.btn-actionable.alt, .btn-xs.btn-actionable.alt {
+.btn-clear {
   background-color: transparent;
-  color: @color-actionable;
-  border-color: @color-actionable;
-}
-.btn-actionable.disabled, .btn-actionable.disabled:hover {
-  background-color: @color-actionable-disabled;
-  color: @color-disabled-button-text;
   border-color: transparent;
-  text-shadow: none;
-}
-.btn-actionable:hover {
-  color: white;
-  background-color: @color-actionable-focus;
-  box-shadow: @shadow-light;
+  text-shadow: 1px 0px 1px rgba(50,50,50,0.8);
+  letter-spacing: 2px;
+  &:hover {
+    background-color: @color-callout;
+    color: @color-text;
+  }
 }
 
 .list-group {
@@ -104,7 +94,6 @@
     color: white;
     &:hover {
       color: white;
-      background-color: @color-back-highlight;
     }
   }
   .list-group-item {

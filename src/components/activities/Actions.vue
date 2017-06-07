@@ -9,7 +9,7 @@
 
       <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn btn-primary"><i class="fa fa-question-circle-o"></i> How to select...</button>
 
-      <button v-if="isMode('selected')" @click="beginDetailing" class="btn btn-actionable btn-block">NEXT</button>
+      <button v-if="isMode('selected')" @click="beginDetailing" class="btn btn-primary btn-block">NEXT</button>
 
       <div v-if="isMode('detailing')" class="actions-detail">
 
@@ -30,9 +30,9 @@
 
         <div class="step-actions">
           <div v-if="currentStep === 'tense'" id="tense-selector" class="flex-row">
-            <button class="btn btn-actionable" :class="{alt: this.tense !== 'past'}" @click="tenseSelected('past')">PAST</button>
-            <button class="btn btn-actionable" :class="{alt: this.tense !== 'present'}" @click="tenseSelected('present')">PRESENT</button>
-            <button class="btn btn-actionable" :class="{alt: this.tense !== 'future'}" @click="tenseSelected('future')">FUTURE</button>
+            <button class="btn btn-primary" :class="{alt: this.tense !== 'past'}" @click="tenseSelected('past')">PAST</button>
+            <button class="btn btn-primary" :class="{alt: this.tense !== 'present'}" @click="tenseSelected('present')">PRESENT</button>
+            <button class="btn btn-primary" :class="{alt: this.tense !== 'future'}" @click="tenseSelected('future')">FUTURE</button>
           </div>
         </div>
 
@@ -289,12 +289,6 @@ export default {
     top: 4px;
   }
 }
-.instruction-label {
-  color: @color-actionable;
-  border-right: solid 1px @color-actionable;
-  padding-right: 10px;
-  margin-right: 10px;
-}
 .action-instruction-sublabel {
   text-align: center;
   color: @color-deemphasize;
@@ -325,6 +319,7 @@ export default {
     margin-left: 2px;
     margin-right: 2px;
     &:focus, &:hover {
+      border-color: @color-callout-light;
       background-color: transparent;
       box-shadow: none;
     }

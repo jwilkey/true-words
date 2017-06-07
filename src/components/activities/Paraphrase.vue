@@ -30,7 +30,7 @@
 
     <div class="flex-zero">
       <div class="bottombar">
-        <button class="btn btn-actionable btn-block" @click="donePressed()">FINISHED</button>
+        <button class="btn btn-primary btn-block" @click="donePressed()">FINISHED</button>
       </div>
     </div>
 

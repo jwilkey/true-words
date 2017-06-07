@@ -39,11 +39,11 @@ export default {
   }
 }
 .card-header {
-  border-bottom: solid 1px @color-border;
+  border-bottom: solid 1px @color-back;
   background-color: @color-callout;
   .card-title {
     color: @color-text;
-    border-right: solid 1px @color-border;
+    border-right: solid 1px @color-back;
     padding: 10px;
     font-size: 18px;
     letter-spacing: 2px;

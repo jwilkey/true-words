@@ -31,7 +31,7 @@
 
         <div class="bottombar flex-zero">
           <p class="text-center passage-instruction">{{ actionText }}</p>
-          <button @click="actionPressed()" class="btn btn-lg btn-actionable btn-block" v-if="isPassageSelected">BEGIN</button>
+          <button @click="actionPressed()" class="btn btn-lg btn-primary btn-block" v-if="isPassageSelected">BEGIN</button>
         </div>
       </div>
     </div>

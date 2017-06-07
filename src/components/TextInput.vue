@@ -1,11 +1,11 @@
 <template>
   <div class="clearfix">
     <div class="text-input-titlebar clearfix">
-      <div class="text-input-title blue">
+      <div class="text-input-title">
         {{ title }}
       </div>
       <div class="text-input-done">
-        <button class="btn btn-actionable alt pull-right" @click="donePressed()">DONE</button>
+        <button class="btn btn-primary pull-right" @click="donePressed()">DONE</button>
       </div>
     </div>
     <div id="text-input" class="text-input" contenteditable="true">
@@ -44,7 +44,7 @@ export default {
     width: 100%;
     vertical-align: middle;
     letter-spacing: 2px;
-    font-family: serif;
+    color: @color-deemphasize;
   }
   .text-input-done {
     display: table-cell;

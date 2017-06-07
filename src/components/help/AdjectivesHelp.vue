@@ -15,13 +15,13 @@
       <p><strong><i class="fa fa-hand-o-down"/> Tap once</strong> to complete your selection.</p>
       <p><strong><i class="fa fa-hand-o-down"/> <i class="fa fa-hand-o-down"/> Tap twice</strong> to delete your selection.</p>
       <br />
-      <p>Click <span class="btn btn-actionable help-action">NEXT</span> to move on to Step 2</p>
+      <p>Click <span class="btn btn-primary help-action">NEXT</span> to move on to Step 2</p>
     </div>
     <hr />
     <p><strong><span class="step-label">Step 2</span> Add detail to adjectives (optional)</strong></p>
     <hr />
     <div>
-       In the same way as you selected each adjective, optionally select the target of each adjective (who or what the word is describing). Press <span class="btn btn-actionable help-action">DONE</span> when you are finished selecting targets, or to skip this step.
+       In the same way as you selected each adjective, optionally select the target of each adjective (who or what the word is describing). Press <span class="btn btn-primary help-action">DONE</span> when you are finished selecting targets, or to skip this step.
     </div>
   </div>
 </template>

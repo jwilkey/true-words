@@ -48,9 +48,9 @@ h1 {
   font-family: "Homizio";
   letter-spacing: 3px;
   padding: 15px;
+  transition: background-color 0.3s;
   &:hover {
     background-color: @color-back-raised;
-    color: @color-selection1;
   }
 }
 </style>

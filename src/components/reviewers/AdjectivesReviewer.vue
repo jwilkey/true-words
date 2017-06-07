@@ -22,7 +22,7 @@
 
 
     <div class="actionbar-flex">
-      <button @click="donePressed()" class="btn btn-lg btn-primary btn-block">DONE</button>
+      <button @click="donePressed()" class="btn btn-lg btn-clear btn-block">DONE</button>
     </div>
   </div>
 </template>

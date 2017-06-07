@@ -89,7 +89,7 @@ export default {
   text-align: center;
   float: left;
   letter-spacing: 2px;
-  border: solid 1px @color-border;
+  border: solid 1px @color-back;
   padding: 5px;
   margin-bottom: 10px;
 }

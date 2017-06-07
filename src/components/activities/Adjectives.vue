@@ -7,7 +7,7 @@
     <div class="flex-zero bottombar noselect">
       <p v-if="isMode('start')" class="instruction">Select an adjective</p>
       <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn btn-primary"><i class="fa fa-question-circle-o"></i> How to select...</button>
-      <button v-if="isMode('selected')" @click="nextPressed" class="btn btn-actionable btn-block">NEXT</button>
+      <button v-if="isMode('selected')" @click="nextPressed" class="btn btn-primary btn-block">NEXT</button>
 
       <div v-if="isMode('detailing')">
         <div class="detailing-label">
@@ -183,24 +183,26 @@ export default {
   margin-bottom: 5px;
   .finish-button {
     padding: 7px 10px;
-    background-color: @color-actionable;
+    background-color: transparent;
+    border: solid 1px @color-callout-light;
     text-shadow: 1px 0px 1px black;
     margin: 0 3px;
     font-weight: bolder;
     letter-spacing: 1.5px;
     cursor: pointer;
     &:hover {
-      background-color: @color-actionable-focus;
+      background-color: @color-callout;
     }
   }
   .navigate-adjective {
     min-width: 90px;
-    background-color: @color-actionable;
+    background-color: transparent;
+    border: solid 1px @color-callout-light;
     text-shadow: 1px 0px 1px black;
     padding: 7px 10px;
     cursor: pointer;
     &:hover {
-      background-color: @color-actionable-focus;
+      background-color: @color-callout;
     }
   }
 }

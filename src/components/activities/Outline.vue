@@ -14,7 +14,7 @@
 
     <div class="actionbar-flex">
       <div>
-        <button id="outline-action" class="btn btn-actionable btn-block" :class="{disabled: !isOutlined()}" @click="finishedClicked()">FINISHED</button>
+        <button id="outline-action" class="btn btn-primary btn-block" :class="{disabled: !isOutlined()}" @click="finishedClicked()">FINISHED</button>
       </div>
     </div>
   </div>
