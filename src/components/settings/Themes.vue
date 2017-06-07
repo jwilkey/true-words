@@ -7,9 +7,6 @@
     <div class="flex-one callout-light"> CALLOUT LIGHT </div>
 
     <div class="themes-overlay">
-      <div class="actionable"> <p>ACTIONABLE</p> </div>
-      <div class="actionable-focused"> </div>
-      <div class="actionable-disabled"> </div>
       <div class="highlights">
         <div class="back-red"> </div>
         <div class="back-blue"> </div>
@@ -52,38 +49,6 @@
   left: 0;
   right: 0;
   bottom: 0;
-
-  .actionable {
-    position: absolute;
-    top: 10%;
-    left: 40px;
-    background-color: @color-actionable;
-    width: 40px;
-    height: 80%;
-    color: @color-text;
-    padding-top: 20px;
-    p {
-      transform: rotate(90deg);
-      transform-origin: right top 80;
-    }
-  }
-  .actionable-focused {
-    position: absolute;
-    top: 10%;
-    left: 90px;
-    width: 20px;
-    height: 40%;
-    background-color: @color-actionable-focus;
-  }
-  .actionable-disabled {
-    position: absolute;
-    top: 50%;
-    left: 90px;
-    width: 20px;
-    height: 40%;
-    background-color: @color-actionable-disabled;
-  }
-
   .highlights, .highlights2 {
     position: absolute;
     top: 0;

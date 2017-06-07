@@ -85,6 +85,7 @@ export default {
     font-size: 16px;
   }
   margin-bottom: 0px;
+  color: @color-deemphasize;
 }
 .drive-connect {
   @media screen and (max-width: 767px) {
@@ -93,7 +94,6 @@ export default {
   @media (min-width: 768px) {
     font-size: 35px;
   }
-  color: @color-actionable;
   margin-bottom: 0px;
 }
 </style>

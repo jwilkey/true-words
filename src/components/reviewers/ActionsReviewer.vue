@@ -64,7 +64,7 @@ export default {
   .action {
     padding-bottom: 12px;
     .action-item:first-child {
-      border-left: solid 2px @color-actionable;
+      border-left: solid 2px @color-callout-light;
       padding-left: 15px;
     }
   }
@@ -79,7 +79,7 @@ export default {
 }
 .action-label {
   font-size: 12px;
-  color: @color-actionable;
+  color: @color-deemphasize;
   margin-bottom: 0px;
 }
 </style>
