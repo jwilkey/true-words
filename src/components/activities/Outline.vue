@@ -14,7 +14,7 @@
 
     <div class="actionbar-flex">
       <div>
-        <button id="outline-action" class="btn btn-primary btn-block" :class="{disabled: !isOutlined()}" @click="finishedClicked()">FINISHED</button>
+        <button id="outline-action" class="btn callout-light btn-block" :class="{disabled: !isOutlined()}" @click="finishedClicked()">FINISHED</button>
       </div>
     </div>
   </div>
@@ -39,10 +39,7 @@ export default {
   },
   props: ['finish', 'data'],
   computed: {
-    ...mapGetters(['getCurrentWords']),
-    paddingBottom () {
-      return $('.actionbar').height() + 18
-    }
+    ...mapGetters(['getCurrentWords'])
   },
   components: {
     SelectableText, SectionVue

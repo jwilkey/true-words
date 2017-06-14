@@ -1,6 +1,6 @@
 <template>
-  <div v-if="data !== undefined" class="flex-v">
-    <div class="flex-1">
+  <div v-if="data !== undefined" class="flex-column vfull">
+    <div class="flex-one scrolly">
       <div class="container" :class="{collapsed: hidePairings}">
         <button class="hide-show" @click="hidePairings = !hidePairings">
           <i v-if="hidePairings" class="fa fa-eye"></i>
@@ -8,12 +8,12 @@
         </button>
         <div class="spacer"> </div>
         <div v-for="adjective in data.collection.items" class="adjective-item">
-          <span class="adjective">{{ adjectiveText(adjective.wordSelection) }}</span>
-          <i v-if="adjective.target" class="fa fa-angle-right"></i>
-          <span v-if="adjective.target" class="target">{{ targetText(adjective.target) }}</span>
+          <span class="adjective back-red">{{ adjectiveText(adjective.wordSelection) }}</span><span v-if="adjective.target">-</span><span v-if="adjective.target" class="target back-purple">{{ targetText(adjective.target) }}</span>
         </div>
         <div v-if="hidePairings" class="shader"></div>
       </div>
+
+      <hr />
 
       <div class="adjective-words">
         <span :key="index" v-for="(word, index) in words" :class="wordClass(word)">{{ word.text }} </span>
@@ -21,7 +21,7 @@
     </div>
 
 
-    <div class="actionbar-flex">
+    <div class="bottombar flex-zero">
       <button @click="donePressed()" class="btn btn-lg btn-clear btn-block">DONE</button>
     </div>
   </div>
@@ -57,7 +57,7 @@ export default {
     },
     wordClass (word) {
       var found = this.adjectiveWords.find(w => word.verse === w.verse && word.index === w.index)
-      return found ? ['selected'] : []
+      return found ? ['red'] : []
     },
     donePressed: function () {
       this.$router.replace('/activities')
@@ -84,22 +84,11 @@ export default {
 .adjective-item {
   padding: 6px;
   float: left;
-  border: solid 1px @color-back-raised2;
   border-radius: 3px;
-  i {
-    color: @color-highlight-red;
-  }
 }
 .adjective, .target {
   padding: 4px;
   border-radius: 3px;
-  text-shadow: 1px 0px 1px black;
-}
-.adjective {
-  background-color: @color-highlight-red;
-}
-.target {
-  background-color: @color-highlight-purple;
 }
 
 .hide-show {
@@ -130,11 +119,7 @@ export default {
 
 .adjective-words {
   margin-top: 10px;
-  border-top: solid 1px @color-back-raised2;
   padding: 10px 15px;
   font-size: 18px;
-  .selected {
-    color: @color-highlight-red;
-  }
 }
 </style>

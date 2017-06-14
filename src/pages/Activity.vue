@@ -3,17 +3,17 @@
     <titlebar id="activity-titlebar" :title="title.toUpperCase()" :left-items="leftMenuItems" :right-items="rightMenuItems" :on-close="closePressed" :on-help="helpPressed" :on-select="titlebarSelect"></titlebar>
     <menubar></menubar>
 
-    <div id="activity" class="blur main-background">
+    <div id="activity" class="blur">
       <component ref="activity" v-if="getCurrentActivity && activityData" :is="currentActivity" :finish="onFinish" :data="activityData"></component>
     </div>
 
-    <div id="review" class="blur main-background">
+    <div id="review" class="blur">
       <component v-if="currentReviewer && activityData" :is="currentReviewer" :data="activityData"></component>
     </div>
 
     <div id="help" class="visible">
       <div class="help-container">
-        <div class="help-box">
+        <div class="help-box shadow-long">
           <div class="help-title">{{ title.toUpperCase() }}: HOW TO <span @click="helpDismiss()" class="glyphicon glyphicon-remove"></span></div>
           <component v-if="getCurrentActivity" :is="currentHelpView"></component>
           <button class="btn btn-block btn-help" @click="helpDismiss()">START</button>
@@ -278,7 +278,6 @@ body {
       border-radius: 5px;
       background-color: @color-help-back;
       color: @color-help;
-      box-shadow: @shadow-long;
       & > * {
         width: 100%;
       }

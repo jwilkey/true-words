@@ -7,32 +7,34 @@
     <div class="flex-zero bottombar">
       <p v-if="isMode('start')" class="instruction">Select an action</p>
 
-      <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn btn-primary"><i class="fa fa-question-circle-o"></i> How to select...</button>
+      <div class="text-center">
+        <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn callout-light"><i class="fa fa-question-circle-o"></i> How to select...</button>
+      </div>
 
-      <button v-if="isMode('selected')" @click="beginDetailing" class="btn btn-primary btn-block">NEXT</button>
+      <button v-if="isMode('selected')" @click="beginDetailing" class="btn callout-light btn-block">NEXT</button>
 
       <div v-if="isMode('detailing')" class="actions-detail">
 
         <div v-if="this.currentActionIndex !== undefined" class="action-header">
-          <i class="delete-action fa fa-trash-o" @click="deleteAction()"></i>
-          <p class="action-title">{{ action.toString() }}</p>
+          <i class="delete-action red hi-right fa fa-trash-o" @click="deleteAction()"></i>
+          <p class="action-title hi-right">{{ action.toString() }}</p>
           <p class="step-value">{{ stepValue }}</p>
         </div>
 
-        <div v-if="this.action" class="action-components flex-row">
-          <button @click="currentStep = 'actor'" class="btn btn-raised2 alt" :class="buttonClasses('actor')">Actor</button>
-          <button @click="currentStep = 'tense'" class="btn btn-raised2 alt" :class="buttonClasses('tense')">Tense</button>
-          <button @click="currentStep = 'target'" class="btn btn-raised2 alt" :class="buttonClasses('target')">Target</button>
-          <button @click="currentStep = 'result'" class="btn btn-raised2 alt" :class="buttonClasses('result')">Result</button>
+        <div v-if="this.action" class="action-components hi-top hi-bottom flex-row">
+          <button @click="currentStep = 'actor'" class="btn theme-hi hover" :class="buttonClasses('actor')">Actor</button>
+          <button @click="currentStep = 'tense'" class="btn theme-hi hover" :class="buttonClasses('tense')">Tense</button>
+          <button @click="currentStep = 'target'" class="btn theme-hi hover" :class="buttonClasses('target')">Target</button>
+          <button @click="currentStep = 'result'" class="btn theme-hi hover" :class="buttonClasses('result')">Result</button>
         </div>
 
         <div class="action-instruction text-center">{{ instructionText }}</div>
 
         <div class="step-actions">
           <div v-if="currentStep === 'tense'" id="tense-selector" class="flex-row">
-            <button class="btn btn-primary" :class="{alt: this.tense !== 'past'}" @click="tenseSelected('past')">PAST</button>
-            <button class="btn btn-primary" :class="{alt: this.tense !== 'present'}" @click="tenseSelected('present')">PRESENT</button>
-            <button class="btn btn-primary" :class="{alt: this.tense !== 'future'}" @click="tenseSelected('future')">FUTURE</button>
+            <button class="btn callout-light" :class="{alt: this.tense !== 'past'}" @click="tenseSelected('past')">PAST</button>
+            <button class="btn callout-light" :class="{alt: this.tense !== 'present'}" @click="tenseSelected('present')">PRESENT</button>
+            <button class="btn callout-light" :class="{alt: this.tense !== 'future'}" @click="tenseSelected('future')">FUTURE</button>
           </div>
         </div>
 
@@ -123,7 +125,7 @@ export default {
     },
     buttonClasses (step) {
       return new ConditionalArray(this[step] !== undefined, 'completed')
-      .and(step === this.currentStep, 'current')
+      .and(step !== this.currentStep, 'alt')
       .toArray()
     },
     deleteAction () {
@@ -252,13 +254,11 @@ export default {
   display: table;
   width: 100%;
   .delete-action {
-    color: @color-highlight-red;
     display: table-cell;
     vertical-align: middle;
     width: 40px;
     padding: 0 12px;
     margin-bottom: 0px;
-    border-right: solid 1px @color-back-raised2;
     font-size: 20px;
     cursor: pointer;
   }
@@ -276,7 +276,6 @@ export default {
     display: table-cell;
     vertical-align: middle;
     padding: 8px;
-    border-left: solid 1px @color-back-raised2;
     font-size: 18px;
     min-width: 30px;
     text-align: right;
@@ -289,26 +288,16 @@ export default {
     top: 4px;
   }
 }
-.action-instruction-sublabel {
-  text-align: center;
-  color: @color-deemphasize;
-  font-size: 14px;
-  margin: 0px;
-}
 .step-actions {
   padding-bottom: 8px;
   p {
     margin-bottom: 0;
   }
-  .clear-step {
-    color: @color-callout-light;
-    text-decoration: underline;
-    white-space: nowrap;
-  }
+}
+.btn.theme-hi.current {
+  background-color: #999;
 }
 .action-components {
-  border-bottom: solid 1px @color-back-raised2;
-  border-top: solid 1px @color-back-raised2;
   padding-top: 8px;
   padding-bottom: 8px;
   margin-bottom: 8px;
@@ -319,28 +308,11 @@ export default {
     margin-left: 2px;
     margin-right: 2px;
     &:focus, &:hover {
-      border-color: @color-callout-light;
-      background-color: transparent;
       box-shadow: none;
     }
     &.completed {
       border-bottom-color: @color-highlight-green !important;
       border-bottom-width: 2px;
-    }
-    &.current {
-      background-color: @color-back-raised;
-      border-color: @color-highlight-blue;
-    }
-  }
-  .cancel-button {
-    border-left: solid 1px @color-back-raised;
-    padding-top: 2px;
-    padding-right: 4px;
-    padding-left: 8px;
-    margin-left: 8px;
-    img {
-      width: 30px;
-      height: 30px;
     }
   }
 }
@@ -351,9 +323,6 @@ export default {
   margin-top: 8px;
 }
 
-.action-items {
-  color: @color-deemphasize;
-}
 .step-selection {
   padding: 10px;
   p {

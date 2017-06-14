@@ -1,25 +1,24 @@
 <template>
   <div class="flex-v">
     <div class="flex-1">
-      <div class="overlay">
+      <div class="overlay theme-mid shadow-long">
         <text-input ref="textInput" :title="textInputTitle" :done="textInputDone"></text-input>
       </div>
+
       <div class="container">
-        <ul class="list-group">
-          <li v-for="verse in getCurrentStudy.verses" class="list-group-item verse-container" :data-verse="verse.number" @click="verseSelected($event.target)">
-            <div class="verse">
-              <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
-            </div>
-          </li>
-        </ul>
+        <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number" @click="verseSelected($event.target)">
+          <div class="verse theme-mid hover">
+            <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+          </div>
+        </div>
 
         <hr />
 
         <div v-if="data" class="space-progress">
           <div v-for="container in data.containers" v-if="container.items.length > 0">
-            <p class="space-title">{{ containerLabels[container.name] }}</p>
+            <p class="space-title muted">{{ containerLabels[container.name] }}</p>
             <div v-for="(item, index) in container.items" class="flex-row">
-              <p class="flex-one space-entry" @click="editEntry(item, container)">{{ item.text }}</p>
+              <p class="flex-one space-entry input" @click="editEntry(item, container)">{{ item.text }}</p>
               <img class="flex-zero" src="/static/images/close.svg" @click="deleteEntry(index, container)" />
             </div>
           </div>
@@ -29,22 +28,22 @@
 
     <div class="actionbar-flex">
       <div v-if="showDoneButton" class="col-xs-12 space-done-button">
-        <button class="btn btn-primary btn-block" @click="finished()">FINISHED</button>
+        <button class="btn callout-light btn-block" @click="finished()">FINISHED</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-primary alt btn-block" @click="actionSelected('S')">S</button>
+        <button class="btn callout-light alt btn-block" @click="actionSelected('S')">S</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-primary alt btn-block" @click="actionSelected('P')">P</button>
+        <button class="btn callout-light alt btn-block" @click="actionSelected('P')">P</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-primary alt btn-block" @click="actionSelected('A')">A</button>
+        <button class="btn callout-light alt btn-block" @click="actionSelected('A')">A</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-primary alt btn-block" @click="actionSelected('C')">C</button>
+        <button class="btn callout-light alt btn-block" @click="actionSelected('C')">C</button>
       </div>
       <div class="col-xs-5c">
-        <button class="btn btn-primary alt btn-block" @click="actionSelected('E')">E</button>
+        <button class="btn callout-light alt btn-block" @click="actionSelected('E')">E</button>
       </div>
     </div>
 
@@ -140,8 +139,6 @@ export default {
   position: absolute;
   width: 100%;
   z-index: 100;
-  background-color: @color-back;
-  box-shadow: @shadow-long;
 }
 
 .verse-container {
@@ -151,27 +148,22 @@ export default {
   }
 }
 .verse {
-  color: white;
-  background-color: @color-back-raised;
   padding: 5px;
   font-size: 18px;
 }
-.verse:hover {
-  background-color: @color-back-raised2;
-}
 .verse-number {
   color: #999;
+  vertical-align: super;
+  font-size: 12px;
 }
 .space-progress {
   .space-title {
     margin-top: 8px;
     margin-bottom: 0px;
-    color: @color-deemphasize;
   }
   .space-entry {
     margin-bottom: 0px;
     padding: 5px;
-    border: solid 1px @color-back-raised2;
     border-radius: 3px;
     margin-bottom: 5px;
     cursor: pointer;

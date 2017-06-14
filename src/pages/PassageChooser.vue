@@ -4,36 +4,33 @@
         <a slot="right" @click="chooseBible()">{{ getCurrentBible }}</a>
     </titlebar>
 
-    <div class="container">
-      <ul class="nav nav-pills" role="tablist">
-        <li role="presentation" class="testament">
-          <a id="ot-tab" href="#ot-chooser" aria-controls="ot-chooser" role="tab" data-toggle="tab">Old Testament</a>
-        </li>
-        <li role="presentation" class="testament">
-          <a id="nt-tab" href="#nt-chooser" aria-controls="nt-chooser" role="tab" data-toggle="tab">New Testament</a>
-        </li>
-        <a href="#chapter-chooser" aria-controls="chapter-chooser" role="tab" data-toggle="tab"></a>
-      </ul>
+    <div class="container theme-back">
+      <div class="flex-row testament-tabs">
+        <button @click="toggleTestament('OT')" class="btn flex-one callout-light" :class="{alt: testament === 'NT'}">OLD TESTAMENT</button>
+        <button @click="toggleTestament('NT')" class="btn flex-one callout-light" :class="{alt: testament === 'OT'}">NEW TESTAMENT</button>
+      </div>
 
-      <div id="passageChooser" class="tab-content">
-        <div id="ot-chooser" role="tabpanel" class="tab-pane fade clearfix">
-          <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="(book, index) in otBooks">
-            <div :key="index" @click='bookSelected($event.target)' class='book-name' :data-book="book.identifier">{{ book.name }}</div>
+      <div id="passageChooser">
+        <div v-if="!selectedBook">
+          <div id="ot-chooser" v-if="testament === 'OT'" class="clearfix">
+            <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="(book, index) in otBooks">
+              <div :key="index" @click='bookSelected($event.target)' class='book-name shadow theme-mid hover' :data-book="book.identifier">{{ book.name }}</div>
+            </div>
+          </div>
+
+          <div id="nt-chooser" v-if="testament === 'NT'" class="clearfix">
+            <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="(book, index) in ntBooks">
+              <div :key="index" @click='bookSelected($event.target)' class='book-name shadow theme-mid hover' :data-book="book.identifier">{{ book.name }}</div>
+            </div>
           </div>
         </div>
 
-        <div id="nt-chooser" role="tabpanel" class="tab-pane fade clearfix">
-          <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="(book, index) in ntBooks">
-            <div :key="index" @click='bookSelected($event.target)' class='book-name' :data-book="book.identifier">{{ book.name }}</div>
-          </div>
-        </div>
-
-        <div id="chapter-chooser" role="tabpanel" class="tab-pane fade clearfix">
-          <p class="selected-book text-center">{{ selectedBookName }}</p>
+        <div v-if="selectedBook" id="chapter-chooser" class="clearfix">
+          <p class="selected-book text-center theme-mid">{{ selectedBookName }}</p>
           <div class="col-xs-2 col-md-1 chapter" v-for="(n, index) in chapterCount">
             <div class="chapter-sizer"></div>
             <div :key="index" @click='chapterSelected($event.target)' class='chapter-label-container' :data-chapter="n">
-              <p class="chapter-label">{{ n }}</p>
+              <p class="chapter-label shadow theme-mid hover">{{ n }}</p>
             </div>
           </div>
         </div>
@@ -52,7 +49,8 @@ export default {
   data () {
     return {
       otBooks: Bible.otBooks,
-      selectedBook: 'MATTHEW',
+      testament: 'NT',
+      selectedBook: undefined,
       selectedBookName: Bible.bookName(this.selectedBook),
       selectedChapter: 1,
       chapterCount: 0,
@@ -73,6 +71,10 @@ export default {
     })
   },
   methods: {
+    toggleTestament (tm, target, otherTarget) {
+      this.testament = tm
+      this.selectedBook = undefined
+    },
     chooseBible () {
       this.$router.push('bible_chooser')
     },
@@ -94,53 +96,25 @@ export default {
 <style lang="less">
 @import '../../static/less/colors.less';
 @import '../../static/less/bootstrap-overrides.less';
-.nav>li {
-  width: 49.6%;
-  padding-right: 5px;
-  padding-left: 5px;
-  a {
-    text-align: center;
-    color: #fdd;
-    padding: 5px;
-    padding-left: 15px;
-    padding-right: 15px;
-    border-radius: 16px;
-    border: solid 1px @color-callout;
+
+.testament-tabs {
+  margin: 10px 0px;
+  button {
+    margin: 0px 5px;
   }
-}
-.nav-pills>li>a:hover {
-  color: @color-back;
-  background-color: #fdd;
-}
-.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
-  background-color: @color-callout;
-}
-.tab-pane {
-  padding-top: 10px;
-}
-.testament:not(.active)>a:hover {
-  background-color: transparent;
-  color: @color-text !important;
-  border-color: @color-callout-light;
 }
 .book {
   padding: 4px;
 }
 .book-name {
-  background-color: @color-back-raised;
   padding: 7px 5px 7px 5px;
   text-align: center;
   border-radius: 2px;
-  box-shadow: @shadow;
   font-size: 18px;
   cursor: pointer;
 }
-.book-name:hover {
-  background-color: @color-back-raised2;
-}
 .selected-book {
   font-size: 18px;
-  background-color: @color-back-raised;
   padding: 7px 5px 7px 5px;
   border-radius: 1px;
   letter-spacing: 2px;
@@ -162,7 +136,6 @@ export default {
   padding: 2px;
 }
 .chapter-label {
-  background-color: @color-back-raised;
   height: 100%;
   width: 100%;
   display: flex;
@@ -171,10 +144,6 @@ export default {
   border-radius: 1px;
   text-align: center;
   font-size: 18px;
-  box-shadow: @shadow;
   cursor: pointer;
-}
-.chapter-label:hover {
-  background-color: @color-back-raised2;
 }
 </style>

@@ -2,39 +2,39 @@
   <div v-if="data !== undefined" class="flex-column vfull">
     <div class="flex-one scrolly bottompad">
       <div class="container">
-        <p class="title-label brand-font">Life Context - <span class="subtitle-label">3 days following {{ getCurrentStudy.lastEditLabel() }}</span></p>
+        <p class="title-label callout brand-font shadow-light">Life Context - <span class="muted">3 days following {{ getCurrentStudy.lastEditLabel() }}</span></p>
 
         <p v-if="timeEntry.freeText.text" class="question">{{ timeEntry.questionText }}</p>
-        <p v-if="timeEntry.freeText.text" class="answer">{{ timeEntry.freeText.text }}</p>
+        <p v-if="timeEntry.freeText.text" class="list-item">{{ timeEntry.freeText.text }}</p>
 
         <p v-if="moneyEntry.freeText.text" class="question">{{ moneyEntry.questionText }}</p>
-        <p v-if="moneyEntry.freeText.text" class="answer">{{ moneyEntry.freeText.text }}</p>
+        <p v-if="moneyEntry.freeText.text" class="list-item">{{ moneyEntry.freeText.text }}</p>
 
         <p v-if="thoughtsEntry.freeText.text" class="question">{{ thoughtsEntry.questionText }}</p>
-        <p v-if="thoughtsEntry.freeText.text" class="answer">{{ thoughtsEntry.freeText.text }}</p>
+        <p v-if="thoughtsEntry.freeText.text" class="list-item">{{ thoughtsEntry.freeText.text }}</p>
 
         <p v-if="peopleEntry.freeText.text" class="question">{{ peopleEntry.questionText }}</p>
-        <p v-if="peopleEntry.freeText.text" class="answer">{{ peopleEntry.freeText.text }}</p>
+        <p v-if="peopleEntry.freeText.text" class="list-item">{{ peopleEntry.freeText.text }}</p>
 
-        <p class="title-label brand-font">How this passage should affect:</p>
+        <p class="title-label callout brand-font shadow-light">How this passage should affect...</p>
 
         <p class="question">...{{ affectTimeEntry.questionText }}</p>
-        <p class="answer">{{ affectTimeEntry.freeText.text }}</p>
+        <p class="list-item">{{ affectTimeEntry.freeText.text }}</p>
 
         <p class="question">...{{ affectMoneyEntry.questionText }}</p>
-        <p class="answer">{{ affectMoneyEntry.freeText.text }}</p>
+        <p class="list-item">{{ affectMoneyEntry.freeText.text }}</p>
 
         <p class="question">...{{ affectThoughtsEntry.questionText }}</p>
-        <p class="answer">{{ affectThoughtsEntry.freeText.text }}</p>
+        <p class="list-item">{{ affectThoughtsEntry.freeText.text }}</p>
 
         <p class="question">...{{ affectPeopleEntry.questionText }}</p>
-        <p class="answer">{{ affectPeopleEntry.freeText.text }}</p>
+        <p class="list-item">{{ affectPeopleEntry.freeText.text }}</p>
       </div>
     </div>
 
     <div class="flex-zero bottombar">
       <div class="col-xs-12">
-        <button @click="donePressed()" class="btn btn-lg btn-primary btn-block">DONE</button>
+        <button @click="donePressed()" class="btn btn-lg callout-light btn-block">DONE</button>
       </div>
     </div>
   </div>
@@ -98,15 +98,8 @@ export default {
 .title-label {
   margin-top: 10px;
   padding: 5px;
-  border-top: solid 1px @color-back-raised;
-  border-bottom: solid 1px @color-back-raised;
-  background-color: @color-back-raised;
-  .subtitle-label {
-    color: @color-deemphasize;
-  }
 }
 .question {
-  color: @color-highlight-blue;
   margin-bottom: 0px;
 }
 .answer {

@@ -2,57 +2,41 @@
   <div class="">
     <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
-    <div class="passage-label brand-font">
+    <div class="passage-label brand-font theme-back">
       {{ getCurrentStudy.passage.description() }}
     </div>
 
-    <div class="container main-background">
+    <div class="container">
       <div v-if="!getPersistor.isLoggedIn()" class="text-center">
-        <button class="btn btn-primary" @click="login()">Login to save your work</button>
+        <button class="btn callout-light" @click="login()">Login to save your work</button>
         <hr />
       </div>
 
-      <div class="stage-heading"><span class="stage-title">PREPARE</span></div>
-      <table>
-        <tbody>
-          <tr @click="goToReaderView()">
-            <td>Read the text</td>
-          </tr>
-          <tr @click="goToHymnView()">
-            <td>Hymns</td>
-          </tr>
-        </tbody>
-      </table>
+      <card title="PREPARE">
+        <div @click="goToReaderView()" class="list-item theme-mid">Read the text</div>
+        <div @click="goToHymnView()" class="list-item theme-mid">Hymns</div>
+      </card>
 
-      <div class="stage-heading"><span class="stage-title">OBSERVE</span><span class="stage-subtitle">What does it say?</span></div>
-      <table>
-        <tbody>
-          <tr v-for="type in activities.manager.observationActivities" @click="activitySelected(type)">
-            <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right completion" v-html="completionPhrase(type)"></td>
-          </tr>
-        </tbody>
-      </table>
+      <card title="OBSERVE" subtitle="What does it say?">
+        <div v-for="type in activities.manager.observationActivities" class="list-item flex-row theme-mid" @click="activitySelected(type)">
+          <div class="flex-one">{{ activities.manager.titleForType(type) }}</div>
+          <div class="flex-zero nowrap text-right" v-html="completionPhrase(type)"></div>
+        </div>
+      </card>
 
-      <div class="stage-heading"><span class="stage-title">INTERPRET</span><span class="stage-subtitle">What does it mean?</span></div>
-      <table>
-        <tbody>
-          <tr v-for="type in activities.manager.interpretationActivities" @click="activitySelected(type)">
-            <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right completion" v-html="completionPhrase(type)"></td>
-          </tr>
-        </tbody>
-      </table>
+      <card title="INTERPRET" subtitle="What does it mean?">
+        <div v-for="type in activities.manager.interpretationActivities" class="list-item flex-row theme-mid" @click="activitySelected(type)">
+          <div class="flex-one">{{ activities.manager.titleForType(type) }}</div>
+          <div class="flex-zero nowrap text-right" v-html="completionPhrase(type)"></div>
+        </div>
+      </card>
 
-      <div class="stage-heading"><span class="stage-title">APPLY</span><span class="stage-subtitle">What should I do?</span></div>
-      <table>
-        <tbody>
-          <tr v-for="type in activities.manager.applicationActivities" @click="activitySelected(type)">
-            <td>{{ activities.manager.titleForType(type) }}</td>
-            <td class="text-right completion" v-html="completionPhrase(type)"></td>
-          </tr>
-        </tbody>
-      </table>
+      <card title="APPLY" subtitle="What should I do?">
+        <div v-for="type in activities.manager.applicationActivities" class="list-item flex-row theme-mid" @click="activitySelected(type)">
+          <div class="flex-one">{{ activities.manager.titleForType(type) }}</div>
+          <div class="flex-zero nowrap text-right" v-html="completionPhrase(type)"></div>
+        </div>
+      </card>
 
       <div class="delete-view">
         <button class="btn" @click="deletePressed()">DELETE STUDY</button>
@@ -64,6 +48,7 @@
 <script>
 import activities from '../js/activity'
 import Titlebar from '../components/Titlebar'
+import Card from '../components/Card'
 import { mapActions, mapGetters } from 'vuex'
 
 export default {
@@ -73,7 +58,7 @@ export default {
     }
   },
   components: {
-    Titlebar
+    Titlebar, Card
   },
   props: ['data'],
   computed: {
@@ -152,45 +137,6 @@ function daysAgo (date) {
   padding: 10px;
   letter-spacing: 1px;
   font-size: 20px;
-}
-.stage-heading {
-  background-color: @color-back-raised;
-  padding: 10px;
-}
-.stage-title {
-  letter-spacing: 1px;
-}
-.stage-subtitle {
-  color: @color-deemphasize;
-  margin-left: 10px;
-  padding-left: 10px;
-  border-left: solid 1px @color-callout-light;
-}
-table {
-  width: 100%;
-  margin-bottom: 15px;
-  thead tr {
-    background-color: @color-back-raised;
-    th {
-      padding: 10px;
-    }
-  }
-  tbody {
-    tr {
-      border-bottom: solid 1px @color-back-raised;
-      cursor: pointer;
-      &:hover {
-        border-bottom: solid 1px @color-callout-light;
-      }
-      td {
-        padding: 10px;
-      }
-      .completion {
-        white-space: nowrap;
-        letter-spacing: -0.5px;
-      }
-    }
-  }
 }
 .delete-view {
   float: right;

@@ -3,18 +3,18 @@
     <titlebar :title="'HYMNS'" :left-items="['back']" :on-back="goBack"></titlebar>
 
     <div class="container">
-      <p class="inspired-by">Inspired by {{ passage }}</p>
-      <p v-if="isLoading" class="hymns-loading"><i class="fa fa-circle-o-notch fa-spin"/> Loading</p>
+      <p class="inspired-by muted">Inspired by {{ passage }}</p>
+      <p v-if="isLoading" class="hymns-loading blue"><i class="fa fa-circle-o-notch fa-spin"/> Loading</p>
       <div v-if="error">
         Error loading hymns...
       </div>
       <p v-if="hymns.length === 0" class="text-center">no hymns found for this passage</p>
 
-      <div class="list-group hymns">
-        <div v-for="hymn in hymns" @click="hymnSelected(hymn)" class="list-group-item">
-          <span class="badge">{{ hymn["scripture references"] }}</span>
+      <div class="hymns">
+        <div v-for="hymn in hymns" @click="hymnSelected(hymn)" class="list-item shadow-light theme-mid">
+          <span class="badge pull-right">{{ hymn["scripture references"] }}</span>
           <p class="title">{{ hymn.title }}</p>
-          <p class="author">{{ hymn.author}}</p>
+          <p class="muted">{{ hymn.author}}</p>
         </div>
       </div>
     </div>
@@ -70,31 +70,18 @@ export default {
 @import '../../../static/less/flex.less';
 
 .inspired-by {
-  color: @color-deemphasize;
   font-size: 18px;
   text-align: center;
-  border-bottom: solid 1px @color-back-raised2;
   padding-bottom: 10px;
 }
 .hymns-loading {
   text-align: center;
   font-size: 20px;
-  color: @color-highlight-blue;
   margin-top: 30px;
 }
-.author {
-  color: @color-deemphasize;
-}
 .hymns {
-  p {
-    margin: 0px;
-  }
-  .list-group-item {
-    border-bottom: solid 1px @color-back-raised2;
-    cursor: pointer;
-    &:hover {
-      background-color: rgba(255, 255, 255, 0.2);
-    }
+  .list-item {
+    margin-bottom: 8px;
   }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="titlebar">
+  <div class="titlebar theme-mid shadow">
     <div class="titlebar-item-group left">
       <a v-if="showLeft('close')" class="titlebar-item" data-title="close" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
       <router-link v-if="showLeft('home')" data-title="home" class="titlebar-item" to="/">
@@ -83,17 +83,10 @@ export default {
   top: 0;
   z-index: 100;
   width: 100%;
-  color: #eee;
-  background-color: @color-back;
   padding-top: 10px;
   padding-bottom: 10px;
-  box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.9);;
   font-size: 16px;
   letter-spacing: 3px;
-  a:hover {
-    color: @color-callout-light;
-    text-decoration: none;
-  }
   .titlebar-item-group {
     position: absolute;
     @media screen and (max-width: 767px) {
@@ -122,6 +115,9 @@ export default {
       min-width: 35px;
       cursor: pointer;
       letter-spacing: 1px;
+      i {
+        font-size: 18px;
+      }
     }
   }
 }

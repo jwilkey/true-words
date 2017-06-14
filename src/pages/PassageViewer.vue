@@ -2,9 +2,9 @@
   <div>
     <titlebar :left-items="['back']" :on-back="goBack">
       <div slot="center" class="btn-group" role="group" aria-label="chapter-nav">
-        <button type="button" @click="chapterBack()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-left"></span></button>
-        <button type="button" @click="bookNavSelected()" class="btn btn-default off">{{ bible.bookName(bookIdentifier) }} {{ chapter }}</button>
-        <button type="button" @click="chapterForward()" class="btn btn-default"><span class="glyphicon glyphicon-chevron-right"></span></button>
+        <button type="button" @click="chapterBack()" class="btn theme-mid shadow"><span class="glyphicon glyphicon-chevron-left"></span></button>
+        <button type="button" @click="bookNavSelected()" class="btn theme-mid shadow off">{{ bible.bookName(bookIdentifier) }} {{ chapter }}</button>
+        <button type="button" @click="chapterForward()" class="btn theme-mid shadow"><span class="glyphicon glyphicon-chevron-right"></span></button>
       </div>
       <div slot="right">
         <span class="verses-style glyphicon" :class="readingModeButtonClass" @click="toggleTextStyle()"></span>
@@ -17,21 +17,21 @@
           <div class="container">
             <div class="verses" :class="{loading: loading, inline: readingMode === 'inline'}">
               <h1 class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></h1>
-              <div v-for="verse in verses" class="verse" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
-                <span class="verse-number">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
+              <div v-for="verse in verses" class="verse theme-mid hover" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
+                <span class="verse-number muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
               </div>
             </div>
           </div>
 
           <div class="navigation">
-            <button @click="chapterBack()" class="btn btn-navigate">PREV</button>
-            <button @click="chapterForward()" class="btn btn-navigate">NEXT</button>
+            <button @click="chapterBack()" class="btn btn-navigate callout-light alt hover">PREV</button>
+            <button @click="chapterForward()" class="btn btn-navigate callout-light alt hover">NEXT</button>
           </div>
         </div>
 
         <div class="bottombar flex-zero">
           <p class="text-center passage-instruction">{{ actionText }}</p>
-          <button @click="actionPressed()" class="btn btn-lg btn-primary btn-block" v-if="isPassageSelected">BEGIN</button>
+          <button @click="actionPressed()" class="btn btn-lg callout-light btn-block" v-if="isPassageSelected">BEGIN</button>
         </div>
       </div>
     </div>
@@ -195,15 +195,10 @@ export default {
     text-align: center;
     padding-top: 10px;
     .btn-navigate {
-      background-color: transparent;
-      color: @color-back-raised2;
       border: none;
       border-radius: 0px;
-      &:hover {
-        color: @color-deemphasize;
-      }
       &:first-child {
-        border-right: solid 1px @color-back-raised2;
+        border-right: solid 1px @color-deemphasize;
       }
     }
   }
@@ -227,27 +222,12 @@ export default {
   vertical-align: middle;
 }
 
-.btn-default {
-  background-color: @color-back-raised;
-  color: @color-text;
-  border-color: @color-back;
-  box-shadow: @shadow;
-}
-.selected-book {
-  font-size: 16px;
-  background-color: @color-back-raised;
-  padding: 5px;
-  padding-bottom: 2px;
-  border-radius: 1px;
-}
 .verses {
   transition: opacity 0.5s;
   &.loading {
     opacity: 0.5;
   }
   .verse {
-    background-color: @color-back-raised;
-    color: @color-text;
     padding: 1px 10px 1px 10px;
     font-size: 18px;
     margin-bottom: 2px;
@@ -255,16 +235,9 @@ export default {
   }
   .verse.selected, .verse.selected:hover {
     background-color: @color-highlight-blue;
-    color: @color-back;
-    .verse-number {
-      color: @color-callout-light;
-    }
-  }
-  .verse:hover {
-    background-color: @color-back-raised2;
+    color: @color-highlight-contrast;
   }
   .verse-number {
-    color: #999;
     padding-right: 2px;
     vertical-align: super;
     font-size: 12px !important;
@@ -272,7 +245,7 @@ export default {
   &.inline {
     padding-left: 10px;
     padding-right: 10px;
-    background-color: @color-back;
+    background-color: transparent;
     .verse {
       display: inline;
       background-color: transparent;
@@ -281,9 +254,6 @@ export default {
       &.selected, &.selected:hover {
         color: @color-highlight-blue;
         background-color: transparent;
-        .verse-number {
-          color: @color-deemphasize;
-        }
       }
     }
     .verse-number {

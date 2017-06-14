@@ -1,37 +1,33 @@
 <template>
   <div class="flex-column vfull">
-    <div id="paraphrase-container" class="flex-zero">
-      <div class="paraphrase-input" contenteditable="true">
+    <div id="paraphrase-container" class="flex-zero shadow-long theme-mid">
+      <div class="paraphrase-input input" contenteditable="true">
 
       </div>
       <div class="paraphrase-menu">
-        <button id="paraphrase-collapse" class="btn btn-raised btn-xs" @click="toggleParaphraseCollapse()">
+        <button id="paraphrase-collapse" class="btn theme-mid shadow btn-xs" @click="toggleParaphraseCollapse()">
           <span class="glyphicon glyphicon-triangle-top"></span>
           <span class="glyphicon glyphicon-triangle-bottom"></span>
         </button>
         <p class="paraphrasing-summary muted"></p>
-        <button id="paraphrase-done" class="btn btn-primary btn-xs" @click="doneParaphrasing()">DONE</button>
+        <button id="paraphrase-done" class="btn callout-light btn-xs" @click="doneParaphrasing()">DONE</button>
       </div>
     </div>
 
     <div class="flex-one scrolly content">
       <div class="container">
-        <ul class="list-group">
-          <li v-for="verse in getCurrentStudy.verses" class="list-group-item verse-container" :data-verse="verse.number" @click="verseSelected($event.target)">
-            <div class="verse">
-              <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
-            </div>
-            <div class="paraphrase">
-            </div>
-          </li>
-        </ul>
+        <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number" @click="verseSelected($event.target)">
+          <div class="verse theme-mid hover">
+            <span class="verse-number muted">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+          </div>
+          <div class="paraphrase muted">
+          </div>
+        </div>
       </div>
     </div>
 
-    <div class="flex-zero">
-      <div class="bottombar">
-        <button class="btn btn-primary btn-block" @click="donePressed()">FINISHED</button>
-      </div>
+    <div class="flex-zero bottombar">
+      <button class="btn callout-light btn-block" @click="donePressed()">FINISHED</button>
     </div>
 
   </div>
@@ -157,12 +153,8 @@ function determineParaphrasingRange (currentVerseContainer) {
 #paraphrase-container {
   display: none;
   padding: 10px;
-  border-top: solid 2px @color-back-raised2;
-  border-bottom: solid 1px @color-back-raised2;
-  box-shadow: @shadow-long;
   z-index: 10;
   .paraphrase-input {
-    border: solid 1px @color-back-raised2;
     border-radius: 4px;
     padding: 3px;
     margin-bottom: 10px;
@@ -217,23 +209,17 @@ function determineParaphrasingRange (currentVerseContainer) {
   padding: 0px;
   margin-bottom: 2px !important;
   .verse {
-    color: white;
-    background-color: @color-back-raised;
     padding: 5px;
     transition: background-color 0.5s, padding 0.5s;
   }
-  .verse:hover {
-    background-color: @color-back-raised2;
-  }
   .verse-number {
-    color: #999;
+    vertical-align: super;
+    font-size: 12px;
   }
   .paraphrase {
-    color: @color-deemphasize;
-    padding-left: 5px;
-    padding-right: 5px;
+    padding: 5px;
     margin-top: 5px;
-    margin-bottom: 12px;
+    margin-bottom: 8px;
     z-index: -10;
     &:empty {
       display: none;
@@ -241,7 +227,7 @@ function determineParaphrasingRange (currentVerseContainer) {
   }
   &.selected, &.paraphrasing {
     .verse {
-      border-left: solid 2px @color-callout;
+      border-left: solid 2px @color-highlight-red;
     }
   }
   &.disabled {

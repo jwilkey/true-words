@@ -1,17 +1,17 @@
 <template>
   <div class="auth-modal">
-    <div class="auth-modal-container">
-      <div id="refresh-auth" class="auth-modal-box">
-        <p class="expired-user">{{ getUser.name }}</p>
+    <div class="auth-modal-container theme-back">
+      <div id="refresh-auth" class="auth-modal-box theme-mid shadow-long">
+        <p class="muted">{{ getUser.name }}</p>
         <p>Your session has expired.</p>
         <p>Would you like to sign back in?</p>
         <br />
         <div class="row">
           <div class="col-xs-6">
-            <button class="btn btn-primary btn-block" @click="signIn()">YES</button>
+            <button class="btn callout-light btn-block" @click="signIn()">YES</button>
           </div>
           <div class="col-xs-6">
-            <button class="btn btn-primary btn-block" @click="signOut()">NO</button>
+            <button class="btn callout-light btn-block" @click="signOut()">NO</button>
           </div>
         </div>
       </div>
@@ -69,22 +69,16 @@ export default {
   p {
     margin-bottom: 0px;
   }
-  .expired-user {
-    color: @color-deemphasize;
-  }
   .auth-modal-container {
-    background-color: @color-back;
     display: table-cell;
     vertical-align: middle;
     padding: 20px;
     .auth-modal-box {
-      background-color: @color-back-raised;
       padding: 20px;
       text-align: center;
       max-width: 400px;
       margin: auto;
       border-radius: 4px;
-      box-shadow: @shadow-long;
     }
   }
 }

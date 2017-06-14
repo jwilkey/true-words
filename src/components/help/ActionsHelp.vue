@@ -14,14 +14,14 @@
       <p><strong><i class="fa fa-hand-o-down"/> Tap once</strong> to complete your selection.</p>
       <p><strong><i class="fa fa-hand-o-down"/> <i class="fa fa-hand-o-down"/> Tap twice</strong> to delete your selection.</p>
       <br />
-      <p>Click <span class="btn btn-primary help-action">NEXT</span> to move on to Step 2</p>
+      <p>Click <span class="btn callout-light help-action">NEXT</span> to move on to Step 2</p>
     </div>
     <br />
     <hr />
     <p><strong><span class="step-label">Step 2</span> Add detail to actions (optional)</strong></p>
     <hr />
     <div>
-       Select details about an action (who or what is doing it, the result or purpose of the action, etc). Use the <span class="btn btn-raised2 help-action-tab">buttons</span> at the bottom of the screen to select these things. Press <span class="btn btn-primary help-action">DONE</span> when you are finished selecting targets, or to skip this step.
+       Select details about an action (who or what is doing it, the result or purpose of the action, etc). Use the <span class="btn help-action-tab theme-back">buttons</span> at the bottom of the screen to select these things. Press <span class="btn callout-light help-action">DONE</span> when you are finished selecting targets, or to skip this step.
     </div>
     <br />
   </div>
@@ -47,7 +47,7 @@ export default {
   background-color: @color-help;
   padding: 4px 8px;
   border-radius: 4px;
-  color: @color-text;
+  color: white;
 }
 .word-highlight {
   background-color: @color-highlight-blue;
@@ -56,13 +56,9 @@ export default {
 }
 .help-action {
   padding: 2px 5px;
-  color: white;
 }
 .help-action-tab {
-  background-color: @color-back;
-  color: @color-text;
   padding: 1px 5px;
   margin: none;
-  border-color: @color-back-raised2;
 }
 </style>

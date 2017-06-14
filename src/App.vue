@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="vfull theme-back">
     <router-view id="application"></router-view>
     <alert></alert>
     <reauthorize-modal v-if="isSessionExpired" :on-reauth="didReauthorize"></reauthorize-modal>

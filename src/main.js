@@ -16,7 +16,7 @@ import Activity from './pages/Activity'
 import Reader from './components/prepare/Reader'
 import Hymns from './components/prepare/Hymns'
 import Hymn from './components/prepare/Hymn'
-import Themes from './components/settings/Themes'
+import SettingsPage from './components/settings/SettingsPage'
 
 var $ = require('jquery')
 window.jQuery = window.$ = $
@@ -26,7 +26,7 @@ Vue.use(VueRouter)
 const routes = [
   { path: '/', component: Home, name: 'Home' },
   { path: '/login', component: Login, name: 'Login' },
-  { path: '/settings', component: Themes, name: 'Settings' },
+  { path: '/settings', component: SettingsPage, name: 'Settings' },
   { path: '/passage', component: PassageViewer, name: 'PassageViewer' },
   { path: '/bible_chooser', component: BibleChooser, name: 'BibleChooser' },
   { path: '/choosepassage', component: PassageChooser, name: 'PassageChooser' },

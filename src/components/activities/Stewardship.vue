@@ -5,23 +5,24 @@
         <h3>In the next 3 days...</h3>
         <div class="context-container" id="time-entry" v-if="timeEntry">
           <p class="context-question">{{ timeEntry.questionText }}</p>
-          <input class="form-control" placeholder="time..." v-model="timeEntry.freeText.text" />
+          <input class="form-control input" placeholder="time..." v-model="timeEntry.freeText.text" />
         </div>
         <div class="context-container" id="money-entry" v-if="moneyEntry">
           <p class="context-question">{{ moneyEntry.questionText }}</p>
-          <input class="form-control" placeholder="money..." v-model="moneyEntry.freeText.text" />
+          <input class="form-control input" placeholder="money..." v-model="moneyEntry.freeText.text" />
         </div>
         <div class="context-container" id="thoughts-entry" v-if="thoughtsEntry">
           <p class="context-question">{{ thoughtsEntry.questionText }}</p>
-          <input class="form-control" placeholder="thoughts..." v-model="thoughtsEntry.freeText.text" />
+          <input class="form-control input" placeholder="thoughts..." v-model="thoughtsEntry.freeText.text" />
         </div>
         <div class="context-container" id="people-entry" v-if="peopleEntry">
           <p class="context-question">{{ peopleEntry.questionText }}</p>
-          <input class="form-control" placeholder="people..." v-model="peopleEntry.freeText.text" />
+          <input class="form-control input" placeholder="people..." v-model="peopleEntry.freeText.text" />
         </div>
       </div>
 
       <div v-if="mode === 'text'" class="container">
+        <br />
         <div v-for="verse in getCurrentStudy.verses" class="verse-container">
           <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
         </div>
@@ -30,19 +31,19 @@
 
     <div class="flex-zero bottombar clearfix">
       <div v-if="mode === 'context'">
-        <button class="btn btn-primary btn-block" @click="contextQuestionsFinished()">NEXT</button>
+        <button class="btn callout-light btn-block" @click="contextQuestionsFinished()">NEXT</button>
       </div>
 
       <div v-if="mode === 'text'">
         <div v-if="currentStep !== 'done'">
-          <div class="proposition">In the next 3 days, how should this passage affect</div>
-          <div class="condition">{{ stepCondition }} <span class="condition-context">{{ stepConditionContext }}</span></div>
-          <div class="user-input" contenteditable="true"></div>
+          <div class="proposition muted">In the next 3 days, how should this passage affect</div>
+          <div class="condition">{{ stepCondition }} <span class="condition-context muted">{{ stepConditionContext }}</span></div>
+          <div class="user-input input" contenteditable="true"></div>
         </div>
         <transition name="fade">
-          <button v-if="currentStep !== 'time'" class="btn btn-xs btn-primary alt pull-left" @click="previousStep()">PREVIOUS</button>
+          <button v-if="currentStep !== 'time'" class="btn btn-xs callout-light pull-left" @click="previousStep()">PREVIOUS</button>
         </transition>
-        <button class="btn btn-xs btn-primary alt pull-right" @click="nextPressed()">{{ nextButtonText }}</button>
+        <button class="btn btn-xs callout-light pull-right" @click="nextPressed()">{{ nextButtonText }}</button>
       </div>
     </div>
   </div>
@@ -214,8 +215,6 @@ export default {
     margin-bottom: 10px;
     input {
       background-color: transparent;
-      color: @color-text;
-      border-color: @color-back-raised2;
     }
   }
 }
@@ -232,18 +231,15 @@ export default {
 }
 .proposition {
   padding-left: 5px;
-  color: @color-highlight-blue;
 }
 .condition {
   font-size: 20px;
-  border-bottom: solid 1px @color-back-raised;
   margin-bottom: 8px;
   padding: 0px 10px 5px 10px;
   text-shadow: 1px 0px 1px @color-highlight-blue;
   line-height: 1;
 }
 .condition-context {
-  color: @color-deemphasize;
   text-shadow: none;
   font-size: 16px;
   margin-left: 5px;
@@ -254,11 +250,9 @@ export default {
     content: ' )'
   }
 }
-.user-input{
+.user-input {
   padding: 5px;
   font-size: 18px;
-  color: @color-text;
-  border: solid 1px @color-back-raised2;
   border-radius: 3px;
   margin-bottom: 8px;
   &:focus {

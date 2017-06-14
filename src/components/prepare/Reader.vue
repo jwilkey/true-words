@@ -11,7 +11,7 @@
         <div class="flex-one scrolly viewer">
           <div class="container">
             <div class="verses" :class="{inline: readingMode === 'inline'}">
-              <div v-for="verse in getCurrentStudy.verses" class="verse" :data-verse="verse.number">
+              <div v-for="verse in getCurrentStudy.verses" class="verse theme-mid hover" :data-verse="verse.number">
                 <span class="verse-number">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
               </div>
             </div>
@@ -84,24 +84,12 @@ export default {
   display: inline-block;
   vertical-align: middle;
 }
-
-.btn-default {
-  background-color: @color-back-raised;
-  color: #fff;
-  border-color: @color-back;
-  box-shadow: @shadow;
-}
 .verses {
   .verse {
-    background-color: @color-back-raised;
-    color: white;
     padding: 1px 10px 1px 10px;
     font-size: 18px;
     margin-bottom: 2px;
     transition: background-color 0.3s;
-  }
-  .verse:hover {
-    background-color: @color-back-raised2;
   }
   .verse-number {
     color: #999;
@@ -112,7 +100,6 @@ export default {
   &.inline {
     padding-left: 10px;
     padding-right: 10px;
-    background-color: @color-back;
     .verse {
       display: inline;
       background-color: transparent;

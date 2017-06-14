@@ -2,9 +2,9 @@
   <div>
     <titlebar title="STUDIES" :left-items="['home']"></titlebar>
 
-    <div class="container">
+    <div class="container studies-root theme-back">
       <div v-for="study in getStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
-        <div class="study-label col-xs-12">
+        <div class="study-label theme-mid hover shadow col-xs-12">
           <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
           <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEditLabel() }} <span class="bible">{{ study.bible }}</span></p>
           <div class="col-sm-12 visible-xs nopad-left nopad-right">
@@ -47,6 +47,10 @@ export default {
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
 
+.studies-root {
+  padding-top: 15px;
+  padding-bottom: 15px;
+}
 .study {
   padding-left: 10px;
   padding-right: 10px;
@@ -58,20 +62,14 @@ export default {
     display: inline-block;
     width: 54px;
     margin-left: 24px;
-    border-left: solid 1px @color-back-raised;
   }
 }
 .study-label {
-  background-color: @color-back-raised;
-  box-shadow: @shadow;
   border: solid 1px transparent;
   border-left: solid 3px transparent;
   padding: 10px;
   padding-left: 5px;
-  &:hover {
-    border-left: solid 3px @color-callout-light;
-    cursor: pointer;
-  }
+  cursor: pointer;
   p {
     margin: 0px;
   }

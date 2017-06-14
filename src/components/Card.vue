@@ -1,10 +1,10 @@
 <template>
   <div class="card">
-    <div class="card-header clearfix">
-      <div class="card-title pull-left">{{ title }}</div>
-      <div class="card-subtitle">{{ subtitle }}</div>
+    <div class="card-header shadow flex-row">
+      <div class="card-title flex-zero callout">{{ title }}</div>
+      <div class="card-subtitle flex-one callout">{{ subtitle }}</div>
     </div>
-    <div class="card-content">
+    <div class="card-content shadow theme-mid">
       <slot></slot>
     </div>
   </div>
@@ -19,10 +19,9 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../static/less/colors.less';
+@import '../../static/less/colors';
+
 .card {
-  background-color: @color-back-raised;
-  box-shadow: @shadow;
   margin-bottom: 20px;
   .card-content {
     padding: 20px;
@@ -39,18 +38,14 @@ export default {
   }
 }
 .card-header {
-  border-bottom: solid 1px @color-back;
-  background-color: @color-callout;
+  margin-bottom: 3px;
   .card-title {
-    color: @color-text;
-    border-right: solid 1px @color-back;
     padding: 10px;
     font-size: 18px;
     letter-spacing: 2px;
-    margin-right: 15px;
+    margin-right: 2px;
   }
   .card-subtitle {
-    color: @color-text;
     font-size: 18px;
     padding: 10px;
   }

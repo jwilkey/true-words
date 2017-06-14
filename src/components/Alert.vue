@@ -1,7 +1,7 @@
 <template>
   <div id="alert">
     <div class="alert-container">
-      <div class="alert-box">
+      <div class="alert-box shadow-long">
         <p id="alert-message"></p>
         <button id="ok-alert-button" class="btn btn-block btn-alert" @click="dismissAlert()">OK</button>
 
@@ -86,7 +86,6 @@ export default {
       padding-left: 20px;
       padding-right: 20px;
       border-radius: 4px;
-      box-shadow: @shadow-long;
       font-size: 18px;
       letter-spacing: 0.5px;
       #alert-message {

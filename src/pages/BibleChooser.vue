@@ -3,8 +3,8 @@
     <titlebar title="BIBLE CHOOSER" :left-items="['close']" :on-close="closePressed" :on-help="helpPressed"></titlebar>
 
     <div class="container">
-      <h1 @click="bibleSelected('ESV')" class="text-center">ESV</h1>
-      <h1 @click="bibleSelected('NASB')" class="text-center">NASB</h1>
+      <h1 @click="bibleSelected('ESV')" class="text-center theme-mid hover">ESV</h1>
+      <h1 @click="bibleSelected('NASB')" class="text-center theme-mid hover">NASB</h1>
     </div>
 
   </div>
@@ -49,8 +49,5 @@ h1 {
   letter-spacing: 3px;
   padding: 15px;
   transition: background-color 0.3s;
-  &:hover {
-    background-color: @color-back-raised;
-  }
 }
 </style>

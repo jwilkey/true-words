@@ -1,8 +1,8 @@
 <template>
-  <div id="authorize-div" class="clearfix" @click="signInToDrive(event)">
+  <div id="authorize-div" class="clearfix theme-mid shadow" @click="signInToDrive(event)">
     <img class="drive-logo" src="../assets/drive.png" />
     <div class="drive-text">
-      <p class="drive-connect-label">Save your studies in Google Drive</p>
+      <p class="drive-connect-label muted">Save your studies in Google Drive</p>
       <p class="drive-connect">Sign in using Google</p>
     </div>
   </div>
@@ -43,7 +43,6 @@ export default {
 
 #authorize-div {
   display: table;
-  background-color: @color-back-raised2;
   @media screen and (max-width: 767px) {
     padding-left: 10px;
   }
@@ -52,7 +51,6 @@ export default {
   }
   padding: 10px;
   padding-right: 20px;
-  box-shadow: @shadow;
   cursor: pointer;
   &:hover {
     box-shadow: 0px 0px 15px rgba(250, 240, 230, 0.5);
@@ -85,7 +83,6 @@ export default {
     font-size: 16px;
   }
   margin-bottom: 0px;
-  color: @color-deemphasize;
 }
 .drive-connect {
   @media screen and (max-width: 767px) {

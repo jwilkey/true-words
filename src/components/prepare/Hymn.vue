@@ -4,7 +4,7 @@
 
     <div class="container" :class="{blur: videoId}">
       <div class="hymn-text">
-        <div class="hymn-header">
+        <div class="hymn-header theme-mid shadow-light">
           <p class="title">{{ title }}</p>
           <p class="author">{{ author}}</p>
         </div>
@@ -24,10 +24,11 @@
       <hr />
 
       <div class="video-results">
-        <div v-for="video in videos" class="video-result clearfix" @click="videoId = video.id">
+        <div v-for="video in videos" class="list-item theme-mid video-result clearfix" @click="videoId = video.id">
           <img :src="video.thumbnail" />
           <p class="video-title">{{ video.title }}</p>
-          <p class="video-description">{{ video.description }}</p>
+          <p class="video-description muted">{{ video.description }}</p>
+          <p v-if="!video.description" class="muted">No description</p>
         </div>
       </div>
     </div>
@@ -129,22 +130,10 @@ export default {
   margin-bottom: 20px;
   .hymn-header {
     white-space: normal;
-    background-color: @color-back-raised;
     padding: 10px;
     margin-bottom: 10px;
     display: table;
     width: 100%;
-    .action-button {
-      display: table-cell;
-      vertical-align: middle;
-      width: 30px;
-      height: 30px;
-      color: @color-deemphasize;
-      cursor: pointer;
-      &:hover {
-        border-right: solid 2px @color-deemphasize;
-      }
-    }
     .title, .author {
       text-align: center;
       margin: 0px;
@@ -161,13 +150,9 @@ export default {
 .video-results {
   overflow: hidden;
   .video-result {
-    border-bottom: solid 2px @color-back-raised2;
-    margin-bottom: 5px;
+    margin-bottom: 8px;
     padding: 5px;
     cursor: pointer;
-    &:hover {
-      background-color: rgba(230, 230, 230, 0.3);
-    }
   }
   img {
     float: left;
@@ -175,7 +160,6 @@ export default {
     margin-bottom: 8px;
   }
   .video-title {
-    color: @color-highlight-blue;
     font-size: 18px;
   }
 }

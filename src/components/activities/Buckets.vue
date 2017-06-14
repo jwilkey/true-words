@@ -15,7 +15,7 @@
           <div class="flex-one flex-column">
             <div class="flex-one"></div>
             <div class="flex-zero join-container">
-              <div class="join-button left" @click="joinLeft()">
+              <div class="join-button theme-mid muted left" @click="joinLeft()">
                 <span class="glyphicon glyphicon-menu-left"></span> JOIN
               </div>
             </div>
@@ -23,20 +23,20 @@
           <div class="flex-two flex-column word-viewer-container">
             <div class="flex-one"></div>
             <div>
-              <span id="word-viewer"></span>
+              <span id="word-viewer" class="theme-mid muted shadow-long"></span>
             </div>
           </div>
           <div class="flex-one flex-column text-right">
             <div class="flex-one"></div>
             <div class="flex-zero join-container">
-              <div class="join-button right" @click="joinRight()">
+              <div class="join-button theme-mid muted right" @click="joinRight()">
                 JOIN <span class="glyphicon glyphicon-menu-right"></span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="text-view">
+        <div class="text-view theme-mid shadow-long">
           <p :key="word.index" v-for="(word, index) in words" class="bucket-word" :data-index="index" :data-word="word.verse + '-' + word.index">{{ word.text }}</p>
         </div>
 
@@ -44,11 +44,11 @@
           <div id="buckets-clear-button" class="image-button" @click="clearCurrentWordSelection()">
             <img class="svg close-button" src="/static/images/close.svg" />
           </div>
-          <div v-if="showScrollTip" class="scroll-tip">
+          <div v-if="showScrollTip" class="scroll-tip muted-more">
             Drag text to scroll
           </div>
         </div>
-        <div class="indicator"></div>
+        <div class="indicator callout-light"></div>
       </div>
 
       <div class="flex-two flex-row">
@@ -58,7 +58,7 @@
       </div>
     </div>
 
-    <div id="buckets-action" class="actionbar-flex">
+    <div id="buckets-action" class="bottombar flex-zero">
       <button class="btn-lg btn-clear btn-block" @click="donePressed()">DONE</button>
     </div>
   </div>
@@ -324,10 +324,9 @@ export default {
   }
 }
 .bucket {
-  border: solid 1px @color-back;
   text-align: center;
   letter-spacing: 2px;
-  font-size: 19px;
+  font-size: 20px;
   font-weight: bold;
   user-select: none;
   transition: all 0.2s;
@@ -336,7 +335,7 @@ export default {
   }
   &:hover {
     font-size: 21px;
-    border: solid 1px @color-text;
+    border: solid 1px @color-highlight-contrast;
   }
   .bubble {
     background-color: rgba(0, 0, 0, 0.2);
@@ -355,18 +354,14 @@ export default {
 .text-view {
   position: relative;
   font-size: 20px;
-  background-color: @color-back-raised;
-  box-shadow: @shadow-long;
-  color: @color-text;
   overflow-x: scroll;
   padding: 15px;
-  // padding-right/left: half-view-width;  <- onMounted
   white-space: nowrap;
   z-index: 10;
   user-select: none;
-  transition: background-color 0.3s;
+  transition: opacity 0.3s;
   &.scrolling {
-    background-color: rgba(55,55,55,0.5);
+    opacity: 0.8;
   }
 }
 .join-container {
@@ -375,8 +370,6 @@ export default {
 .join-button {
   z-index: 11;
   padding: 8px;
-  color: @color-deemphasize;
-  background-color: @color-back-raised;
   font-size: 13px;
   font-family: 'Arial';
   display: inline-block;
@@ -397,11 +390,8 @@ export default {
   text-align: center;
   #word-viewer {
     opacity: 0;
-    color: @color-deemphasize;
-    background-color: @color-back-raised;
     padding: 5px;
     border-radius: 5px;
-    box-shadow: @shadow-long;
     transition: opacity 0.7s;
     &.scrolling {
       opacity: 1;
@@ -417,7 +407,6 @@ export default {
   bottom: 20%;
   left: 50%;
   width: 1px;
-  background-color: @color-back-raised2;
   opacity: 0;
   transition: opacity 0.5s;
   z-index: 1;
@@ -435,7 +424,6 @@ export default {
   &.current {
     border-top: solid 2px @color-highlight-blue;
     border-bottom: solid 2px @color-highlight-blue;
-    box-shadow: @shadow;
   }
 }
 .image-button {
@@ -445,7 +433,6 @@ export default {
   margin-top: 10px;
 }
 .scroll-tip {
-  color: @color-deemphasize-more;
   text-align: center;
   margin-top: 8px;
 }

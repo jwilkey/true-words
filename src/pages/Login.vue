@@ -9,7 +9,7 @@
         <p class="user-name">Hello {{ username }}!</p>
         <img v-if="userimage" class="user-photo" :src="userimage" />
         <hr />
-        <p class="redirect-helper">If you are not automatically redirected <router-link to="Home">click here</router-link></p>
+        <p class="redirect-helper muted">If you are not automatically redirected <router-link to="Home">click here</router-link></p>
       </div>
     </div>
   </div>
@@ -88,7 +88,6 @@ body {
 }
 .redirect-helper {
   font-size: 13px;
-  color: @color-deemphasize;
   margin-top: 40px;
   a {
     color: @color-highlight-blue;

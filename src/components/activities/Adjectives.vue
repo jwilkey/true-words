@@ -5,20 +5,20 @@
     </div>
 
     <div class="flex-zero bottombar noselect">
-      <p v-if="isMode('start')" class="instruction">Select an adjective</p>
-      <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn btn-primary"><i class="fa fa-question-circle-o"></i> How to select...</button>
-      <button v-if="isMode('selected')" @click="nextPressed" class="btn btn-primary btn-block">NEXT</button>
+      <p v-if="isMode('start')" class="instruction muted">Select an adjective</p>
+      <div class="text-center">
+        <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn callout-light"><i class="fa fa-question-circle-o"></i> How to select...</button>
+      </div>
+      <button v-if="isMode('selected')" @click="nextPressed" class="btn callout-light btn-block">NEXT</button>
 
       <div v-if="isMode('detailing')">
         <div class="detailing-label">
-          <span class="current-adjective">{{ currentAdjective.toString() }}</span>
+          <span class="current-adjective back-red">{{ currentAdjective.toString() }}</span>
           <i class="fa fa-long-arrow-right" />
           {{ currentTarget ? currentTarget.toString() : 'Select who or what is described.' }}
         </div>
-        <div class="detailing flex-row">
-          <div @click="previousAdjectivePressed" class="navigate-adjective"><i class="fa fa-chevron-left" /></div>
-          <div @click="skipDetailing" class="flex-two finish-button">DONE</div>
-          <div @click="nextAdjectivePressed" class="navigate-adjective"><i class="fa fa-chevron-right" /></div>
+        <div class="detailing">
+          <selector-bar :next="nextAdjectivePressed" :previous="previousAdjectivePressed" click-title="DONE" :click="skipDetailing"></selector-bar>
         </div>
       </div>
     </div>
@@ -30,6 +30,7 @@ import SelectableText from '../SelectableText'
 import { mapGetters } from 'vuex'
 import { Adjective } from '../../js/models/ActivityData'
 import activities from '../../js/activity'
+import SelectorBar from '../common/SelectorBar'
 
 export default {
   data () {
@@ -65,7 +66,7 @@ export default {
     }
   },
   components: {
-    SelectableText
+    SelectableText, SelectorBar
   },
   methods: {
     isMode (mode) {
@@ -165,7 +166,6 @@ export default {
 
 .instruction {
   text-align: center;
-  color: @color-deemphasize;
   font-size: 17px;
   margin: 0px;
 }
@@ -176,35 +176,6 @@ export default {
 }
 .detailing {
   .noselect;
-  border-radius: 6px;
-  overflow: hidden;
-  text-align: center;
-  font-size: 18px;
-  margin-bottom: 5px;
-  .finish-button {
-    padding: 7px 10px;
-    background-color: transparent;
-    border: solid 1px @color-callout-light;
-    text-shadow: 1px 0px 1px black;
-    margin: 0 3px;
-    font-weight: bolder;
-    letter-spacing: 1.5px;
-    cursor: pointer;
-    &:hover {
-      background-color: @color-callout;
-    }
-  }
-  .navigate-adjective {
-    min-width: 90px;
-    background-color: transparent;
-    border: solid 1px @color-callout-light;
-    text-shadow: 1px 0px 1px black;
-    padding: 7px 10px;
-    cursor: pointer;
-    &:hover {
-      background-color: @color-callout;
-    }
-  }
 }
 .detailing-label {
   padding: 0px 5px;
@@ -212,7 +183,6 @@ export default {
   text-align: center;
 }
 .current-adjective {
-  background-color: @color-highlight-red;
   padding: 2px 4px;
   border-radius: 4px;
   text-shadow: 1px 0px 1px black;

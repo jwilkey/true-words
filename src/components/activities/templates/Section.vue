@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <div class="section-title editing">
+    <div class="section-title callout-bottom editing">
       <div class="section-item" @click="editSection($event.target)">
         {{ prefix }}{{ section.title }} <span v-if="section.title" class="word-range">{{ section.rangeDescription() }}</span>
       </div>
@@ -83,7 +83,6 @@ export default {
   .section-title {
     display: table;
     width: 100%;
-    border-bottom: solid 1px @color-back-raised;
     padding-top: 5px;
     padding-bottom: 8px;
     .section-item {
@@ -96,10 +95,8 @@ export default {
     }
   }
   .section-title.root {
-    border-bottom: solid 1px @color-callout;
     font-family: "Sinkin";
     font-size: 18px;
-    text-shadow: 1px 1px @color-back-raised2;
     letter-spacing: 1px;
   }
   .section-title.editing {
@@ -140,7 +137,6 @@ export default {
     .temp {
       padding-top: 5px;
       padding-bottom: 8px;
-      border-bottom: solid 1px @color-back-raised;
     }
   }
 }
