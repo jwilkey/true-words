@@ -4,113 +4,20 @@
   &:focus {
     outline: none;
   }
-}
-
-.btn-raised {
-  background-color: @color-back-raised;
-  border-color: @color-back-raised;
-  box-shadow: @shadow;
-  &:hover, &:focus {
-    color: white;
-    background-color: @color-back-raised2;
-    border-color: @color-back-raised2;
-    outline: none;
-    box-shadow: @shadow;
-  }
-}
-.btn-raised.alt {
-  background-color: transparent;
-  color: @color-back-raised;
-  font-weight: bolder;
-  letter-spacing: 1px;
   &:hover {
-    color: @color-text;
+    opacity: 0.85;
   }
-}
-
-.btn-raised2 {
-  background-color: @color-back-raised2;
-  border-color: @color-back-raised2;
-  box-shadow: @shadow;
-  &:hover, &:focus {
-    color: @color-text;
-    background-color: @color-back-raised2;
-    border-color: @color-back-raised2;
-    outline: none;
-    box-shadow: @shadow;
-  }
-}
-.btn-raised2.alt {
-  background-color: transparent;
-  color: @color-text;
-  font-weight: bolder;
-  letter-spacing: 1px;
-  &:hover {
-    color: @color-text;
-    background-color: @color-callout;
-  }
-}
-
-.btn-primary {
-  background-color: @color-callout-light;
-  border-color: @color-callout-light;
-  box-shadow: @shadow;
-  &:hover {
-    background-color: @color-callout-light;
-    border-color: @color-callout-light;
-    color: @color-callout;
-    outline: none;
-  }
-}
-.btn-primary.alt {
-  background-color: transparent;
-  color: @color-text;
-  font-weight: bolder;
-  letter-spacing: 1px;
-  &:hover {
-    color: @color-text;
-  }
-}
-.btn-primary.disabled, .btn-primary.disabled:hover {
-  background-color: @color-text;
-  color: @color-back;
-  border-color: transparent;
 }
 
 .btn-clear {
   background-color: transparent;
   border-color: transparent;
-  text-shadow: 1px 0px 1px rgba(50,50,50,0.8);
   letter-spacing: 2px;
+  font-weight: bold;
+  transition: letter-spacing 0.3s;
   &:hover {
-    background-color: @color-callout;
-    color: @color-text;
+    letter-spacing: 4px;
   }
-}
-
-.list-group {
-  border-radius: 0px;
-  a {
-    color: white;
-    &:hover {
-      color: white;
-    }
-  }
-  .list-group-item {
-    color: white;
-    background-color: transparent;
-    box-shadow: @shadow;
-    border: none;
-    border-radius: 0;
-    margin-bottom: 5px;
-  }
-}
-
-.form-control:focus {
-  border-color: @color-actionable;
-  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 9px @color-actionable;
-  color: white;
-  font-size: 16px;
 }
 
 .col-xs-5c,

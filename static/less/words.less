@@ -1,12 +1,9 @@
 .word {
   float: left;
-  color: white;
   text-align: center;
   min-width: 32px;
-  background-color: @color-back-raised;
   margin-top: 2px;
   margin-bottom: 2px;
-  border: solid 1px @color-back;
   padding: 5px;
   padding-left: 5px;
   padding-right: 5px;
@@ -21,22 +18,22 @@
 }
 .word.focused {
   background-color: @color-highlight-blue;
-  color: @color-back;
+  color: @color-highlight-contrast;
   word-wrap: normal;
   border-radius: 0px;
-  border-right: solid 1px @color-back-raised2;
+  border-right: solid 1px @color-highlight-contrast;
   border-left: solid 1px transparent;
-  border-top: solid 1px @color-back-raised2;
-  border-bottom: solid 1px @color-back-raised2;
+  border-top: solid 1px @color-highlight-contrast;
+  border-bottom: solid 1px @color-highlight-contrast;
   &.start {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
-    border-left: solid 1px @color-back-raised2;
+    border-left: solid 1px @color-highlight-contrast;
   }
   &.end {
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
-    border-right: solid 1px @color-back-raised2;
+    border-right: solid 1px @color-highlight-contrast;
   }
 }
 .word.mute-filled {
@@ -64,7 +61,9 @@
   }
 }
 .word.filled {
-  background-color: @color-highlight-red;
+  background-color: #ff4452;
+  color: white;
+  text-shadow: 0px 0px 3px black;
   &.fill-start {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
