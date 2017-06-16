@@ -24,7 +24,7 @@
       <div v-if="mode === 'text'" class="container">
         <br />
         <div v-for="verse in getCurrentStudy.verses" class="verse-container">
-          <span class="verse-number">{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+          <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
         </div>
       </div>
     </div>

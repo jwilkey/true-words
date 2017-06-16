@@ -141,9 +141,10 @@ function Passage (startVerse, endVerse) {
 }
 
 Passage.prototype.description = function () {
-  var text = Bible.bookName(this.start.book) + ' ' + this.start.chapter + ':' + this.start.number
+  var text = `${Bible.bookName(this.start.book)} ${this.start.chapter}:${this.start.number}`
   if (this.end !== undefined) {
-    text = text + '-' + this.end.number
+    var endChapter = this.end.chapter !== this.start.chapter ? `${this.end.chapter}:` : ''
+    text = `${text}-${endChapter}${this.end.number}`
   }
   return text
 }

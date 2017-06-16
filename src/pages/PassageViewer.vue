@@ -31,7 +31,7 @@
 
         <div class="bottombar flex-zero">
           <p class="text-center passage-instruction">{{ actionText }}</p>
-          <button @click="actionPressed()" class="btn btn-lg callout-light btn-block" v-if="isPassageSelected">BEGIN</button>
+          <button @click="beginPressed()" class="btn btn-lg callout-light btn-block" v-if="isPassageSelected">BEGIN</button>
         </div>
       </div>
     </div>
@@ -53,6 +53,7 @@ export default {
       bookIdentifier: undefined,
       chapter: undefined,
       verses: undefined,
+      cachedVerses: {},
       startingVerse: undefined,
       endingVerse: undefined,
       readingMode: 'list',
@@ -76,15 +77,6 @@ export default {
         return 'Select a starting verse'
       }
     },
-    selectedVerses: function () {
-      if (this.startingVerse !== undefined) {
-        var a = []
-        $('.verse.selected').each(function () {
-          a.push(parseInt($(this).data('verse')))
-        })
-        return a
-      }
-    },
     readingModeButtonClass: function () {
       return this.readingMode === 'list' ? ['glyphicon-align-center'] : ['glyphicon-list']
     }
@@ -103,13 +95,21 @@ export default {
   },
   methods: {
     loadVerses () {
-      var self = this
-      this.loading = true
-      bibleLoader.load(this.bookIdentifier, this.chapter, this.getCurrentBible, function (json) {
-        self.verses = json
-        self.loading = false
+      var cache = this.getCache(this.getCurrentBible, this.bookIdentifier, this.chapter)
+      if (cache !== undefined) {
+        this.verses = cache
         $('.viewer').animate({ scrollTop: 0 }, 'slow')
-      })
+      } else {
+        var self = this
+        this.loading = true
+        bibleLoader.load(this.bookIdentifier, this.chapter, this.getCurrentBible, json => {
+          json.forEach(v => { v.chapter = self.chapter })
+          self.cacheVerses(self.getCurrentBible, self.bookIdentifier, self.chapter, json)
+          self.verses = json
+          self.loading = false
+          $('.viewer').animate({ scrollTop: 0 }, 'slow')
+        })
+      }
     },
     goBack () {
       this.$router.back()
@@ -124,6 +124,23 @@ export default {
       }
       return false
     },
+    getCache (bibleVersion, book, chapter, verses) {
+      if (this.cachedVerses[bibleVersion]) {
+        if (this.cachedVerses[bibleVersion][book]) {
+          return this.cachedVerses[bibleVersion][book][chapter]
+        }
+      }
+      return undefined
+    },
+    cacheVerses (bibleVersion, book, chapter, verses) {
+      if (this.cachedVerses[bibleVersion] === undefined) {
+        this.cachedVerses[bibleVersion] = {}
+      }
+      if (this.cachedVerses[bibleVersion][book] === undefined) {
+        this.cachedVerses[bibleVersion][book] = {}
+      }
+      this.cachedVerses[bibleVersion][book][chapter] = verses
+    },
     verseSelected (element) {
       var verseElement = element.closest('.verse')
       var selectedVerseNumber = $(verseElement).data('verse')
@@ -136,8 +153,11 @@ export default {
       } else {
         if (bibleVerse.isAfter(this.startingVerse)) {
           this.endingVerse = bibleVerse
-          Vue.set(this.verses, 0, this.verses[0])
+        } else {
+          this.endingVerse = this.endingVerse || this.startingVerse
+          this.startingVerse = bibleVerse
         }
+        Vue.set(this.verses, 0, this.verses[0])
       }
     },
     chapterBack () {
@@ -147,18 +167,35 @@ export default {
       this.chapter = this.chapter === Bible.chapters(this.bookIdentifier) ? this.chapter : this.chapter + 1
     },
     bookNavSelected () {
+      this.cachedVerses = {}
       this.$router.push('/choosepassage')
     },
-    actionPressed () {
-      var selected = this.selectedVerses
-      var versesArray = this.verses.slice(selected[0] - 1, selected[0] + selected.length - 1)
-      var vm = this
+    getVerses () {
+      const self = this
+      var cachedBook = this.cachedVerses[this.getCurrentBible][this.bookIdentifier]
+      var verses = cachedBook[this.startingVerse.chapter].filter(v => v.number >= self.startingVerse.number)
+      if (this.endingVerse.chapter > this.startingVerse.chapter) {
+        for (var i = this.startingVerse.chapter + 1; i <= this.endingVerse.chapter; i++) {
+          if (i === this.endingVerse.chapter) {
+            verses = verses.concat(cachedBook[i].filter(v => v.number <= this.endingVerse.number))
+          } else {
+            verses = verses.concat(cachedBook[i])
+          }
+        }
+      } else {
+        verses = verses.filter(v => v.number <= self.endingVerse.number)
+      }
+      return verses
+    },
+    beginPressed () {
+      var versesArray = this.getVerses()
       var passage = Bible.buildPassage(this.startingVerse, this.endingVerse)
       var self = this
       this.alert('SAVING...')
       this.createNewStudy({passage: passage, verses: versesArray})
       .done(function () {
-        vm.$router.push('/activities')
+        self.cachedVerses = {}
+        self.$router.push('/activities')
       })
       .fail(function () {
         self.alert('Failed to create study', 'ok')
