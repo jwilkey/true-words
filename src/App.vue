@@ -10,6 +10,7 @@
 import Alert from './components/Alert'
 import ReauthorizeModal from './components/ReauthorizeModal'
 import { mapGetters, mapActions } from 'vuex'
+import { isTouchDevice } from './js/polyfill'
 
 export default {
   data () {
@@ -52,6 +53,10 @@ export default {
     }
   },
   mounted () {
+    if (!isTouchDevice()) {
+      document.querySelector('html').classList.add('hover-on')
+    }
+
     var self = this
     window.clearInterval(this.sessionTimer)
     this.sessionTimer = window.setInterval(() => {
