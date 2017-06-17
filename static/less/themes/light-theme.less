@@ -105,15 +105,17 @@
     color: @color-deemphasize-more;
   }
 
-  .hover {
-    &.theme-mid {
-      border-bottom: solid 2px transparent;
-      &:hover {
-        border-bottom: solid 2px @color-callout-light;
+  &.hover-on {
+    .hover {
+      &.theme-mid {
+        border-bottom: solid 2px transparent;
+        &:hover {
+          border-bottom: solid 2px @color-callout-light;
+        }
       }
-    }
-    &.callout-light {
-      &:hover { color: @color-deemphasize; }
+      &.callout-light {
+        &:hover { color: @color-deemphasize; }
+      }
     }
   }
 

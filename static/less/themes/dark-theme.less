@@ -105,6 +105,20 @@
     color: @color-dark-deemphasize-more;
   }
 
+  &.hover-on {
+    .hover {
+      &.theme-mid {
+        border-bottom: solid 2px transparent;
+        &:hover {
+          border-bottom: solid 2px @color-dark-callout-light;
+        }
+      }
+      &.callout-light {
+        &:hover { color: @color-dark-deemphasize; }
+      }
+    }
+  }
+
   .shadow {
     box-shadow: @shadow-dark;
   }
