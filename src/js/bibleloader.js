@@ -10,11 +10,12 @@ export default {
       })
     } else {
       $.ajax({
-        url: 'https://esvbibleapi.herokuapp.com/search/' + bookIdentifier + '+' + chapter,
+        url: `https://bible.truewordsapp.com/esv/${bookIdentifier}/${chapter}`,
         type: 'GET',
         beforeSend: function (xhr) { xhr.setRequestHeader('x-esv-api-key', ESV) },
-        success: function (data) {
-          onload(data.passage.verses)
+        success: function (verses) {
+          verses.forEach(v => { v.text = v.text.replace(/<f>*.<\/f>/g, '') })
+          onload(verses)
         }
       })
     }
