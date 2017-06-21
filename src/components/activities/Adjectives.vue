@@ -115,6 +115,7 @@ export default {
       this.$refs.selectableText.scrollTo(this.currentAdjective.words)
     },
     nextPressed () {
+      this.data.collection.items.sort((a1, a2) => a1.wordSelection.compare(a2.wordSelection))
       this.finishedSelecting = true
       this.highlighCurrentAdjective()
     },

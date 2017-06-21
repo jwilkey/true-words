@@ -203,6 +203,10 @@ WordSelection.prototype.matches = function (query) {
   return false
 }
 
+WordSelection.prototype.compare = function (other) {
+  return this.words[0].verse - other.words[0].verse || this.words[0].index - other.words[0].index
+}
+
 WordSelection.prototype.toString = function () {
   return this.words.map(function (w) {
     return w.text

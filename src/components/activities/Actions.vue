@@ -190,6 +190,7 @@ export default {
       this.alert('Swipe right to extend the end of your selection\nSwipe left to decrease the end of your selection.\nSwipe up to extend the beginning of your selection\nSwipe down to decrease the beginning. \nTap once to finish selecting. \nTap twice to remove selection.', 'ok')
     },
     beginDetailing () {
+      this.data.collection.items.sort((a1, a2) => a1.action.compare(a2.action))
       this.currentStep = 'actor'
       this.finishedSelecting = true
       this.highlighCurrentAction()
