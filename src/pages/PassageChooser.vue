@@ -64,14 +64,10 @@ export default {
     Titlebar, PassageViewer
   },
   mounted () {
-    this.$nextTick(function () {
-      this.$route.query.t === 'ot'
-        ? $('#ot-tab').tab('show')
-        : $('#nt-tab').tab('show')
-    })
+    this.$route.query.t === 'ot' ? this.toggleTestament('OT') : this.toggleTestament('NT')
   },
   methods: {
-    toggleTestament (tm, target, otherTarget) {
+    toggleTestament (tm) {
       this.testament = tm
       this.selectedBook = undefined
     },
