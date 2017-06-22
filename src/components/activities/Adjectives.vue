@@ -82,6 +82,9 @@ export default {
       return this.$refs.selectableText.selectedWords()
     },
     onSelectionChange (wordSelection, operation) {
+      if (!wordSelection.words || wordSelection.words.length === 0) {
+        return
+      }
       if (this.isMode('detailing')) {
         this.$refs.selectableText.clearFill(wordSelection.words)
         this.adjectives[this.detailingAdjectiveIndex].target = wordSelection

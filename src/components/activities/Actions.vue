@@ -147,6 +147,9 @@ export default {
       this.isSelecting = isFocused
     },
     onSelectionChange (wordSelection, operation) {
+      if (!wordSelection.words || wordSelection.words.length === 0) {
+        return
+      }
       if (this.isMode('detailing')) {
         this.$refs.selectableText.clearFill(wordSelection.words)
         switch (this.currentStep) {
