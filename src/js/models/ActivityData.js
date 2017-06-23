@@ -204,7 +204,9 @@ WordSelection.prototype.matches = function (query) {
 }
 
 WordSelection.prototype.compare = function (other) {
-  return this.words[0].verse - other.words[0].verse || this.words[0].index - other.words[0].index
+  const word = this.words[0]
+  var chapterCompare = (word.chapter || 0) - (other.words[0].chapter || 0)
+  return chapterCompare || this.words[0].verse - other.words[0].verse || this.words[0].index - other.words[0].index
 }
 
 WordSelection.prototype.toString = function () {

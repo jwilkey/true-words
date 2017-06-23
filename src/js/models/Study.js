@@ -42,10 +42,9 @@ Study.prototype.getWords = function () {
     this.words = []
     for (var vIndex in this.verses) {
       var verse = this.verses[vIndex]
-      var verseNumber = verse.number
       var wordTexts = verse.text.split(' ')
       this.words.push.apply(this.words, wordTexts.map(function (text, index) {
-        return {book: b, verse: verseNumber, text: text, index: index}
+        return {book: b, chapter: verse.chapter, verse: verse.number, text: text, index: index}
       }))
     }
   }
