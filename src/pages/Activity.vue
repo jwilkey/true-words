@@ -3,11 +3,11 @@
     <titlebar id="activity-titlebar" :title="title.toUpperCase()" :left-items="leftMenuItems" :right-items="rightMenuItems" :on-close="closePressed" :on-help="helpPressed" :on-select="titlebarSelect"></titlebar>
     <menubar></menubar>
 
-    <div id="activity" class="blur">
+    <div v-if="!isReviewing" id="activity" class="blur">
       <component ref="activity" v-if="getCurrentActivity && activityData" :is="currentActivity" :finish="onFinish" :data="activityData"></component>
     </div>
 
-    <div id="review" class="blur">
+    <div v-if="isReviewing" id="review" class="blur">
       <component v-if="currentReviewer && activityData" :is="currentReviewer" :data="activityData"></component>
     </div>
 
@@ -62,7 +62,10 @@ export default {
     return {
       leftMenuItems: ['close'],
       rightMenuItems: ['help'],
-      activityData: undefined
+      activityData: undefined,
+      isReviewing: false,
+      lastSavedData: undefined,
+      autosaveTimer: undefined
     }
   },
   computed: {
@@ -74,11 +77,45 @@ export default {
     currentReviewer: function () { return this.reviewerForType(this.getCurrentActivity) },
     currentHelpView: function () { return this.helpViewForType(this.getCurrentActivity) }
   },
+  watch: {
+    isReviewing (isReviewing) {
+      if (isReviewing) {
+        clearInterval(this.autosaveTimer)
+        this.rightMenuItems = ['EDIT']
+        this.helpDismiss(true)
+        this.analytics.trackScreen(this.title + 'Reviewer')
+      } else {
+        this.rightMenuItems = ['help']
+        this.startAutosaving()
+        this.$nextTick(() => {
+          if (this.$refs.activity.willAppear) {
+            this.$refs.activity.willAppear()
+          }
+          this.analytics.trackScreen(this.title)
+        })
+      }
+    }
+  },
   components: {
     Titlebar, Menubar, Actions, Buckets, Adjectives, Outline, Paraphrase, Space, Stewardship, BucketsReviewer, ActionsReviewer, AdjectivesReviewer, OutlineReviewer, ParaphraseReviewer, SpaceReviewer, StewardshipReviewer, ActionsHelp, BucketsHelp, AdjectivesHelp, OutlineHelp, ParaphraseHelp, SpaceHelp, StewardshipHelp
   },
   methods: {
     ...mapActions(['saveActivity']),
+    startAutosaving () {
+      clearInterval(this.autosaveTimer)
+      const self = this
+      this.autosaveTimer = setInterval(() => {
+        if (JSON.stringify(self.activityData) !== self.lastSavedData) {
+          var achievement = new ActivityAchievement(self.currentActivity, self.activityData, new Date(), activities.manager.version(self.currentActivity))
+          self.saveActivity(achievement)
+          .then(d => {
+            self.lastSavedData = JSON.stringify(self.activityData)
+            this.log('Progress saved')
+          })
+          .fail(e => this.log('Failed to save progress: ' + e))
+        }
+      }, 20 * 1000)
+    },
     closePressed () {
       this.$router.back()
     },
@@ -97,13 +134,7 @@ export default {
     },
     titlebarSelect (buttonTitle) {
       if (buttonTitle === 'EDIT') {
-        if (this.$refs.activity.willAppear) {
-          this.$refs.activity.willAppear()
-        }
-        $('#activity').show()
-        $('#review').hide()
-        this.rightMenuItems = ['help']
-        this.analytics.trackScreen(this.title)
+        this.isReviewing = false
       }
     },
     onFinish (activityType, activityData) {
@@ -113,9 +144,7 @@ export default {
       this.saveActivity(achievement)
       .done(function () {
         self.currentReviewer = self.reviewerForType(activityType)
-        $('#activity').hide()
-        $('#review').show()
-        self.rightMenuItems = ['EDIT']
+        self.isReviewing = true
         self.dismissAlert()
       })
       .fail(function (resp) {
@@ -165,17 +194,18 @@ export default {
   mounted () {
     var completedActivity = this.getCurrentStudy.findActivity(this.getCurrentActivity)
     if (completedActivity !== undefined) {
-      this.analytics.trackScreen(this.title + 'Reviewer')
-      this.helpDismiss(true)
       this.activityData = completedActivity.data
-      $('#activity').hide()
-      $('#review').show()
-      this.rightMenuItems = ['EDIT']
+      this.isReviewing = true
     } else {
       this.analytics.trackScreen(this.title)
       this.activityData = ActivityDataFactory.createForType(this.getCurrentActivity, this.getCurrentStudy)
-      this.rightMenuItems = ['help']
+      this.isReviewing = false
+      this.startAutosaving()
     }
+    this.lastSavedData = JSON.stringify(this.activityData)
+  },
+  beforeDestroy () {
+    clearInterval(this.autosaveTimer)
   }
 }
 </script>
@@ -216,7 +246,6 @@ body {
   right: 0;
   bottom: 0;
   left: 0;
-  display: none;
   &.blur {
     -webkit-filter: blur(5px);
     filter: blur(5px);

@@ -75,6 +75,9 @@ Vue.mixin({
     }
   },
   methods: {
+    log (message) {
+      console.log(message)
+    },
     refreshData () {
       this.$root.$children[0].refreshPersistedData()
     },
