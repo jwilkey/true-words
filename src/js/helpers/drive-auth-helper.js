@@ -39,5 +39,24 @@ export default {
   },
   isSignedIn () {
     return window.gapi.auth2.getAuthInstance().isSignedIn.get()
+  },
+  driveToken () {
+    try {
+      var user = window.gapi.auth2.getAuthInstance().currentUser.get()
+      var expiresIn = (user.getAuthResponse().expires_at - new Date().getTime()) / 1000 / 60
+      if (expiresIn < 0) {
+        return undefined
+      }
+      if (expiresIn < 10) {
+        user.reloadAuthResponse()
+      }
+      return user.getAuthResponse().access_token
+    } catch (e) {
+      return undefined
+    }
+  },
+  driveUser () {
+    var profile = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
+    return {name: profile.getName(), imageUrl: profile.getImageUrl()}
   }
 }

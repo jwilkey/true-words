@@ -17,14 +17,14 @@ function Persistor (persistenceStrategy) {
 
 Persistor.prototype.isLoggedIn = function () {
   if (this.usingDrive()) {
-    return driveToken() !== undefined
+    return driveAuth.driveToken() !== undefined
   }
   return false
 }
 
 Persistor.prototype.isSessionExpired = function () {
   if (this.usingDrive()) {
-    return driveAuth.isSignedIn() && (driveToken() === undefined)
+    return driveAuth.isSignedIn() && (driveAuth.driveToken() === undefined)
   }
   return false
 }
@@ -44,7 +44,7 @@ Persistor.prototype.refreshAuthorization = function () {
 Persistor.prototype.refreshData = function (onFinish) {
   if (this.usingDrive()) {
     var self = this
-    drive.fetchFiles(driveToken(), 'name+contains+%27.study%27')
+    drive.fetchFiles(driveAuth.driveToken(), 'name+contains+%27.study%27')
     .done(function (data) {
       var studies = data.files.map(function (file) {
         var start = JSON.parse(file.properties.start)
@@ -57,7 +57,7 @@ Persistor.prototype.refreshData = function (onFinish) {
         return study
       })
       if (onFinish) {
-        onFinish(studies, driveUser())
+        onFinish(studies, driveAuth.driveUser())
       }
     })
     .fail(function (resp) {
@@ -82,7 +82,7 @@ Persistor.prototype.saveStudy = function (study) {
       properties: { id: study.id, createdDate: study.date, start: start, end: end, bible: study.bible }
     }
     var self = this
-    return drive.upload(driveToken(), metadata, study)
+    return drive.upload(driveAuth.driveToken(), metadata, study)
     .done(function (file) {
       self.addDriveFileForStudy(file.id, study.id)
     })
@@ -93,7 +93,7 @@ Persistor.prototype.saveStudy = function (study) {
 
 Persistor.prototype.updateStudy = function (study) {
   if (this.usingDrive()) {
-    return drive.update(driveToken(), this.drive.studies[study.id], study)
+    return drive.update(driveAuth.driveToken(), this.drive.studies[study.id], study)
   }
 
   return $.when(console.log('Not logged in - requested to update study.'))
@@ -101,7 +101,7 @@ Persistor.prototype.updateStudy = function (study) {
 
 Persistor.prototype.loadStudy = function (studyId) {
   if (this.usingDrive()) {
-    return drive.fetchFileContent(driveToken(), this.drive.studies[studyId])
+    return drive.fetchFileContent(driveAuth.driveToken(), this.drive.studies[studyId])
   }
 
   return $.when()
@@ -110,7 +110,7 @@ Persistor.prototype.loadStudy = function (studyId) {
 Persistor.prototype.deleteStudy = function (studyId) {
   if (this.usingDrive()) {
     var self = this
-    return drive.delete(driveToken(), this.drive.studies[studyId])
+    return drive.delete(driveAuth.driveToken(), this.drive.studies[studyId])
     .done(function () {
       self.drive.studies[studyId] = undefined
     })
@@ -123,25 +123,4 @@ Persistor.prototype.usingDrive = function () {
 
 Persistor.prototype.addDriveFileForStudy = function (driveFileId, studyId) {
   this.drive.studies[studyId] = driveFileId
-}
-
-function driveToken () {
-  try {
-    var user = window.gapi.auth2.getAuthInstance().currentUser.get()
-    var expiresIn = (user.getAuthResponse().expires_at - new Date().getTime()) / 1000 / 60
-    if (expiresIn < 0) {
-      return undefined
-    }
-    if (expiresIn < 10) {
-      user.reloadAuthResponse()
-    }
-    return user.getAuthResponse().access_token
-  } catch (e) {
-    return undefined
-  }
-}
-
-function driveUser () {
-  var profile = window.gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile()
-  return {name: profile.getName(), imageUrl: profile.getImageUrl()}
 }
