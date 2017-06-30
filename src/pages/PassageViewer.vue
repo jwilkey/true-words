@@ -16,7 +16,9 @@
         <div class="flex-one scrolly viewer">
           <div class="container">
             <div class="verses" :class="{loading: loading, inline: readingMode === 'inline'}">
-              <h1 class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></h1>
+
+              <p class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></p>
+
               <div v-for="verse in verses" class="verse theme-mid hover" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
                 <span class="verse-number muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
               </div>
@@ -238,6 +240,10 @@ export default {
         border-right: solid 1px @color-deemphasize;
       }
     }
+  }
+  .fa-circle-o-notch {
+    font-size: 27px;
+    margin-top: 15px;
   }
 }
 .passage-instruction {

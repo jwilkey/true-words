@@ -93,6 +93,9 @@ export default {
 @import '../../static/less/colors.less';
 @import '../../static/less/bootstrap-overrides.less';
 
+#passageChooser {
+  padding-bottom: 50px;
+}
 .testament-tabs {
   margin: 10px 0px;
   button {
