@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import driveAuth from '../js/helpers/drive-auth-helper'
+import { mapGetters } from 'vuex'
+import container from '../js/container'
 
 export default {
   data () {
@@ -33,7 +33,6 @@ export default {
   },
   components: { },
   methods: {
-    ...mapActions(['setPersistenceStrategy']),
     signIn () {
       this.getPersistor.refreshAuthorization()
       this.onReauth()
@@ -43,11 +42,7 @@ export default {
     }
   },
   mounted () {
-    const self = this
-    var signinListener = this.$root.$children[0].signinCallback
-    driveAuth.checkAuth(signinListener, () => {
-      self.setPersistenceStrategy('GOOGLE_DRIVE')
-    })
+    container.authHandler.checkAuth()
   }
 }
 </script>

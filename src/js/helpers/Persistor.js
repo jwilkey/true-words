@@ -1,7 +1,7 @@
 import drive from './DriveHelper'
-import driveAuth from './drive-auth-helper'
 import Studies from '../models/Study'
 import { Bible, Verse } from '../bible'
+import container from '../container'
 import $ from 'jquery'
 
 export default {
@@ -17,34 +17,27 @@ function Persistor (persistenceStrategy) {
 
 Persistor.prototype.isLoggedIn = function () {
   if (this.usingDrive()) {
-    return driveAuth.driveToken() !== undefined
+    return container.authToken !== undefined
   }
   return false
 }
 
 Persistor.prototype.isSessionExpired = function () {
-  if (this.usingDrive()) {
-    return driveAuth.isSignedIn() && (driveAuth.driveToken() === undefined)
-  }
-  return false
+  return container.authHandler.isSessionExpired(this.persistenceStrategy)
 }
 
 Persistor.prototype.signOut = function () {
-  if (this.usingDrive()) {
-    driveAuth.signOut()
-  }
+  container.authHandler.signOut(this.persistenceStrategy)
 }
 
 Persistor.prototype.refreshAuthorization = function () {
-  if (this.usingDrive()) {
-    driveAuth.signIn()
-  }
+  container.authHandler.signIn(this.persistenceStrategy)
 }
 
 Persistor.prototype.refreshData = function (onFinish) {
   if (this.usingDrive()) {
     var self = this
-    drive.fetchFiles(driveAuth.driveToken(), 'name+contains+%27.study%27')
+    drive.fetchFiles(container.authToken, 'name+contains+%27.study%27')
     .done(function (data) {
       var studies = data.files.map(function (file) {
         var start = JSON.parse(file.properties.start)
@@ -57,10 +50,11 @@ Persistor.prototype.refreshData = function (onFinish) {
         return study
       })
       if (onFinish) {
-        onFinish(studies, driveAuth.driveUser())
+        onFinish(studies)
       }
     })
     .fail(function (resp) {
+      console.log('failed to refreshData')
       if (resp.status === 401) {
         window.location.reload(false)
       } else {
@@ -82,9 +76,12 @@ Persistor.prototype.saveStudy = function (study) {
       properties: { id: study.id, createdDate: study.date, start: start, end: end, bible: study.bible }
     }
     var self = this
-    return drive.upload(driveAuth.driveToken(), metadata, study)
+    return drive.upload(container.authToken, metadata, study)
     .done(function (file) {
       self.addDriveFileForStudy(file.id, study.id)
+    })
+    .fail(resp => {
+      handleFailure(self, resp, 'Save study')
     })
   }
 
@@ -93,7 +90,11 @@ Persistor.prototype.saveStudy = function (study) {
 
 Persistor.prototype.updateStudy = function (study) {
   if (this.usingDrive()) {
-    return drive.update(driveAuth.driveToken(), this.drive.studies[study.id], study)
+    const self = this
+    return drive.update(container.authToken, this.drive.studies[study.id], study)
+    .fail(resp => {
+      handleFailure(self, resp, 'Update study')
+    })
   }
 
   return $.when(console.log('Not logged in - requested to update study.'))
@@ -101,16 +102,27 @@ Persistor.prototype.updateStudy = function (study) {
 
 Persistor.prototype.loadStudy = function (studyId) {
   if (this.usingDrive()) {
-    return drive.fetchFileContent(driveAuth.driveToken(), this.drive.studies[studyId])
+    const self = this
+    return drive.fetchFileContent(container.authToken, this.drive.studies[studyId])
+    .fail(resp => {
+      handleFailure(self, resp, 'Load study')
+    })
   }
 
   return $.when()
 }
 
+function handleFailure (persistor, resp, operationId) {
+  console.log('Failed to: ' + operationId)
+  if (resp.status === 401) {
+    persistor.refreshAuthorization()
+  }
+}
+
 Persistor.prototype.deleteStudy = function (studyId) {
   if (this.usingDrive()) {
     var self = this
-    return drive.delete(driveAuth.driveToken(), this.drive.studies[studyId])
+    return drive.delete(container.authToken, this.drive.studies[studyId])
     .done(function () {
       self.drive.studies[studyId] = undefined
     })

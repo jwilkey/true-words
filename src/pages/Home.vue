@@ -13,10 +13,10 @@
           </card>
 
           <card title="CONTINUE" subtitle="Choose a study">
-            <div v-if="isSignedIn && isLoadingData" class="callout-light alt">
+            <div v-if="isAuthenticated && isLoadingData" class="callout-light alt">
               <p class="text-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></p>
             </div>
-            <div v-if="isSignedIn === true && !isLoadingData">
+            <div v-if="isAuthenticated === true && !isLoadingData">
               <p v-if="manyStudies" class="muted">RECENT STUDIES <span class="callout-light alt">| {{ getStudies.length }} TOTAL</span></p>
               <div v-for="study in recentStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
                 <div class="list-item col-xs-12">
@@ -37,7 +37,7 @@
                 </div>
               </div>
             </div>
-            <div v-if="isSignedIn === false" class="sign-in-view">
+            <div v-if="isAuthenticated === false" class="sign-in-view">
               <p class="muted">You are not signed in.</p>
               <p class="muted">Sign in to save your studies.</p>
               <router-link to="Login?referrer=Home" class="btn theme-hi btn-lg">SIGN IN</router-link>
@@ -61,10 +61,9 @@
 
 <script>
 import Titlebar from '../components/Titlebar'
-import GoogleAuth from '../components/GoogleAuth'
 import Card from '../components/Card'
 import { mapGetters, mapActions } from 'vuex'
-import driveAuth from '../js/helpers/drive-auth-helper'
+import container from '../js/container'
 
 export default {
   data () {
@@ -73,7 +72,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
+    ...mapGetters(['isAuthenticated', 'getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
     manyStudies () {
       return this.getStudies.length > 3
     },
@@ -85,13 +84,16 @@ export default {
     },
     recentStudies () {
       return this.manyStudies ? this.getStudies.slice(0, 3) : this.getStudies
+    },
+    container () {
+      return container
     }
   },
   components: {
-    Card, Titlebar, GoogleAuth
+    Card, Titlebar
   },
   methods: {
-    ...mapActions(['setPersistenceStrategy', 'getPersistor', 'setCurrentStudy', 'setStudies', 'openStudy']),
+    ...mapActions(['getPersistor', 'setCurrentStudy', 'setStudies', 'openStudy']),
     continueStudy (studyId) {
       var self = this
       this.alert('LOADING...')
@@ -110,17 +112,9 @@ export default {
         self.dismissAlert()
       })
       this.alert('Sign out?', 'confirm')
-    },
-    checkAuth () {
-      const self = this
-      var signinListener = this.$root.$children[0].signinCallback
-      driveAuth.checkAuth(signinListener, () => {
-        self.setPersistenceStrategy('GOOGLE_DRIVE')
-      })
     }
   },
   mounted () {
-    this.checkAuth()
     this.refreshData()
   }
 }
@@ -135,7 +129,6 @@ html {
   height: 100%;
 }
 body {
-  // background-image: url('/static/bible-midnight-fade.png');
   background-position: top;
   background-repeat: no-repeat;
   background-size: cover;

@@ -31,7 +31,7 @@
 
         <div class="bottombar flex-zero">
           <p class="text-center passage-instruction">{{ actionText }}</p>
-          <button @click="beginPressed()" class="btn btn-lg callout-light btn-block" v-if="isPassageSelected">BEGIN</button>
+          <button @click="beginPressed()" class="btn btn-lg callout-light btn-block study-begin" v-if="isPassageSelected">BEGIN</button>
         </div>
       </div>
     </div>
@@ -70,11 +70,11 @@ export default {
     },
     actionText: function () {
       if (this.startingVerse !== undefined && this.endingVerse !== undefined) {
-        return 'Begin, or tap verses to edit selection'
+        return 'BEGIN, OR TAP VERSES TO EDIT SELECTION'
       } else if (this.startingVerse !== undefined) {
-        return 'Select an ending verse, or begin'
+        return 'SELECT AN ENDING VERSE, OR BEGIN'
       } else {
-        return 'Select a starting verse'
+        return 'SELECT A STARTING VERSE'
       }
     },
     readingModeButtonClass: function () {
@@ -241,8 +241,10 @@ export default {
   }
 }
 .passage-instruction {
-  letter-spacing: 0.5px;
-  font-weight: bold;
+  margin: 0;
+}
+.study-begin {
+  margin-top: 8px;
 }
 .center-wrapper {
   height: 100%;

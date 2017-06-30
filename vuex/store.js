@@ -14,6 +14,7 @@ Vue.use(Vuex)
 export const state = {
   page: 'home',
   persistor: new Persistence.Persistor(),
+  platform: 'web',
   isAuthenticated: false,
   user: {},
   currentBible: 'ESV',
@@ -27,7 +28,12 @@ export const state = {
 // Create an object storing various mutations. We will write the mutation
 export const mutations = {
   SET_PERSISTANCE_STRATEGY (state, persistenceStrategy) {
-    state.persistor = new Persistence.Persistor(persistenceStrategy)
+    if (persistenceStrategy !== undefined) {
+      state.persistor = new Persistence.Persistor(persistenceStrategy)
+    }
+  },
+  SET_PLATFORM (state, platform) {
+    state.platform = platform
   },
   SET_IS_AUTHENTICATED (state, isAuthed) {
     state.isAuthenticated = isAuthed
@@ -40,6 +46,17 @@ export const mutations = {
   },
   CURRENT_BIBLE (state, bible) {
     state.currentBible = bible
+  },
+  CLEAR_DATA (state) {
+    state.page = 'home'
+    state.persistor = new Persistence.Persistor()
+    state.isAuthenticated = false
+    state.user = {}
+    state.studies = []
+    state.currentStudy = undefined
+    state.currentActivity = activities.types.PeoplePlacesThings
+    state.currentPassage = undefined
+    state.activities = []
   },
   CREATE_STUDY (state, study) {
     state.studies.push(study)

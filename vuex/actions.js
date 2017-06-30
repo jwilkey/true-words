@@ -5,6 +5,9 @@ export default {
   setPersistenceStrategy (context, persistenceStrategy) {
     context.commit('SET_PERSISTANCE_STRATEGY', persistenceStrategy)
   },
+  setPlatform ({ commit }, platform) {
+    commit('SET_PLATFORM', platform)
+  },
   setAuthenticated ({ commit }, isAuthenticated) {
     commit('SET_IS_AUTHENTICATED', isAuthenticated)
   },
@@ -16,6 +19,9 @@ export default {
   },
   setCurrentBible ({ commit }, bible) {
     commit('CURRENT_BIBLE', bible)
+  },
+  clearData ({ commit }) {
+    commit('CLEAR_DATA')
   },
   createNewStudy (context, studyData) {
     var bible = context.getters.getCurrentBible

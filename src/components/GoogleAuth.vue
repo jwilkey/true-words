@@ -9,31 +9,16 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
-import driveAuth from '../js/helpers/drive-auth-helper'
+import container from '../js/container'
 
 export default {
   data () {
     return { }
   },
-  computed: {
-    ...mapGetters([])
-  },
-  components: {
-  },
   methods: {
-    ...mapActions(['setPersistenceStrategy']),
     signInToDrive () {
-      this.setPersistenceStrategy('GOOGLE_DRIVE')
-      driveAuth.signIn()
+      container.authHandler.signIn('GOOGLE_DRIVE')
     }
-  },
-  mounted: function () {
-    const self = this
-    var signinListener = this.$root.$children[0].signinCallback
-    driveAuth.checkAuth(signinListener, () => {
-      self.setPersistenceStrategy('GOOGLE_DRIVE')
-    })
   }
 }
 </script>

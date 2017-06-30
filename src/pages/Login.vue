@@ -18,7 +18,7 @@
 <script>
 import Titlebar from '../components/Titlebar'
 import GoogleAuth from '../components/GoogleAuth'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data () {
@@ -57,6 +57,7 @@ export default {
     Titlebar, GoogleAuth
   },
   methods: {
+    ...mapActions(['setUser', 'setAuthenticated']),
     closePressed () {
       var referrer = this.$route.query.referrer || '/'
       this.$router.replace(referrer)

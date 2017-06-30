@@ -11,6 +11,7 @@ import Alert from './components/Alert'
 import ReauthorizeModal from './components/ReauthorizeModal'
 import { mapGetters, mapActions } from 'vuex'
 import { isTouchDevice } from './js/polyfill'
+import container from './js/container'
 
 export default {
   data () {
@@ -22,48 +23,57 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getPersistor', 'isAuthenticated'])
+    ...mapGetters(['getPersistor', 'platform', 'isAuthenticated'])
   },
   components: {
     Alert, ReauthorizeModal
   },
   methods: {
-    ...mapActions(['setStudies', 'setAuthenticated', 'setUser']),
+    ...mapActions(['setPersistenceStrategy', 'setPlatform', 'setStudies', 'setAuthenticated', 'setUser', 'clearData']),
     didReauthorize () {
       this.isSessionExpired = false
     },
-    signinCallback (isSignedIn) {
-      this.setAuthenticated(isSignedIn)
-      if (isSignedIn) {
-        this.refreshPersistedData()
-      } else {
-        window.location.reload(false)
+    refreshPersistedData () {
+      if (this.isAuthenticated) {
+        console.log('Refreshing data')
+        var self = this
+        this.isLoadingPersistedData = true
+        this.getPersistor.refreshData((studies) => {
+          console.log(studies.length + ' studies loaded')
+          self.setStudies(studies)
+          self.isLoadingPersistedData = false
+        })
       }
     },
-    refreshPersistedData () {
-      console.log('Refreshing data')
-      var self = this
-      this.isLoadingPersistedData = true
-      this.getPersistor.refreshData(function (studies, user) {
-        console.log(studies.length + ' studies loaded')
-        self.setStudies(studies)
-        self.setUser(user)
-        self.isLoadingPersistedData = false
-      })
+    authorize (token, strategy, username, userImage) {
+      if (token) {
+        this.setPersistenceStrategy(strategy)
+        container.authToken = token
+        this.setUser({name: username, imageUrl: userImage})
+        this.setAuthenticated(true)
+        this.refreshPersistedData()
+      }
+    },
+    deauthorize () {
+      container.authToken = undefined
+      this.clearData()
+      window.location = '/'
+    },
+    checkAuth () {
+      container.authHandler.checkAuth()
     }
   },
   mounted () {
+    window.twauth = this.authorize
+    window.twdeauth = this.deauthorize
+    container.platform = this.$route.query.platform || 'web'
+    this.setPlatform(container.platform)
+
     if (!isTouchDevice()) {
       document.querySelector('html').classList.add('hover-on')
     }
 
-    var self = this
-    window.clearInterval(this.sessionTimer)
-    this.sessionTimer = window.setInterval(() => {
-      if (self.getPersistor.isSessionExpired()) {
-        self.isSessionExpired = true
-      }
-    }, 10 * 1000)
+    this.checkAuth()
   }
 }
 </script>
