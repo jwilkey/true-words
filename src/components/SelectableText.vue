@@ -88,10 +88,10 @@ export default {
         $elements.removeAttr('data-selection')
       })
     },
-    highlightWords (words) {
+    highlightWords (words, color) {
       var self = this
       words.forEach(word => {
-        $(`.word[data-id=${self.wordId(word)}]`).addClass('highlighted')
+        $(`.word[data-id=${self.wordId(word)}]`).addClass(color ? `highlighted-${color}` : 'highlighted')
       })
     },
     selectedText () {
@@ -134,7 +134,7 @@ export default {
       }
     },
     clearHighlight () {
-      $('.word').removeClass('highlighted')
+      $('.word').removeClass('highlighted highlighted-red highlighted-green highlighted-orange highlighted-purple')
     },
     clearSelection () {
       $('.focused').removeAttr('data-selection')

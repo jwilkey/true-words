@@ -22,10 +22,10 @@
         </div>
 
         <div v-if="this.action" class="action-components hi-top hi-bottom flex-row">
-          <button @click="currentStep = 'actor'" class="btn theme-hi hover" :class="buttonClasses('actor')">Actor</button>
-          <button @click="currentStep = 'tense'" class="btn theme-hi hover" :class="buttonClasses('tense')">Tense</button>
-          <button @click="currentStep = 'target'" class="btn theme-hi hover" :class="buttonClasses('target')">Target</button>
-          <button @click="currentStep = 'result'" class="btn theme-hi hover" :class="buttonClasses('result')">Result</button>
+          <button @click="currentStep = 'actor'" class="btn theme-hi c-red hover" :class="buttonClasses('actor')">Actor</button>
+          <button @click="currentStep = 'tense'" class="btn theme-hi c-green hover" :class="buttonClasses('tense')">Tense</button>
+          <button @click="currentStep = 'target'" class="btn theme-hi c-blue hover" :class="buttonClasses('target')">Target</button>
+          <button @click="currentStep = 'result'" class="btn theme-hi c-orange hover" :class="buttonClasses('result')">Result</button>
         </div>
 
         <div class="action-instruction text-center">{{ instructionText }}</div>
@@ -199,14 +199,12 @@ export default {
       this.highlighCurrentAction()
     },
     highlighCurrentAction () {
-      var words = []
-      if (this.action) { words = words.concat(this.action.words) }
-      if (this.actor) { words = words.concat(this.actor.words) }
-      if (this.target) { words = words.concat(this.target.words) }
-      if (this.result) { words = words.concat(this.result.words) }
-      this.$refs.selectableText.muteSelectedWords()
       this.$refs.selectableText.clearHighlight()
-      this.$refs.selectableText.highlightWords(words)
+      if (this.action) { this.$refs.selectableText.highlightWords(this.action.words, 'red') }
+      if (this.actor) { this.$refs.selectableText.highlightWords(this.actor.words, 'red') }
+      if (this.target) { this.$refs.selectableText.highlightWords(this.target.words) }
+      if (this.result) { this.$refs.selectableText.highlightWords(this.result.words, 'orange') }
+      this.$refs.selectableText.muteSelectedWords()
       this.$refs.selectableText.unmuteWords(this.action.words)
       this.$refs.selectableText.scrollTo(this.currentAction.action.words)
     },
@@ -315,8 +313,33 @@ export default {
       box-shadow: none;
     }
     &.completed {
-      border-bottom-color: @color-highlight-green !important;
+      position: relative;
       border-bottom-width: 2px;
+      &:after {
+        content: ' ';
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        top: 3px;
+        right: 3px;
+        border-radius: 4px;
+      }
+      &.c-red {
+        border-bottom-color: @color-highlight-red !important;
+        &:after { background-color: @color-highlight-red; }
+      }
+      &.c-green {
+        border-bottom-color: @color-highlight-green !important;
+        &:after { background-color: @color-highlight-green; }
+      }
+      &.c-orange {
+        border-bottom-color: @color-highlight-orange !important;
+        &:after { background-color: @color-highlight-orange; }
+      }
+      &.c-blue {
+        border-bottom-color: @color-highlight-blue !important;
+        &:after { background-color: @color-highlight-blue; }
+      }
     }
   }
 }

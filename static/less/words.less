@@ -2,12 +2,9 @@
   float: left;
   text-align: center;
   min-width: 32px;
-  margin-top: 2px;
-  margin-bottom: 2px;
   padding: 5px;
   padding-left: 5px;
   padding-right: 5px;
-  box-shadow: 0px -1px 2px rgba(0, 0, 0, 0.5);
   cursor: pointer;
   -webkit-touch-callout: none;
   -webkit-user-select: none;
@@ -21,10 +18,8 @@
   color: @color-highlight-contrast;
   word-wrap: normal;
   border-radius: 0px;
-  border-right: solid 1px @color-highlight-contrast;
-  border-left: solid 1px transparent;
-  border-top: solid 1px @color-highlight-contrast;
-  border-bottom: solid 1px @color-highlight-contrast;
+  border-top-color: @color-highlight-contrast;
+  border-bottom-color: @color-highlight-contrast;
   &.start {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
@@ -37,8 +32,7 @@
   }
 }
 .word.mute-filled {
-  border: solid 1px @color-highlight-red;
-  box-shadow: inset 0px 0px 2px 1px @color-highlight-red;
+  border-bottom-color: @color-highlight-red;
   &.fill-start {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
@@ -50,7 +44,8 @@
 }
 .word.highlighted {
   border-radius: 0px;
-  border: solid 1px @color-highlight-blue;
+  border-color: @color-highlight-blue;
+  box-shadow: inset 0px 0px 4px 1px @color-highlight-blue;
   &.start {
     border-bottom-left-radius: 6px;
     border-top-left-radius: 6px;
@@ -59,6 +54,22 @@
     border-bottom-right-radius: 6px;
     border-top-right-radius: 6px;
   }
+}
+.word.highlighted-red {
+  border-color: @color-highlight-red;
+  box-shadow: inset 0px 0px 4px 0px @color-highlight-red;
+}
+.word.highlighted-orange {
+  border-color: @color-highlight-orange;
+  box-shadow: inset 0px 0px 4px 0px @color-highlight-orange;
+}
+.word.highlighted-green {
+  border-color: @color-highlight-green;
+  box-shadow: inset 0px 0px 4px 1px @color-highlight-green;
+}
+.word.highlighted-purple {
+  border-color: @color-highlight-purple;
+  box-shadow: inset 0px 0px 4px 0px @color-highlight-purple;
 }
 .word.filled {
   background-color: #ff4452;
