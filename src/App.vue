@@ -57,7 +57,7 @@ export default {
     deauthorize () {
       container.authToken = undefined
       this.clearData()
-      window.location = '/'
+      this.$router.push('Home')
     },
     checkAuth () {
       container.authHandler.checkAuth()

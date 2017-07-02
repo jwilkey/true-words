@@ -251,6 +251,7 @@ export default {
 
 .actions-content {
   padding-bottom: 30px;
+  padding-top: 10px;
 }
 .action-header {
   display: table;

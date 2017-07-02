@@ -86,6 +86,7 @@ export default {
 
 #buckets-reviewer-words {
   font-size: 18px;
+  padding-bottom: 20px;
 }
 .bucket-label {
   text-align: center;
