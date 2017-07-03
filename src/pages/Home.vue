@@ -12,6 +12,16 @@
             </div>
           </card>
 
+          <div class="theme-mid shadow" @click="toggleAbout($event.target)">
+            <div class="about-tw">
+              <p><span class="about-title callout-light alt">ABOUT</span> <span>Read the Bible intentionally...</span></p>
+              <i class="fa fa-chevron-right muted"></i>
+              <div class="shrinkable shrunk">
+                <p class="list-item">True Words will help you learn skills so that as you read the Bible you can <i class="callout-light alt">know</i> what the text says, <i class="callout-light alt">understand</i> what it means, and <i class="callout-light alt">apply</i> it to your life. This tool was made with <i class="callout-light alt">everyone</i> in mind, children and scholars alike. Taste and see that the Lord is good!</p>
+              </div>
+            </div>
+          </div>
+
           <card title="CONTINUE" subtitle="Choose a study">
             <div v-if="isAuthenticated && isLoadingData" class="callout-light alt">
               <p class="text-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></p>
@@ -103,6 +113,10 @@ export default {
       })
       .always(self.dismissAlert)
     },
+    toggleAbout (aboutView) {
+      this.$el.querySelector('.about-tw .shrinkable').classList.toggle('shrunk')
+      this.$el.querySelector('.about-tw .fa-chevron-right').classList.toggle('fa-rotate-90')
+    },
     userPressed () {
       const self = this
       this.setAlertCallback(confirmation => {
@@ -150,6 +164,34 @@ body {
     margin-left: 1px;
   }
 }
+
+.about-tw {
+  padding: 8px;
+  margin-bottom: 20px;
+  position: relative;
+  cursor: pointer;
+  p { margin: 0; }
+  .fa-chevron-right {
+    position: absolute;
+    right: 10px;
+    top: 12px;
+    transition: transform 0.3s;
+  }
+  .shrinkable {
+    overflow: hidden;
+    max-height: 500px;
+    transition: opacity 0.2s, max-height 0.4s;
+    p {
+      padding-top: 5px;
+      padding-left: 8px;
+    }
+    &.shrunk {
+      opacity: 0;
+      max-height: 0px;
+    }
+  }
+}
+
 .user-img {
   height: 20px;
   width: 20px;
