@@ -34,7 +34,7 @@ export default {
   components: { },
   methods: {
     signIn () {
-      this.getPersistor.refreshAuthorization()
+      container.authHandler.signIn()
       this.onReauth()
     },
     signOut () {

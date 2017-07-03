@@ -52,6 +52,11 @@ container.authHandler = {
       }
     }
     return false
+  },
+  refreshAuthorization () {
+    if (container.platform === 'web') {
+      container.onAuthorizationExpired()
+    }
   }
 }
 

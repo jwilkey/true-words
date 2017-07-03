@@ -31,7 +31,7 @@ Persistor.prototype.signOut = function () {
 }
 
 Persistor.prototype.refreshAuthorization = function () {
-  container.authHandler.signIn(this.persistenceStrategy)
+  container.authHandler.refreshAuthorization()
 }
 
 Persistor.prototype.refreshData = function (onFinish) {

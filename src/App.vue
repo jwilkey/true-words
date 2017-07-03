@@ -61,12 +61,16 @@ export default {
     },
     checkAuth () {
       container.authHandler.checkAuth()
+    },
+    showReauthView () {
+      this.isSessionExpired = true
     }
   },
   mounted () {
     window.twauth = this.authorize
     window.twdeauth = this.deauthorize
     container.platform = this.$route.query.platform || 'web'
+    container.onAuthorizationExpired = this.showReauthView
     this.setPlatform(container.platform)
 
     if (!isTouchDevice()) {
