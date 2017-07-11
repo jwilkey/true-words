@@ -216,15 +216,16 @@ WordSelection.prototype.toString = function () {
 }
 
 // FreeText
-function FreeText (text, passage) {
+function FreeText (text, passage, order) {
   this.kind = 'free-text'
   this.text = text
   this.passage = passage
+  this.order = order
 }
 
 FreeText.prototype.fromJson = function (json) {
   if (json !== undefined) {
-    return new FreeText(json.text, json.passage)
+    return new FreeText(json.text, json.passage, json.order)
   }
   return undefined
 }

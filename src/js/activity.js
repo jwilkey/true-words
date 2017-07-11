@@ -6,7 +6,7 @@ var ActivityType = {
 
   Outline: 'OUTLINE',
   Keywords: 'KEYWORDS',
-  TopicTagging: 'TOPICS',
+  Topics: 'TOPICS',
   Idioms: 'IDIOMS',
   Paraphrase: 'PARAPHRASE',
 
@@ -24,7 +24,7 @@ function Activity (id, category, title, subtitle, enabled) {
 
 function ActivityManager () {
   this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions, ActivityType.Adjectives] // , ActivityType.CauseEffect
-  this.interpretationActivities = [ActivityType.Outline, ActivityType.Paraphrase] // [ActivityType.Keywords, ActivityType.TopicTagging, ActivityType.Idioms]
+  this.interpretationActivities = [ActivityType.Topics, ActivityType.Outline, ActivityType.Paraphrase] // [ActivityType.Keywords, ActivityType.Idioms]
   this.applicationActivities = [ActivityType.Space, ActivityType.Stewardship]
   this.activities = [
     new Activity('PPT', 'observation', 'People, Places & Things', 'People-Places-Things', true),
@@ -33,7 +33,7 @@ function ActivityManager () {
     new Activity('CAUSEEFFECT', 'observation', 'Cause & Effect', 'Cause & Effect', false),
 
     new Activity('KEYWORDS', 'interpretation', 'Key Words', 'Key Words', false),
-    new Activity('TOPICS', 'interpretation', 'Topics', 'Topics', false),
+    new Activity('TOPICS', 'interpretation', 'Topics', 'Topics', true),
     new Activity('IDIOMS', 'interpretation', 'Idioms', 'Words not used in everyday talk', false),
     new Activity('OUTLINE', 'interpretation', 'Outline', 'Outline', true),
     new Activity('PARAPHRASE', 'interpretation', 'Paraphrase', 'Paraphrase', true),

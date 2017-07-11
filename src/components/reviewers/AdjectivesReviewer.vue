@@ -1,19 +1,14 @@
 <template>
   <div v-if="data !== undefined" class="flex-column vfull">
     <div class="flex-one scrolly">
-      <div class="container" :class="{collapsed: hidePairings}">
-        <button class="hide-show" @click="hidePairings = !hidePairings">
-          <i v-if="hidePairings" class="fa fa-eye"></i>
-          <i v-else class="fa fa-eye-slash"></i>
-        </button>
-        <div class="spacer"> </div>
-        <div v-for="adjective in data.collection.items" class="adjective-item">
-          <span class="adjective back-red">{{ adjectiveText(adjective.wordSelection) }}</span><span v-if="adjective.target">-</span><span v-if="adjective.target" class="target back-purple">{{ targetText(adjective.target) }}</span>
-        </div>
-        <div v-if="hidePairings" class="shader"></div>
+      <div class="container">
+        <drawer :expanded="true">
+          <div slot="title">{{ data.collection.items.length }} ADJECTIVES</div>
+          <div slot="content" v-for="adjective in data.collection.items" class="adjective-item">
+            <span class="adjective back-red">{{ adjectiveText(adjective.wordSelection) }}</span><span v-if="adjective.target">-</span><span v-if="adjective.target" class="target back-purple">{{ targetText(adjective.target) }}</span>
+          </div>
+        </drawer>
       </div>
-
-      <hr />
 
       <div class="adjective-words">
         <span :key="index" v-for="(word, index) in words" :class="wordClass(word)">{{ word.text }} </span>
@@ -30,6 +25,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import activities from '../../js/activity'
+import Drawer from '../common/Drawer'
 
 export default {
   data () {
@@ -48,6 +44,7 @@ export default {
     }
   },
   props: ['data'],
+  components: { Drawer },
   methods: {
     adjectiveText (wordSelection) {
       return wordSelection ? wordSelection.toString() : ''
@@ -118,7 +115,6 @@ export default {
 }
 
 .adjective-words {
-  margin-top: 10px;
   padding: 10px 15px;
   font-size: 18px;
 }

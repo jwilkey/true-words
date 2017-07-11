@@ -49,6 +49,7 @@ export default {
       if (token) {
         this.setPersistenceStrategy(strategy)
         container.authToken = token
+        container.recentPersistentStrategy = strategy
         this.setUser({name: username, imageUrl: userImage})
         this.setAuthenticated(true)
         this.refreshPersistedData()

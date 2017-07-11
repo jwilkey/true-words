@@ -9,6 +9,7 @@ export default {
       case activities.types.PeoplePlacesThings: return peoplePlacesThingsData()
       case activities.types.Actions: return actionsData()
       case activities.types.Adjectives: return adjectivesData()
+      case activities.types.Topics: return topicsData(study)
       case activities.types.Outline: return outlineData(study)
       case activities.types.Paraphrase: return paraphraseData()
       case activities.types.Space: return spaceData()
@@ -39,6 +40,12 @@ function adjectivesData () {
 }
 
 // Interpret
+function topicsData () {
+  var data = ActivityData.new()
+  data.initCollection('free-text')
+  return data
+}
+
 function outlineData (study) {
   var data = ActivityData.new()
   data.initCollection('section')
