@@ -2,7 +2,7 @@
   <div class="flex-column vfull">
     <div class="flex-row topic-input">
       <p class="flex-zero callout-light alt"><i class="fa fa-tag"></i></p>
-      <form class="flex-one" @submit="addTopic">
+      <form class="flex-one" @submit.prevent="addTopic">
         <input v-model="topic" autofocus type="text" class="callout-bottom theme-back" placeholder="topic" />
       </form>
       <button :disabled="!topic" @click="addTopic"><i class="fa fa-plus-circle callout-light alt flex-zero"></i></button>
