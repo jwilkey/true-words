@@ -6,9 +6,13 @@ var container = {
   recentPersistentStrategy: undefined
 }
 
+function isWebView () {
+  return /(iPhone|iPod|iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent)
+}
+
 container.authHandler = {
   checkAuth (callback) {
-    if (container.platform === 'ios') {
+    if (isWebView()) {
       window.location = 'truewords:drive:checkAuth'
     } else {
       driveAuth.checkAuth()
@@ -21,7 +25,7 @@ container.authHandler = {
       strategy = container.recentPersistentStrategy
     }
 
-    if (container.platform === 'ios') {
+    if (isWebView()) {
       if (strategy === 'GOOGLE_DRIVE') {
         window.location = 'truewords:drive:signIn'
       }
@@ -33,7 +37,7 @@ container.authHandler = {
   },
   signOut (strategy) {
     container.recentPersistentStrategy = undefined
-    if (container.platform === 'ios') {
+    if (isWebView()) {
       if (strategy === 'GOOGLE_DRIVE') {
         window.location = 'truewords:drive:signOut'
       }
@@ -44,7 +48,7 @@ container.authHandler = {
     }
   },
   isSignedIn (strategy) {
-    if (container.platform === 'ios') {
+    if (isWebView()) {
       return true
     } else {
       if (strategy === 'GOOGLE_DRIVE') {
