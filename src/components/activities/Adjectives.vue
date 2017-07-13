@@ -176,7 +176,7 @@ export default {
 .adjectives-content {
   height: 100%;
   padding-top: 5px;
-  padding-bottom: 5px;
+  padding-bottom: 50px;
 }
 .detailing {
   .noselect;

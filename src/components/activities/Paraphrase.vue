@@ -201,6 +201,7 @@ function determineParaphrasingRange (currentVerseContainer) {
 }
 .content {
   padding-top: 10px;
+  padding-bottom: 100px;
   &.keyboard {
     padding-bottom: 400px;
   }

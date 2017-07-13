@@ -1,33 +1,38 @@
 <template>
   <div v-if="data !== undefined" class="flex-column vfull">
-    <div class="flex-one scrolly">
-      <div class="flex-row">
-        <div class="flex-one bucket-label back-orange">{{ container(0).name }}</div>
-        <div class="flex-one bucket-label back-purple">{{ container(1).name }}</div>
-        <div class="flex-one bucket-label back-red">{{ container(2).name }}</div>
-      </div>
+    <div class="flex-row">
+      <div class="flex-one bucket-label back-orange">{{ container(0).name }}</div>
+      <div class="flex-one bucket-label back-purple">{{ container(1).name }}</div>
+      <div class="flex-one bucket-label back-red">{{ container(2).name }}</div>
+    </div>
 
+    <div class="flex-one scrolly bottompad">
       <div class="container">
-        <div class="row">
-          <div class="col-sm-4">
-            <ul class="word-list">
-              <li class="orange list-item" v-for="selection in container(0).items">{{ selection.toString() }}</li>
-            </ul>
+        <drawer :expanded="true">
+          <div slot="title">
+            {{container(0).items.length}} {{container(0).name}},
+            {{container(1).items.length}} {{container(1).name}},
+            {{container(2).items.length}} {{container(2).name}}</div>
+          <div slot="content" class="row">
+            <div class="col-sm-4">
+              <ul class="word-list">
+                <li class="orange list-item" v-for="selection in container(0).items">{{ selection.toString() }}</li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <ul class="word-list">
+                <li class="purple list-item" v-for="selection in container(1).items">{{ selection.toString() }}</li>
+              </ul>
+            </div>
+            <div class="col-sm-4">
+              <ul class="word-list">
+                <li class="red list-item" v-for="selection in container(2).items">{{ selection.toString() }}</li>
+              </ul>
+            </div>
           </div>
-          <div class="col-sm-4">
-            <ul class="word-list">
-              <li class="purple list-item" v-for="selection in container(1).items">{{ selection.toString() }}</li>
-            </ul>
-          </div>
-          <div class="col-sm-4">
-            <ul class="word-list">
-              <li class="red list-item" v-for="selection in container(2).items">{{ selection.toString() }}</li>
-            </ul>
-          </div>
-        </div>
+        </drawer>
       </div>
-
-      <hr />
+      <br />
 
       <div id="buckets-reviewer-words" class="container">
         <span :key="index" v-for="(word, index) in words" :class="wordClass(word)">{{ word.text }} </span>
@@ -45,6 +50,7 @@
 <script>
 import { mapGetters } from 'vuex'
 import activities from '../../js/activity'
+import Drawer from '../common/Drawer'
 
 export default {
   data () { return { } },
@@ -58,6 +64,7 @@ export default {
     }
   },
   props: ['data'],
+  components: { Drawer },
   methods: {
     container (index) {
       return this.data.containers[index]
