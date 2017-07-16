@@ -14,7 +14,7 @@ export default {
         type: 'GET',
         beforeSend: function (xhr) { xhr.setRequestHeader('x-esv-api-key', ESV) },
         success: function (verses) {
-          verses.forEach(v => { v.text = v.text.replace(/<f>*.<\/f>/g, '') })
+          verses.forEach(v => { v.text = v.text.replace(/<f>\d*<\/f>/g, '') })
           onload(verses)
         }
       })
