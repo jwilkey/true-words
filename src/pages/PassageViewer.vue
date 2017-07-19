@@ -32,7 +32,7 @@
         </div>
 
         <div class="bottombar flex-zero">
-          <p class="text-center passage-instruction">{{ actionText }}</p>
+          <p class="text-center passage-instruction pulse">{{ actionText }}</p>
           <button @click="beginPressed()" class="btn btn-lg callout-light btn-block study-begin" v-if="isPassageSelected">BEGIN</button>
         </div>
       </div>
@@ -217,6 +217,7 @@ export default {
 @import '../../static/less/app.less';
 @import '../../static/less/colors.less';
 @import '../../static/less/flex.less';
+@import '../../static/less/common';
 
 #passage-viewer {
   position: absolute;
