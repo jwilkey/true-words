@@ -1,9 +1,9 @@
 <template>
   <div v-if="data !== undefined" class="flex-column vfull">
     <div class="flex-row">
-      <div class="flex-one bucket-label back-orange">{{ container(0).name }}</div>
-      <div class="flex-one bucket-label back-purple">{{ container(1).name }}</div>
-      <div class="flex-one bucket-label back-red">{{ container(2).name }}</div>
+      <div class="flex-one bucket-label back-orange"><i class="fa fa-user-circle-o"></i> {{ container(0).name }}</div>
+      <div class="flex-one bucket-label back-purple"><i class="fa fa-institution"></i> {{ container(1).name }}</div>
+      <div class="flex-one bucket-label back-red"><i class="fa fa-tree"></i> {{ container(2).name }}</div>
     </div>
 
     <div class="flex-one scrolly bottompad">
