@@ -14,9 +14,12 @@
 
           <div class="theme-mid shadow" @click="toggleAbout($event.target)">
             <div class="about-tw">
-              <p><span class="about-title callout-light alt">ABOUT</span> <span>Read the Bible intentionally...</span></p>
+              <p><i class="fa fa-play callout-light"></i> <span class="about-title callout-light alt">ABOUT</span> <span>Read the Bible intentionally...</span></p>
               <i class="fa fa-chevron-right muted"></i>
               <div class="shrinkable shrunk">
+                <div class="video-intro embed-responsive embed-responsive-16by9">
+                  <iframe src="https://www.youtube.com/embed/pYVs7p-lgzY?rel=0" frameborder="0" allowfullscreen></iframe>
+                </div>
                 <p class="list-item">True Words will help you learn skills so that as you read the Bible you can <i class="callout-light alt">know</i> what the text says, <i class="callout-light alt">understand</i> what it means, and <i class="callout-light alt">apply</i> it to your life. This tool was made with <i class="callout-light alt">everyone</i> in mind, children and scholars alike. Taste and see that the Lord is good!</p>
               </div>
             </div>
@@ -171,15 +174,23 @@ body {
   position: relative;
   cursor: pointer;
   p { margin: 0; }
+  .fa-play {
+    padding: 4px 8px;
+    border-radius: 4px;
+    margin-right: 8px;
+  }
   .fa-chevron-right {
     position: absolute;
     right: 10px;
     top: 12px;
     transition: transform 0.3s;
   }
+  .video-intro {
+    margin: 10px 0px;
+  }
   .shrinkable {
     overflow: hidden;
-    max-height: 500px;
+    max-height: 1500px;
     transition: opacity 0.2s, max-height 0.4s;
     p {
       padding-top: 5px;
