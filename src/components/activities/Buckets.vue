@@ -3,10 +3,10 @@
     <div class="flex-one flex-column">
       <div class="flex-two flex-row">
         <div data-index="0" class="flex-one flex-column flex-center bucket back-orange dropzone" @click="assignToBucket(0)">
-          <p>{{ container(0).name }} <span v-if="!container(0).isEmpty()" class="bubble">{{ container(0).items.length }}</span></p>
+          <p><i class="fa fa-user-circle-o"></i> {{ container(0).name }} <span v-if="!container(0).isEmpty()" class="bubble">{{ container(0).items.length }}</span></p>
         </div>
         <div data-index="1" class="flex-one flex-column flex-center bucket back-purple dropzone" @click="assignToBucket(1)">
-          <p>{{ container(1).name }} <span v-if="!container(1).isEmpty()" class="bubble">{{ container(1).items.length }}</span></p>
+          <p><i class="fa fa-institution"></i> {{ container(1).name }} <span v-if="!container(1).isEmpty()" class="bubble">{{ container(1).items.length }}</span></p>
         </div>
       </div>
 
@@ -53,7 +53,7 @@
 
       <div class="flex-two flex-row">
         <div data-index="2" class="flex-one flex-column flex-center bucket back-red dropzone" @click="assignToBucket(2)">
-          <p>{{ container(2).name }} <span v-if="!container(2).isEmpty()" class="bubble">{{ container(2).items.length }}</span></p>
+          <p><i class="fa fa-tree"></i> {{ container(2).name }} <span v-if="!container(2).isEmpty()" class="bubble">{{ container(2).items.length }}</span></p>
         </div>
       </div>
     </div>
