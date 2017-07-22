@@ -8,7 +8,7 @@ export default {
       $.getJSON(path, function (json) {
         onload(json)
       })
-    } else {
+    } else if (version === 'ESV') {
       $.ajax({
         url: `https://bible.truewordsapp.com/esv/${bookIdentifier}/${chapter}`,
         type: 'GET',
@@ -17,6 +17,12 @@ export default {
           verses.forEach(v => { v.text = v.text.replace(/<f>\d*<\/f>/g, '') })
           onload(verses)
         }
+      })
+    } else {
+      $.ajax({
+        url: `https://bible.truewordsapp.com/verses/${version}/${bookIdentifier}/${chapter}`,
+        type: 'GET',
+        success: onload
       })
     }
   }

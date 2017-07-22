@@ -3,8 +3,10 @@
     <titlebar title="BIBLE CHOOSER" :left-items="['close']" :on-close="closePressed" :on-help="helpPressed"></titlebar>
 
     <div class="container">
-      <h1 @click="bibleSelected('ESV')" class="text-center theme-mid hover">ESV</h1>
-      <h1 @click="bibleSelected('NASB')" class="text-center theme-mid hover">NASB</h1>
+      <div v-for="version in versions" @click="bibleSelected(version.id)" class="version shadow-light text-center theme-mid hover">
+        <h1>{{ version.display }}</h1>
+        <p class="muted">{{ version.name }}</p>
+      </div>
     </div>
 
   </div>
@@ -16,7 +18,13 @@ import Titlebar from '../components/Titlebar'
 
 export default {
   data () {
-    return { }
+    return {
+      versions: [
+        {display: 'ESV', name: 'English Standard Version', id: 'ESV'},
+        {display: 'NASB', name: 'New American Standard Bible', id: 'NASB'},
+        {display: 'RVR60 (Español)', name: 'Reina-Valera 1960', id: 'RVR60'}
+      ]
+    }
   },
   computed: {
     ...mapGetters(['getCurrentBible'])
@@ -44,10 +52,16 @@ export default {
 body {
   padding-top: 55px;
 }
+.version {
+  margin-bottom: 10px;
+  cursor: pointer;
+}
 h1 {
   font-family: "Homizio";
   letter-spacing: 3px;
   padding: 15px;
+  padding-bottom: 0px;
+  margin: 0px;
   transition: background-color 0.3s;
 }
 </style>
