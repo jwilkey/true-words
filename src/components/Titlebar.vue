@@ -64,7 +64,14 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style lang="less">
+@import '../../static/less/common.less';
+
+body {
+  padding-top: @titlebar-height;
+}
+</style>
+
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
 @import '../../static/less/common.less';

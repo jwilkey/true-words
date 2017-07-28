@@ -1,6 +1,6 @@
 <template>
-  <div v-if="data !== undefined" class="flex-v">
-    <div class="flex-1">
+  <div v-if="data !== undefined" class="flex-column vfull">
+    <div class="flex-one substance">
       <div class="container">
         <div class="space-container">
           <p class="space-title muted"><span class="acronym">S</span>INS TO CONFESS</p>
@@ -30,7 +30,7 @@
       </div>
     </div>
 
-    <div class="actionbar-flex">
+    <div class="flex-zero bottombar">
       <button @click="donePressed()" class="btn btn-lg callout-light btn-block">DONE</button>
     </div>
   </div>
@@ -58,7 +58,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../static/less/colors.less';
+@import '../../../static/less/colors';
+@import '../../../static/less/flex';
+
 .space-container {
   margin-bottom: 20px;
 }

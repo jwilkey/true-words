@@ -1,6 +1,6 @@
 <template>
   <div v-if="data !== undefined" class="flex-column vfull">
-    <div class="flex-one scrolly">
+    <div class="flex-one substance">
       <div class="container">
         <div class="actions">
           <div v-for="action in data.collection.items" class="action clearfix">
@@ -63,7 +63,7 @@ export default {
   display: table;
   margin-left: auto;
   margin-right: auto;
-  padding: 15px 10px;
+  padding: 0px 10px;
   .action {
     padding-bottom: 12px;
     .action-item:first-child {

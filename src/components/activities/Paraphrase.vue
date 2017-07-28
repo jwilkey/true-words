@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="flex-one scrolly content">
+    <div class="flex-one substance content">
       <div class="container">
         <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number" @click="verseSelected($event.target)">
           <div class="verse theme-mid hover">
@@ -146,9 +146,9 @@ function determineParaphrasingRange (currentVerseContainer) {
 </script>
 
 <style lang="less" scoped>
-@import '../../../static/less/colors.less';
-@import '../../../static/less/app.less';
-@import '../../../static/less/flex.less';
+@import '../../../static/less/colors';
+@import '../../../static/less/app';
+@import '../../../static/less/flex';
 
 #paraphrase-container {
   display: none;
@@ -199,12 +199,8 @@ function determineParaphrasingRange (currentVerseContainer) {
     }
   }
 }
-.content {
-  padding-top: 10px;
-  padding-bottom: 100px;
-  &.keyboard {
-    padding-bottom: 400px;
-  }
+.content.keyboard {
+  padding-bottom: 400px;
 }
 .verse-container {
   padding: 0px;

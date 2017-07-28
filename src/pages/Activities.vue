@@ -2,11 +2,11 @@
   <div class="">
     <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
-    <div class="passage-label brand-font theme-back">
-      {{ getCurrentStudy.passage.description() }}
-    </div>
+    <div class="container substance">
+      <div class="passage-label brand-font theme-back">
+        {{ getCurrentStudy.passage.description() }}
+      </div>
 
-    <div class="container">
       <div v-if="!getPersistor.isLoggedIn()" class="text-center">
         <button class="btn callout-light" @click="login()">Login to save your work</button>
         <hr />
@@ -130,11 +130,11 @@ function daysAgo (date) {
 </script>
 
 <style lang="less" scoped>
-@import '../../static/less/colors.less';
+@import '../../static/less/colors';
 
 .passage-label {
   text-align: center;
-  padding: 10px;
+  margin-bottom: 10px;
   letter-spacing: 1px;
   font-size: 20px;
 }

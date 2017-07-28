@@ -2,7 +2,7 @@
   <div>
     <titlebar :title="'HYMNS'" :left-items="['back']" :on-back="goBack"></titlebar>
 
-    <div class="container">
+    <div class="container substance">
       <p class="inspired-by muted">Inspired by {{ passage }}</p>
       <p v-if="isLoading" class="hymns-loading blue"><i class="fa fa-circle-o-notch fa-spin"/> Loading</p>
       <div v-if="error">

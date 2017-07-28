@@ -1,12 +1,12 @@
 <template>
-  <div v-if="data !== undefined" class="flex-v">
-    <div class="flex-1">
-      <div class="container">
+  <div v-if="data !== undefined" class="flex-column vfull">
+    <div class="flex-one">
+      <div class="container substance">
         <span v-for="freeText in data.collection.items">{{ freeText.text }} </span>
       </div>
     </div>
 
-    <div class="actionbar-flex">
+    <div class="flex-zero bottombar">
       <button @click="donePressed()" class="btn btn-lg callout-light btn-block">DONE</button>
     </div>
   </div>
@@ -37,5 +37,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../static/less/colors.less';
+@import '../../../static/less/colors';
+@import '../../../static/less/flex';
 </style>

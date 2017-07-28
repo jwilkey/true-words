@@ -4,7 +4,7 @@
         <a slot="right" @click="chooseBible()">{{ getCurrentBible }}</a>
     </titlebar>
 
-    <div class="container theme-back">
+    <div class="container substance theme-back">
       <div class="flex-row testament-tabs">
         <button @click="toggleTestament('OT')" class="btn flex-one callout-light" :class="{alt: testament === 'NT'}">OLD TESTAMENT</button>
         <button @click="toggleTestament('NT')" class="btn flex-one callout-light" :class="{alt: testament === 'OT'}">NEW TESTAMENT</button>
@@ -91,16 +91,20 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../static/less/colors.less';
-@import '../../static/less/bootstrap-overrides.less';
+@import '../../static/less/colors';
+@import '../../static/less/flex';
+@import '../../static/less/bootstrap-overrides';
 
 #passageChooser {
   padding-bottom: 50px;
 }
 .testament-tabs {
-  margin: 10px 0px;
-  button {
-    margin: 0px 5px;
+  margin-bottom: 10px;
+  button:first-child {
+    margin-right: 5px;
+  }
+  button:last-child {
+    margin-left: 5px;
   }
 }
 .book {

@@ -2,7 +2,7 @@
   <div>
     <titlebar title="SIGN IN" :left-items="['close']" :on-close="closePressed"></titlebar>
 
-    <div class="container">
+    <div class="container substance">
       <google-auth v-if="!isAuthenticated"></google-auth>
 
       <div v-if="isAuthenticated" class="text-center">
@@ -71,9 +71,7 @@ export default {
 
 <style lang="less" scoped>
 @import '../../static/less/colors.less';
-body {
-  padding-top: 55px;
-}
+
 .user-name {
   text-align: center;
   font-size: 20px;

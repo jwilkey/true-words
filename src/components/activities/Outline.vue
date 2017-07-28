@@ -1,7 +1,7 @@
 <template>
-  <div class="flex-v">
-    <div class="flex-1">
-      <div class="container content">
+  <div class="flex-column vfull">
+    <div class="flex-one substance">
+      <div class="container">
         <div class="row section-container" :key="sectionIndex" v-for="(section, sectionIndex) in data.collection.items">
           <div class="col-xs-12">
             <section-vue class="section-content" :section="section" :index="sectionIndex" :allows-sub-sections="true" :delete="deleteSection"></section-vue>
@@ -12,10 +12,8 @@
       </div>
     </div>
 
-    <div class="actionbar-flex">
-      <div>
-        <button id="outline-action" class="btn callout-light btn-block" :class="{disabled: !isOutlined()}" @click="finishedClicked()">FINISHED</button>
-      </div>
+    <div class="flex-zero bottombar">
+      <button id="outline-action" class="btn callout-light btn-block" :class="{disabled: !isOutlined()}" @click="finishedClicked()">FINISHED</button>
     </div>
   </div>
 </template>
@@ -119,11 +117,10 @@ function recalculateWordRanges (data, wordsBySection) {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="less" scoped>
-@import '../../../static/less/colors.less';
-@import '../../../static/less/words.less';
-.container.content {
-  padding-bottom: 30px;
-}
+@import '../../../static/less/colors';
+@import '../../../static/less/words';
+@import '../../../static/less/flex';
+
 .section-container {
   margin-bottom: 15px;
   .section-content {

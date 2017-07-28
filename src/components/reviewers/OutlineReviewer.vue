@@ -1,14 +1,14 @@
 <template>
-  <div v-if="data !== undefined" class="flex-v">
-    <div class="flex-1">
-      <div class="container content">
+  <div v-if="data !== undefined" class="flex-column vfull">
+    <div class="flex-one substance">
+      <div class="container">
         <div class="row section-container" :key="sectionIndex" v-for="(section, sectionIndex) in data.collection.items">
           <section-vue class="section-content col-xs-12 readonly" :section="section" :index="sectionIndex" :allows-sub-sections="true"></section-vue>
         </div>
       </div>
     </div>
 
-    <div class="actionbar-flex">
+    <div class="flex-zero bottombar">
       <button @click="donePressed()" class="btn btn-lg callout-light btn-block">DONE</button>
     </div>
   </div>
@@ -32,5 +32,6 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../static/less/colors.less';
+@import '../../../static/less/colors';
+@import '../../../static/less/flex';
 </style>

@@ -11,30 +11,28 @@
       </div>
     </titlebar>
 
-    <div id="passage-viewer">
-      <div class="flex-column vfull">
-        <div class="flex-one scrolly viewer">
-          <div class="container">
-            <div class="verses" :class="{loading: loading, inline: readingMode === 'inline'}">
+    <div class="flex-column vfull">
+      <div class="flex-one substance">
+        <div class="container">
+          <div class="verses" :class="{loading: loading, inline: readingMode === 'inline'}">
 
-              <p class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></p>
+            <p class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></p>
 
-              <div v-for="verse in verses" class="verse theme-mid hover" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
-                <span class="verse-number muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
-              </div>
+            <div v-for="verse in verses" class="verse row theme-mid hover" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
+              <span class="verse-number muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
             </div>
           </div>
-
-          <div class="navigation">
-            <button @click="chapterBack()" class="btn btn-navigate callout-light alt hover">PREV</button>
-            <button @click="chapterForward()" class="btn btn-navigate callout-light alt hover">NEXT</button>
-          </div>
         </div>
 
-        <div class="bottombar flex-zero">
-          <p class="text-center passage-instruction pulse">{{ actionText }}</p>
-          <button @click="beginPressed()" class="btn btn-lg callout-light btn-block study-begin" v-if="isPassageSelected">BEGIN</button>
+        <div class="navigation">
+          <button @click="chapterBack()" class="btn btn-navigate callout-light alt hover">PREV</button>
+          <button @click="chapterForward()" class="btn btn-navigate callout-light alt hover">NEXT</button>
         </div>
+      </div>
+
+      <div class="bottombar flex-zero">
+        <p class="text-center passage-instruction pulse">{{ actionText }}</p>
+        <button @click="beginPressed()" class="btn btn-lg callout-light btn-block study-begin" v-if="isPassageSelected">BEGIN</button>
       </div>
     </div>
   </div>
@@ -219,33 +217,20 @@ export default {
 @import '../../static/less/flex.less';
 @import '../../static/less/common';
 
-#passage-viewer {
-  position: absolute;
-  top: @titlebar-height;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  .viewer {
-    padding: 14px 0px 50px 0px;
-    .container {
-      padding: 2px;
+.navigation {
+  text-align: center;
+  padding-top: 30px;
+  .btn-navigate {
+    border: none;
+    border-radius: 0px;
+    &:first-child {
+      border-right: solid 1px @color-deemphasize;
     }
   }
-  .navigation {
-    text-align: center;
-    padding-top: 10px;
-    .btn-navigate {
-      border: none;
-      border-radius: 0px;
-      &:first-child {
-        border-right: solid 1px @color-deemphasize;
-      }
-    }
-  }
-  .fa-circle-o-notch {
-    font-size: 27px;
-    margin-top: 15px;
-  }
+}
+.fa-circle-o-notch {
+  font-size: 27px;
+  margin-top: 15px;
 }
 .passage-instruction {
   margin: 0;
@@ -274,7 +259,7 @@ export default {
     opacity: 0.5;
   }
   .verse {
-    padding: 1px 10px 1px 10px;
+    padding: 1px 15px 1px 15px;
     font-size: 18px;
     margin-bottom: 2px;
     transition: background-color 0.3s;

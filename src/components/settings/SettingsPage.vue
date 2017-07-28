@@ -2,8 +2,7 @@
   <div>
     <titlebar title="SETTINGS" :left-items="['home']"></titlebar>
 
-    <div class="container">
-      <br />
+    <div class="container substance">
       <card title="THEME" subtitle="Choose a theme">
         <div class="theme-container">
           <p>Light</p>

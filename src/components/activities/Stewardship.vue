@@ -1,6 +1,6 @@
 <template>
   <div class="flex-column vfull">
-    <div class="flex-one scrolly bottompad">
+    <div class="flex-one substance">
       <div v-if="mode === 'context'" class="container context-mode">
         <h3>In the next 3 days...</h3>
         <div class="context-container" id="time-entry" v-if="timeEntry">
@@ -22,7 +22,6 @@
       </div>
 
       <div v-if="mode === 'text'" class="container">
-        <br />
         <div v-for="verse in getCurrentStudy.verses" class="verse-container">
           <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
         </div>

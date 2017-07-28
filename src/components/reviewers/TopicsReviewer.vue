@@ -1,6 +1,6 @@
 <template>
   <div class="flex-column vfull">
-    <div class="flex-one scrolly topics-view">
+    <div class="flex-one substance">
       <div class="container">
         <drawer :expanded="true">
           <div slot="title">{{ topics.length }} TOPICS</div>
@@ -49,12 +49,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.topics-view {
-  padding-top: 10px;
-  padding-bottom: 30px;
-  .container {
-    padding-bottom: 10px;
-  }
+.container {
+  padding-bottom: 10px;
 }
 .topic {
   display: inline-block;

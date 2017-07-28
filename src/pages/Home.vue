@@ -2,9 +2,9 @@
   <div>
     <titlebar title="TRUE WORDS"></titlebar>
 
-    <div class="flex-column vfull home-root theme-back">
-      <div class="flex-one scrolly">
-        <div id="home-content" class="container">
+    <div class="flex-column vfull theme-back">
+      <div class="flex-one home-root">
+        <div class="container">
           <card title="BEGIN" subtitle="Choose a Bible text to study" class="nopad">
             <div class="flex-row clearfix theme-back">
               <router-link class="flex-one text-center testament-button theme-mid hover" to="/choosepassage?t=ot">OLD TESTAMENT</router-link>
@@ -106,7 +106,7 @@ export default {
     Card, Titlebar
   },
   methods: {
-    ...mapActions(['getPersistor', 'setCurrentStudy', 'setStudies', 'openStudy']),
+    ...mapActions(['setCurrentStudy', 'setStudies', 'openStudy']),
     continueStudy (studyId) {
       var self = this
       this.alert('LOADING...')
@@ -138,6 +138,7 @@ export default {
 </script>
 
 <style lang="less">
+@import '../../static/less/app';
 @import '../../static/less/common';
 @import '../../static/less/colors';
 @import '../../static/less/flex';
@@ -151,11 +152,11 @@ body {
   background-size: cover;
   height: 100%
 }
+
 .home-root {
+  .scrolly;
   padding-top: 15px;
-}
-#home-content {
-  padding-bottom: 50px;
+  padding-bottom: 20px;
 }
 .testament-button {
   padding: 23px 5px 20px 5px;

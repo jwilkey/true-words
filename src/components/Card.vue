@@ -20,6 +20,7 @@ export default {
 
 <style lang="less">
 @import '../../static/less/colors';
+@import '../../static/less/flex';
 
 .card {
   margin-bottom: 20px;

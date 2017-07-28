@@ -2,7 +2,7 @@
   <div>
     <titlebar title="BIBLE CHOOSER" :left-items="['close']" :on-close="closePressed" :on-help="helpPressed"></titlebar>
 
-    <div class="container">
+    <div class="container substance">
       <div v-for="version in versions" @click="bibleSelected(version.id)" class="version shadow-light text-center theme-mid hover">
         <h1>{{ version.display }}</h1>
         <p class="muted">{{ version.name }}</p>
@@ -49,9 +49,6 @@ export default {
 
 <style lang="less">
 @import '../../static/less/colors.less';
-body {
-  padding-top: 55px;
-}
 .version {
   margin-bottom: 10px;
   cursor: pointer;

@@ -220,9 +220,6 @@ export default {
 @import '../../static/less/colors.less';
 @import '../../static/less/common.less';
 
-#activity, #review {
-  padding-top: @titlebar-height;
-}
 @media screen and (max-height: 380px) {
   #activity-titlebar {
     display: none;
@@ -232,26 +229,13 @@ export default {
   }
 }
 
-body {
-  padding-top: 55px;
-}
-#activity {
+#activity, #review {
   position: absolute;
   top: 0;
   right: 0;
   bottom: 0;
   left: 0;
-  &.blur {
-    -webkit-filter: blur(5px);
-    filter: blur(5px);
-  }
-}
-#review {
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
+  padding-top: @titlebar-height;
   &.blur {
     -webkit-filter: blur(5px);
     filter: blur(5px);

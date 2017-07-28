@@ -1,6 +1,6 @@
 <template>
-  <div class="flex-v">
-    <div class="flex-1">
+  <div class="flex-column vfull">
+    <div class="flex-one substance">
       <div class="overlay theme-mid shadow-long">
         <text-input ref="textInput" :title="textInputTitle" :done="textInputDone"></text-input>
       </div>
@@ -26,7 +26,7 @@
       </div>
     </div>
 
-    <div class="actionbar-flex">
+    <div class="flex-zero bottombar">
       <div v-if="showDoneButton" class="col-xs-12 space-done-button">
         <button class="btn callout-light btn-block" @click="finished()">FINISHED</button>
       </div>
@@ -131,14 +131,16 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../../static/less/colors.less';
-@import '../../../static/less/app.less';
+@import '../../../static/less/colors';
+@import '../../../static/less/app';
+@import '../../../static/less/flex';
 
 .overlay {
   display: none;
   position: absolute;
   width: 100%;
   z-index: 100;
+  margin-top: -15px;
 }
 
 .verse-container {

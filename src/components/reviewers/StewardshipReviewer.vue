@@ -1,6 +1,6 @@
 <template>
   <div v-if="data !== undefined" class="flex-column vfull">
-    <div class="flex-one scrolly bottompad">
+    <div class="flex-one substance">
       <div class="container">
         <p class="title-label callout brand-font shadow-light">Life Context - <span class="muted">3 days following {{ getCurrentStudy.lastEditLabel() }}</span></p>
 
@@ -33,9 +33,7 @@
     </div>
 
     <div class="flex-zero bottombar">
-      <div class="col-xs-12">
-        <button @click="donePressed()" class="btn btn-lg callout-light btn-block">DONE</button>
-      </div>
+      <button @click="donePressed()" class="btn btn-lg callout-light btn-block">DONE</button>
     </div>
   </div>
 </template>

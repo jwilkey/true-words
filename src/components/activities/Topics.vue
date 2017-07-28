@@ -8,7 +8,7 @@
       <button :disabled="!topic" @click="addTopic"><i class="fa fa-plus-circle callout-light alt flex-zero"></i></button>
     </div>
 
-    <div class="flex-one scrolly">
+    <div class="flex-one substance">
 
       <div v-if="!showTopics" class="container passage">
         <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number">

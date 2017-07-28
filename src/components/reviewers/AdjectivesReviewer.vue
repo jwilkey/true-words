@@ -1,6 +1,6 @@
 <template>
   <div v-if="data !== undefined" class="flex-column vfull">
-    <div class="flex-one scrolly">
+    <div class="flex-one substance">
       <div class="container">
         <drawer :expanded="true">
           <div slot="title">{{ data.collection.items.length }} ADJECTIVES</div>

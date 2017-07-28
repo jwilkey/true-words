@@ -1,11 +1,11 @@
 <template>
   <div class="flex-column vfull">
-    <div class="flex-one scrolly actions-content">
+    <div class="flex-one substance">
       <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
     </div>
 
     <div class="flex-zero bottombar">
-      <p v-if="isMode('start')" class="instruction">Select an action</p>
+      <p v-if="isMode('start')" class="text-center">Select an action</p>
 
       <div class="text-center">
         <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn callout-light"><i class="fa fa-question-circle-o"></i> How to select...</button>
@@ -249,10 +249,6 @@ export default {
 @import '../../../static/less/colors.less';
 @import '../../../static/less/flex.less';
 
-.actions-content {
-  padding-bottom: 30px;
-  padding-top: 10px;
-}
 .action-header {
   display: table;
   width: 100%;

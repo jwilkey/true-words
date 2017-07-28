@@ -1,6 +1,6 @@
 <template>
   <div class="flex-column vfull">
-    <div class="flex-one scrolly adjectives-content">
+    <div class="flex-one substance">
       <selectable-text ref="selectableText" :delegate="selectionDelegate"></selectable-text>
     </div>
 
@@ -172,11 +172,6 @@ export default {
   text-align: center;
   font-size: 17px;
   margin: 0px;
-}
-.adjectives-content {
-  height: 100%;
-  padding-top: 5px;
-  padding-bottom: 50px;
 }
 .detailing {
   .noselect;

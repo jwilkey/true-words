@@ -6,14 +6,12 @@
       </div>
     </titlebar>
 
-    <div id="passage-viewer">
-      <div class="flex-column vfull">
-        <div class="flex-one scrolly viewer">
-          <div class="container">
-            <div class="verses" :class="{inline: readingMode === 'inline'}">
-              <div v-for="verse in getCurrentStudy.verses" class="verse theme-mid hover" :data-verse="verse.number">
-                <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
-              </div>
+    <div class="flex-column vfull">
+      <div class="flex-one scrolly bottompad">
+        <div class="container">
+          <div class="verses" :class="{inline: readingMode === 'inline'}">
+            <div v-for="verse in getCurrentStudy.verses" class="verse theme-mid hover" :data-verse="verse.number">
+              <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
             </div>
           </div>
         </div>
@@ -57,18 +55,8 @@ export default {
 @import '../../../static/less/colors.less';
 @import '../../../static/less/flex.less';
 
-#passage-viewer {
-  position: absolute;
-  top: @titlebar-height;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  .viewer {
-    padding: 14px 0px 50px 0px;
-    .container {
-      padding: 2px;
-    }
-  }
+.container {
+  padding: 2px;
 }
 .center-wrapper {
   height: 100%;

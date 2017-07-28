@@ -2,7 +2,7 @@
   <div>
     <titlebar :title="'HYMN'" :left-items="['back']" :on-back="goBack"></titlebar>
 
-    <div class="container" :class="{blur: videoId}">
+    <div class="container substance" :class="{blur: videoId}">
       <div class="hymn-text">
         <div class="hymn-header theme-mid shadow-light">
           <p class="title">{{ title }}</p>
@@ -34,10 +34,10 @@
     </div>
 
     <div class="video-embed" v-if="videoId">
-      <div class="video-close" @click="videoId = undefined">
+      <div class="video-close red" @click="videoId = undefined">
         <i class="fa fa-close"></i> CLOSE
       </div>
-      <youtube-player :video-id="videoId"></youtube-player>
+      <youtube-player :video-id="videoId" class="shadow"></youtube-player>
     </div>
   </div>
 </template>
@@ -172,7 +172,7 @@ export default {
   background-color: rgba(0,0,0,0.8);
   padding: calc(@titlebar-height + 20) 10px;
   .video-close {
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     font-size: 18px;
     cursor: pointer;
     &:hover {

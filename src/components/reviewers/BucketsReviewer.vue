@@ -1,12 +1,12 @@
 <template>
   <div v-if="data !== undefined" class="flex-column vfull">
-    <div class="flex-row">
+    <div class="flex-row shadow">
       <div class="flex-one bucket-label back-orange"><i class="fa fa-user-circle-o"></i> {{ container(0).name }}</div>
       <div class="flex-one bucket-label back-purple"><i class="fa fa-institution"></i> {{ container(1).name }}</div>
       <div class="flex-one bucket-label back-red"><i class="fa fa-tree"></i> {{ container(2).name }}</div>
     </div>
 
-    <div class="flex-one scrolly bottompad">
+    <div class="flex-one substance">
       <div class="container">
         <drawer :expanded="true">
           <div slot="title">
@@ -100,7 +100,6 @@ export default {
   float: left;
   letter-spacing: 2px;
   padding: 5px;
-  margin-bottom: 10px;
 }
 .word-list {
   padding-left: 0px;
