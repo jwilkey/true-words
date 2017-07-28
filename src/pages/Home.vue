@@ -143,16 +143,6 @@ export default {
 @import '../../static/less/colors';
 @import '../../static/less/flex';
 
-html {
-  height: 100%;
-}
-body {
-  background-position: top;
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100%
-}
-
 .home-root {
   .scrolly;
   padding-top: 15px;

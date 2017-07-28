@@ -7,12 +7,10 @@
     </titlebar>
 
     <div class="flex-column vfull">
-      <div class="flex-one scrolly bottompad">
-        <div class="container">
-          <div class="verses" :class="{inline: readingMode === 'inline'}">
-            <div v-for="verse in getCurrentStudy.verses" class="verse theme-mid hover" :data-verse="verse.number">
-              <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
-            </div>
+      <div class="flex-one substance">
+        <div class="container verses" :class="{inline: readingMode === 'inline'}">
+          <div v-for="verse in getCurrentStudy.verses" class="verse theme-mid hover" :data-verse="verse.number">
+            <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
           </div>
         </div>
       </div>
@@ -74,7 +72,7 @@ export default {
 }
 .verses {
   .verse {
-    padding: 1px 10px 1px 10px;
+    padding: 1px 20px;
     font-size: 18px;
     margin-bottom: 2px;
     transition: background-color 0.3s;
@@ -86,8 +84,8 @@ export default {
     font-size: 12px !important;
   }
   &.inline {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     .verse {
       display: inline;
       background-color: transparent;

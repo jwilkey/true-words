@@ -13,14 +13,12 @@
 
     <div class="flex-column vfull">
       <div class="flex-one substance">
-        <div class="container">
-          <div class="verses" :class="{loading: loading, inline: readingMode === 'inline'}">
+        <div class="container verses" :class="{loading: loading, inline: readingMode === 'inline'}">
 
-            <p class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></p>
+          <p class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></p>
 
-            <div v-for="verse in verses" class="verse row theme-mid hover" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
-              <span class="verse-number muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
-            </div>
+          <div v-for="verse in verses" class="verse theme-mid hover" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
+            <span class="verse-number muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
           </div>
         </div>
 
@@ -212,9 +210,9 @@ export default {
 </script>
 
 <style lang="less" scoped>
-@import '../../static/less/app.less';
-@import '../../static/less/colors.less';
-@import '../../static/less/flex.less';
+@import '../../static/less/app';
+@import '../../static/less/colors';
+@import '../../static/less/flex';
 @import '../../static/less/common';
 
 .navigation {
@@ -255,6 +253,7 @@ export default {
 
 .verses {
   transition: opacity 0.5s;
+  padding: 0px 5px;
   &.loading {
     opacity: 0.5;
   }
@@ -274,8 +273,8 @@ export default {
     font-size: 12px !important;
   }
   &.inline {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 20px;
+    padding-right: 20px;
     background-color: transparent;
     .verse {
       display: inline;

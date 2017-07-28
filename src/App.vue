@@ -87,6 +87,16 @@ export default {
 @import '../static/less/app.less';
 @import '../static/less/colors.less';
 
+html {
+  height: 100%;
+}
+body {
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%
+}
+
 .fade-enter-active, .fade-leave-active {
   transition: opacity .3s ease;
 }

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <titlebar title="BIBLE CHOOSER" :left-items="['close']" :on-close="closePressed" :on-help="helpPressed"></titlebar>
+    <titlebar title="BIBLE CHOOSER" :left-items="['close']" :on-close="closePressed"></titlebar>
 
     <div class="container substance">
       <div v-for="version in versions" @click="bibleSelected(version.id)" class="version shadow-light text-center theme-mid hover">
