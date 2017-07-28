@@ -48,10 +48,14 @@ export default {
 </script>
 
 <style lang="less">
-@import '../../static/less/colors.less';
+@import '../../static/less/colors';
 .version {
   margin-bottom: 10px;
+  padding-bottom: 10px;
   cursor: pointer;
+  p {
+    margin: 0;
+  }
 }
 h1 {
   font-family: "Homizio";
