@@ -58,8 +58,6 @@ export default {
   }
 }
 h1 {
-  font-family: "Homizio";
-  letter-spacing: 3px;
   padding: 15px;
   padding-bottom: 0px;
   margin: 0px;
