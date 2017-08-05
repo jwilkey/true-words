@@ -25,6 +25,7 @@
         </div>
       </card>
       <a class="btn callout-light btn-block" href="mailto:help.truewords@gmail.com?subject=Feedback">Provide Feedback</a>
+      <p class="muted app-info">App info: {{platform}}{{version}}</p>
     </div>
   </div>
 </template>
@@ -32,6 +33,7 @@
 <script>
 import Titlebar from '../Titlebar'
 import Card from '../Card'
+import container from '../../js/container'
 import $ from 'jquery'
 
 export default {
@@ -41,6 +43,12 @@ export default {
   },
   components: { Titlebar, Card },
   computed: {
+    platform () {
+      return container.platform
+    },
+    version () {
+      return container.appVersion ? ` ${container.appVersion}` : ''
+    }
   },
   methods: {
     setTheme (theme) {
@@ -96,5 +104,9 @@ export default {
   .t-hi { background-color: @color-dark-back-raised2; }
   .t-callout { background-color: @color-dark-callout; }
   .t-callout-light { background-color: @color-dark-callout-light; }
+}
+.app-info {
+  text-align: right;
+  margin-top: 20px;
 }
 </style>

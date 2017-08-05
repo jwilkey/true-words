@@ -56,17 +56,20 @@
               <router-link to="Login?referrer=Home" class="btn theme-hi btn-lg">SIGN IN</router-link>
             </div>
           </card>
+
+          <share :done="doneSharing" :show="sharing"></share>
         </div>
       </div>
 
       <div class="bottombar clearfix flex-zero">
         <div class="pull-left">
           <router-link class="settings" to="Settings"><i class="fa fa-gear muted"></i></router-link>
+          <a v-if="version('1.0.1')" @click="share" class="callout-light alt text-right">SHARE <i class="fa fa-share"></i></a>
         </div>
-        <div class="pull-right muted user" @click="userPressed">
+        <a class="pull-right muted user" @click="userPressed">
           <img v-if="userimage" class="user-img" :src="userimage" />
           {{ username }}
-        </div>
+        </a>
       </div>
     </div>
   </div>
@@ -75,17 +78,19 @@
 <script>
 import Titlebar from '../components/Titlebar'
 import Card from '../components/Card'
+import Share from '../components/common/Share'
 import { mapGetters, mapActions } from 'vuex'
 import container from '../js/container'
 
 export default {
   data () {
     return {
-      loaded: false
+      loaded: false,
+      sharing: false
     }
   },
   computed: {
-    ...mapGetters(['isAuthenticated', 'getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
+    ...mapGetters(['isAuthenticated', 'socialPlatforms', 'getStudies', 'getPersistor', 'getUser', 'getCurrentStudy']),
     manyStudies () {
       return this.getStudies.length > 3
     },
@@ -103,10 +108,16 @@ export default {
     }
   },
   components: {
-    Card, Titlebar
+    Card, Titlebar, Share
   },
   methods: {
     ...mapActions(['setCurrentStudy', 'setStudies', 'openStudy']),
+    share () {
+      this.sharing = true
+    },
+    doneSharing () {
+      this.sharing = false
+    },
     continueStudy (studyId) {
       var self = this
       this.alert('LOADING...')
@@ -236,5 +247,10 @@ export default {
 .settings {
   font-size: 18px;
   padding: 0 10px;
+}
+.bottombar {
+  a {
+    cursor: pointer;
+  }
 }
 </style>

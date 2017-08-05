@@ -20,6 +20,7 @@
     "vue": "^2.4.2",
     "vue-html": "^0.3.0",
     "vue-router": "^2.7.0",
+    "vue-social-sharing": "^2.2.3",
     "vuedraggable": "^2.14.1",
     "vuex": "^2.3.1"
   },

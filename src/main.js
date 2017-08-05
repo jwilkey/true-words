@@ -2,6 +2,8 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Analytics from './js/helpers/AnalyticsHelper'
+import container from './js/container'
+import SocialSharing from 'vue-social-sharing'
 
 import store from '../vuex/store'
 import App from './App'
@@ -22,6 +24,7 @@ var $ = require('jquery')
 window.jQuery = window.$ = $
 
 Vue.use(VueRouter)
+Vue.use(SocialSharing)
 
 const routes = [
   { path: '/', component: Home, name: 'Home' },
@@ -101,6 +104,9 @@ Vue.mixin({
     },
     setAlertCallback (callback) {
       this.$root.$children[0].alertCallback = callback
+    },
+    version (minimumRequiredVersion) {
+      return !container.requiresUpdate(minimumRequiredVersion)
     }
   },
   mounted: function () {

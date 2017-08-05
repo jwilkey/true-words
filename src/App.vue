@@ -71,6 +71,7 @@ export default {
     window.twauth = this.authorize
     window.twdeauth = this.deauthorize
     container.platform = this.$route.query.platform || 'web'
+    container.appVersion = this.$route.query.app_version
     container.onAuthorizationExpired = this.showReauthView
     this.setPlatform(container.platform)
 

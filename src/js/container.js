@@ -3,7 +3,21 @@ import driveAuth from './helpers/drive-auth-helper'
 var container = {
   authToken: '',
   platform: 'web',
+  appVersion: undefined,
   recentPersistentStrategy: undefined
+}
+
+container.isMobile = function () {
+  return container.platform === 'ios'
+}
+
+container.requiresUpdate = function (requiredAppVersion) {
+  if (container.isMobile()) {
+    const version = (container.appVersion || '1.0.0').split('.').map(s => parseInt(s))
+    const required = requiredAppVersion.split('.').map(s => parseInt(s))
+    return version[0] < required[0] || version[1] < required[1] || version[2] < required[2]
+  }
+  return false
 }
 
 function isWebView () {
