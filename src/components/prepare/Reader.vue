@@ -14,6 +14,12 @@
           </div>
         </div>
       </div>
+
+      <div class="bottombar">
+        <div class="text-right">
+          <router-link :to="readerContextPath" class="callout-light alt context-link">READ IN CONTEXT <i class="fa fa-arrow-right"></i></router-link>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -35,6 +41,11 @@ export default {
     ...mapGetters(['getCurrentStudy']),
     readingModeButtonClass: function () {
       return this.readingMode === 'list' ? ['glyphicon-align-center'] : ['glyphicon-list']
+    },
+    readerContextPath () {
+      const book = this.getCurrentStudy.passage.start.book
+      const chapter = this.getCurrentStudy.passage.start.chapter
+      return `/passage?book=${book}&chapter=${chapter}&read_only=true`
     }
   },
   methods: {
@@ -92,6 +103,13 @@ export default {
       padding: 0px 7px 0px 0px;
       margin-bottom: 0px;
     }
+  }
+}
+.context-link {
+  padding: 5px;
+  border-radius: 4px;
+  i {
+    padding: 0 5px;
   }
 }
 </style>

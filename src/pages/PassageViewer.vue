@@ -17,7 +17,7 @@
 
           <p class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></p>
 
-          <div v-for="verse in verses" class="verse theme-mid hover" :class="{ 'selected': isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
+          <div v-for="verse in verses" class="verse theme-mid" :class="{ hover: !readOnly, selected: isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
             <span class="verse-number muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
           </div>
         </div>
@@ -28,7 +28,7 @@
         </div>
       </div>
 
-      <div class="bottombar flex-zero">
+      <div v-if="!readOnly" class="bottombar flex-zero">
         <p class="text-center passage-instruction pulse">{{ actionText }}</p>
         <button @click="beginPressed()" class="btn btn-lg callout-light btn-block study-begin" v-if="isPassageSelected">BEGIN</button>
       </div>
@@ -55,6 +55,7 @@ export default {
       startingVerse: undefined,
       endingVerse: undefined,
       readingMode: 'list',
+      readOnly: false,
       loading: false
     }
   },
@@ -116,6 +117,8 @@ export default {
       this.readingMode = this.readingMode === 'list' ? 'inline' : 'list'
     },
     isSelected (verse) {
+      if (this.readOnly) { return false }
+
       if (this.bookIdentifier && this.chapter) {
         var bibleVerse = new Verse(this.bookIdentifier, this.chapter, verse.number)
         return Bible.passageContains(this.startingVerse, this.endingVerse, bibleVerse)
@@ -140,6 +143,8 @@ export default {
       this.cachedVerses[bibleVersion][book][chapter] = verses
     },
     verseSelected (element) {
+      if (this.readOnly) { return }
+
       var verseElement = element.closest('.verse')
       var selectedVerseNumber = $(verseElement).data('verse')
       var bibleVerse = new Verse(this.bookIdentifier, this.chapter, selectedVerseNumber)
@@ -203,6 +208,7 @@ export default {
     ...mapActions(['createNewStudy'])
   },
   mounted () {
+    this.readOnly = this.$route.query.read_only
     this.bookIdentifier = this.$route.query.book || 'MATTHEW'
     this.chapter = parseInt(this.$route.query.chapter) || 1
   }
