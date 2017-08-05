@@ -1,22 +1,19 @@
 <template>
-  <div class="share-view callout shadow-top" :class="{show}">
+  <div class="share-view theme-mid shadow-top" :class="{show}">
     <p class="share-label callout-light shadow">Share this app! <a @click="done" class="pull-right mid-left">cancel</a></p>
     <social-sharing v-if="version('1.0.1')" url="https://truewordsapp.com" title="You can study the Bible. Here's how." inline-template>
       <div class="share-buttons">
         <network network="facebook">
-          <button class="btn btn-share shadow"><i class="fa fa-facebook fa-2x"></i><span>Facebook</span></button>
+          <button class="btn btn-share theme-hi shadow"><i class="fa fa-facebook fa-2x"></i><span>Facebook</span></button>
         </network>
         <network network="twitter">
-          <button class="btn btn-share shadow"><i class="fa fa-twitter fa-2x"></i><span>Twitter</span></button>
-        </network>
-        <network network="whatsapp">
-          <button class="btn btn-share shadow"><i class="fa fa-whatsapp fa-2x"></i><span>Whatsapp</span></button>
+          <button class="btn btn-share theme-hi shadow"><i class="fa fa-twitter fa-2x"></i><span>Twitter</span></button>
         </network>
         <network network="googleplus">
-          <button class="btn btn-share shadow"><i class="fa fa-google-plus fa-2x"></i><span>Google +</span></button>
+          <button class="btn btn-share theme-hi shadow"><i class="fa fa-google-plus fa-2x"></i><span>Google +</span></button>
         </network>
         <network network="reddit">
-          <button class="btn btn-share shadow"><i class="fa fa-reddit fa-2x"></i><span>Reddit</span></button>
+          <button class="btn btn-share theme-hi shadow"><i class="fa fa-reddit fa-2x"></i><span>Reddit</span></button>
         </network>
       </div>
     </social-sharing>
@@ -54,6 +51,7 @@ export default {
   margin-right: 3px;
   min-width: 80px;
   padding-top: 15px;
+  background-color: transparent;
   i {
     display: block;
     margin-bottom: 5px;
