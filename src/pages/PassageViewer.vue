@@ -26,6 +26,10 @@
           <button @click="chapterBack()" class="btn btn-navigate callout-light alt hover">PREV</button>
           <button @click="chapterForward()" class="btn btn-navigate callout-light alt hover">NEXT</button>
         </div>
+
+        <div class="copyright muted-more hi-top">
+          {{ copyright }}
+        </div>
       </div>
 
       <div v-if="!readOnly" class="bottombar flex-zero">
@@ -40,6 +44,7 @@
 import Vue from 'vue'
 import { Bible, Verse } from '../js/bible.js'
 import bibleLoader from '../js/bibleloader.js'
+import biblecopyrights from '../js/bible-copyrights.js'
 import { mapActions, mapGetters } from 'vuex'
 import $ from 'jquery'
 import Titlebar from '../components/Titlebar'
@@ -64,10 +69,10 @@ export default {
   },
   computed: {
     ...mapGetters(['getCurrentBible']),
-    isPassageSelected: function () {
+    isPassageSelected () {
       return this.startingVerse !== undefined
     },
-    actionText: function () {
+    actionText () {
       if (this.startingVerse !== undefined && this.endingVerse !== undefined) {
         return 'BEGIN, OR TAP VERSES TO EDIT SELECTION'
       } else if (this.startingVerse !== undefined) {
@@ -76,8 +81,11 @@ export default {
         return 'SELECT A STARTING VERSE'
       }
     },
-    readingModeButtonClass: function () {
+    readingModeButtonClass () {
       return this.readingMode === 'list' ? ['glyphicon-align-center'] : ['glyphicon-list']
+    },
+    copyright () {
+      return biblecopyrights[this.getCurrentBible] || ''
     }
   },
   watch: {
@@ -223,7 +231,7 @@ export default {
 
 .navigation {
   text-align: center;
-  padding-top: 30px;
+  padding: 30px 0;
   .btn-navigate {
     border: none;
     border-radius: 0px;
@@ -296,5 +304,9 @@ export default {
       font-size: 14px;
     }
   }
+}
+.copyright {
+  padding: 20px;
+  font-size: 13px;
 }
 </style>
