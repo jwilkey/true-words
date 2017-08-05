@@ -30,7 +30,7 @@ const routes = [
   { path: '/', component: Home, name: 'Home' },
   { path: '/login', component: Login, name: 'Login' },
   { path: '/settings', component: SettingsPage, name: 'Settings' },
-  { path: '/passage', component: PassageViewer, name: 'PassageViewer' },
+  { path: '/passage', component: PassageViewer, name: 'Passage' },
   { path: '/bible_chooser', component: BibleChooser, name: 'BibleChooser' },
   { path: '/choosepassage', component: PassageChooser, name: 'PassageChooser' },
   { path: '/viewpassage', component: PassageViewer, name: 'PassageViewer' },
