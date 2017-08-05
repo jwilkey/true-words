@@ -18,7 +18,7 @@
               <i class="fa fa-chevron-right muted"></i>
               <div class="shrinkable shrunk">
                 <div class="video-intro embed-responsive embed-responsive-16by9">
-                  <iframe src="https://www.youtube.com/embed/pYVs7p-lgzY?rel=0" frameborder="0" allowfullscreen></iframe>
+                  <iframe src="https://www.youtube.com/embed/OXpqHXBHPnk?rel=0" frameborder="0" allowfullscreen></iframe>
                 </div>
                 <p class="list-item">True Words will help you learn skills so that as you read the Bible you can <i class="callout-light alt">know</i> what the text says, <i class="callout-light alt">understand</i> what it means, and <i class="callout-light alt">apply</i> it to your life. This tool was made with <i class="callout-light alt">everyone</i> in mind, children and scholars alike. Taste and see that the Lord is good!</p>
               </div>
