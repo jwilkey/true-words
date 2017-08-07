@@ -45,7 +45,7 @@ export default {
   }
   .drawer-content {
     padding-top: 10px;
-    max-height: 1000px;
+    max-height: 10000px;
     transition: max-height 0.5s;
     overflow: hidden;
     &.collapsed {

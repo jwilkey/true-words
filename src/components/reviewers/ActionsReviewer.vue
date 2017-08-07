@@ -2,25 +2,34 @@
   <div v-if="data !== undefined" class="flex-column vfull">
     <div class="flex-one substance">
       <div class="container">
-        <div class="actions">
-          <div v-for="action in data.collection.items" class="action clearfix">
-            <div v-if="action.actor" class="action-item list-item theme-mid">
-              <p class="action-label muted">ACTOR</p>
-              <div>{{action.actor ? action.actor.toString() : '?'}}</div>
-            </div>
-            <div class="action-item list-item theme-mid">
-              <p class="action-label muted">ACTION</p>
-              <div class="blue">{{action.action ? action.action.toString() : '?'}}</div>
-            </div>
-            <div v-if="action.target" class="action-item list-item theme-mid">
-              <p class="action-label muted">TARGET</p>
-              <div>{{action.target ? action.target.toString() : '?'}}</div>
-            </div>
-            <div v-if="action.result" class="action-item list-item theme-mid">
-              <p class="action-label muted">RESULT</p>
-              <div>{{action.result ? action.result.toString() : '?'}}</div>
+        <drawer :expanded="true">
+          <div slot="title">{{ data.collection.items.length }} ACTIONS</div>
+          <div slot="content">
+            <div class="actions">
+              <div v-for="action in data.collection.items" class="action clearfix">
+                <div v-if="action.actor" class="action-item list-item theme-mid">
+                  <p class="action-label muted">ACTOR</p>
+                  <div>{{action.actor ? action.actor.toString() : '?'}}</div>
+                </div>
+                <div class="action-item list-item theme-mid">
+                  <p class="action-label muted">ACTION</p>
+                  <div class="blue">{{action.action ? action.action.toString() : '?'}}</div>
+                </div>
+                <div v-if="action.target" class="action-item list-item theme-mid">
+                  <p class="action-label muted">TARGET</p>
+                  <div>{{action.target ? action.target.toString() : '?'}}</div>
+                </div>
+                <div v-if="action.result" class="action-item list-item theme-mid">
+                  <p class="action-label muted">RESULT</p>
+                  <div>{{action.result ? action.result.toString() : '?'}}</div>
+                </div>
+              </div>
             </div>
           </div>
+        </drawer>
+
+        <div class="action-words">
+          <span :key="index" v-for="(word, index) in words" :class="wordClass(word)">{{ word.text }} </span>
         </div>
       </div>
     </div>
@@ -34,9 +43,14 @@
 <script>
 import { mapGetters } from 'vuex'
 import activities from '../../js/activity'
+import Drawer from '../common/Drawer'
 
 export default {
-  data () { return { } },
+  data () {
+    return {
+      actionWords: []
+    }
+  },
   computed: {
     ...mapGetters({
       words: 'getCurrentWords',
@@ -47,10 +61,19 @@ export default {
     }
   },
   props: ['data'],
+  components: { Drawer },
   methods: {
+    wordClass (word) {
+      var found = this.actionWords.find(w => word.verse === w.verse && word.index === w.index)
+      return found ? ['red'] : []
+    },
     donePressed: function () {
       this.$router.replace('/activities')
     }
+  },
+  mounted () {
+    this.actionWords = []
+    this.data.collection.items.forEach(action => action.action.words.forEach(w => this.actionWords.push(w)))
   }
 }
 </script>
