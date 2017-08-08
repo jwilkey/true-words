@@ -12,6 +12,7 @@ import ReauthorizeModal from './components/ReauthorizeModal'
 import { mapGetters, mapActions } from 'vuex'
 import { isTouchDevice } from './js/polyfill'
 import container from './js/container'
+import settings from './js/settings'
 
 export default {
   data () {
@@ -74,6 +75,7 @@ export default {
     container.appVersion = this.$route.query.app_version
     container.onAuthorizationExpired = this.showReauthView
     this.setPlatform(container.platform)
+    settings.loadSettings()
 
     if (!isTouchDevice()) {
       document.querySelector('html').classList.add('hover-on')

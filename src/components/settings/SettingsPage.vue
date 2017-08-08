@@ -45,6 +45,7 @@
 import Titlebar from '../Titlebar'
 import Card from '../Card'
 import container from '../../js/container'
+import settings from '../../js/settings'
 import $ from 'jquery'
 
 export default {
@@ -65,14 +66,10 @@ export default {
   methods: {
     fontSize (size) {
       this.font = size
-      $('html').removeClass('font-2 font-1 font1 font2')
-      if (size !== 0) {
-        $('html').addClass(`font${size}`)
-      }
+      settings.setFontSize(size)
     },
     setTheme (theme) {
-      $('html').removeClass('light-theme dark-theme')
-      $('html').addClass(theme)
+      settings.setTheme(theme)
     }
   },
   mounted () {
