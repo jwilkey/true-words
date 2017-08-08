@@ -14,7 +14,7 @@
 
           <div class="theme-mid shadow" @click="toggleAbout($event.target)">
             <div class="about-tw">
-              <p><i class="fa fa-play callout-light"></i> <span class="about-title callout-light alt">ABOUT</span> <span>Read the Bible intentionally...</span></p>
+              <p><i class="fa fa-play callout-light"></i> <span class="about-title callout-light alt">ABOUT</span> <span>Read the Bible intentionally</span></p>
               <i class="fa fa-chevron-right muted"></i>
               <div class="shrinkable shrunk">
                 <div class="video-intro embed-responsive embed-responsive-16by9">

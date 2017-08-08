@@ -1,8 +1,8 @@
 <template>
   <div class="card">
     <div class="card-header shadow flex-row">
-      <div class="card-title font-large flex-zero callout">{{ title }}</div>
-      <div class="card-subtitle font-large flex-one callout">{{ subtitle }}</div>
+      <div class="card-title flex-zero callout">{{ title }}</div>
+      <div class="card-subtitle flex-one callout">{{ subtitle }}</div>
     </div>
     <div class="card-content shadow theme-mid">
       <slot></slot>
