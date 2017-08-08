@@ -3,7 +3,7 @@
     <titlebar title="ACTIVITIES" :left-items="['home']"></titlebar>
 
     <div class="container substance">
-      <div class="passage-label brand-font theme-back">
+      <div class="passage-label brand-font font-larger theme-back">
         {{ getCurrentStudy.passage.description() }}
       </div>
 
@@ -136,7 +136,6 @@ function daysAgo (date) {
   text-align: center;
   margin-bottom: 10px;
   letter-spacing: 1px;
-  font-size: 20px;
 }
 .delete-view {
   float: right;

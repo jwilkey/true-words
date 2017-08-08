@@ -7,9 +7,9 @@
 
       <p>Place words from the passage in 1 of 3 buckets/categories: People, Places, or Things.</p>
       <div class="help-buckets">
-        <div class="third back-orange">PEOPLE</div>
-        <div class="third back-purple">PLACES</div>
-        <div class="third back-red">THINGS</div>
+        <div class="third font-large back-orange">PEOPLE</div>
+        <div class="third font-large back-purple">PLACES</div>
+        <div class="third font-large back-red">THINGS</div>
       </div>
       <br/>
 
@@ -50,7 +50,6 @@ export default {
   float: left;
   text-align: center;
   letter-spacing: 2px;
-  font-size: 19px;
 }
 .selected {
   border-top: solid 2px @color-highlight-blue;

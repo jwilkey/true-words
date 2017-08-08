@@ -5,7 +5,7 @@
     </div>
 
     <div class="flex-zero bottombar noselect">
-      <p v-if="isMode('start')" class="instruction muted">Select an adjective</p>
+      <p v-if="isMode('start')" class="instruction font-large muted">Select an adjective</p>
       <div class="text-center">
         <button v-if="isMode('selecting') && !isMode('detailing')" @click="helpSelectingPressed" class="btn callout-light"><i class="fa fa-question-circle-o"></i> How to select...</button>
       </div>
@@ -170,7 +170,6 @@ export default {
 
 .instruction {
   text-align: center;
-  font-size: 17px;
   margin: 0px;
 }
 .detailing {

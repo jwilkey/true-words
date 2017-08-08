@@ -6,10 +6,10 @@
         <span class="glyphicon glyphicon-home"></span>
       </router-link>
       <a v-if="showLeft('back')" class="titlebar-item" data-title="back" @click="onBack()"><span class="glyphicon glyphicon-menu-left"></span></a>
-      <div v-if="showLeft('help')" class="titlebar-item" data-title="help" @click="help()"><i class="fa fa-question-circle-o"></i></div>
+      <div v-if="showLeft('help')" class="titlebar-item" data-title="help" @click="help()"><i class="fa fa-question-circle-o font-large"></i></div>
       <a v-for="title in customLeftButtons" class="titlebar-item" @click="onSelect(title)">{{ title }}</a>
     </div>
-    <div class="text-center title">
+    <div class="text-center title brand-font">
       {{ title }}
       <slot name="center"></slot>
     </div>
@@ -17,7 +17,7 @@
       <a v-if="showRight('close')" class="titlebar-item" data-title="close" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
       <router-link v-if="showRight('home')" class="titlebar-item" data-title="home" to="/"><span class="glyphicon glyphicon-home"></span></router-link>
       <a v-if="showRight('back')" class="titlebar-item" @click="onBack()">BACK</a>
-      <div v-if="showRight('help')" class="titlebar-item" data-title="help" @click="help()"><i class="fa fa-question-circle-o"></i></div>
+      <div v-if="showRight('help')" class="titlebar-item" data-title="help" @click="help()"><i class="fa fa-question-circle-o font-large"></i></div>
       <a v-for="title in customRightButtons" class="titlebar-item pull-right" @click="onSelect(title)">{{ title }}</a>
       <div class="titlebar-item">
         <slot name="right"></slot>
@@ -77,8 +77,6 @@ body {
 @import '../../static/less/common.less';
 
 .title {
-  font-family: 'HomizioLight';
-  font-size: 18px;
   display: table-cell;
   text-align: center;
   vertical-align: middle;
@@ -92,8 +90,7 @@ body {
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
-  font-size: 16px;
-  letter-spacing: 3px;
+  letter-spacing: 1px;
   .titlebar-item-group {
     position: absolute;
     @media screen and (max-width: 767px) {
@@ -122,9 +119,6 @@ body {
       min-width: 35px;
       cursor: pointer;
       letter-spacing: 1px;
-      i {
-        font-size: 18px;
-      }
     }
   }
 }

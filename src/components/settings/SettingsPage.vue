@@ -3,6 +3,17 @@
     <titlebar title="SETTINGS" :left-items="['home']"></titlebar>
 
     <div class="container substance">
+      <card title="FONT" subtitle="Adjust text" class="font-size">
+        <div class="flex-row">
+          <button @click="fontSize(-2)" class="btn callout-light flex-one" :class="{alt: font !== -2}">Aa</button>
+          <button @click="fontSize(-1)" class="btn callout-light flex-one" :class="{alt: font !== -1}">Aa</button>
+          <button @click="fontSize(0)" class="btn callout-light flex-one" :class="{alt: font !== 0}">Aa</button>
+          <button @click="fontSize(1)" class="btn callout-light flex-one" :class="{alt: font !== 1}">Aa</button>
+          <button @click="fontSize(2)" class="btn callout-light flex-one" :class="{alt: font !== 2}">Aa</button>
+        </div>
+        <p class="sample">In the beginning was the Word, and the Word was with God, and the Word was God.</p>
+      </card>
+
       <card title="THEME" subtitle="Choose a theme">
         <div class="theme-container">
           <p>Light</p>
@@ -39,6 +50,7 @@ import $ from 'jquery'
 export default {
   data () {
     return {
+      font: 0
     }
   },
   components: { Titlebar, Card },
@@ -51,6 +63,13 @@ export default {
     }
   },
   methods: {
+    fontSize (size) {
+      this.font = size
+      $('html').removeClass('font-2 font-1 font1 font2')
+      if (size !== 0) {
+        $('html').addClass(`font${size}`)
+      }
+    },
     setTheme (theme) {
       $('html').removeClass('light-theme dark-theme')
       $('html').addClass(theme)
@@ -62,6 +81,34 @@ export default {
 <style lang="less" scoped>
 @import '../../../static/less/colors';
 @import '../../../static/less/flex';
+
+.font-size {
+  button {
+    border-radius: 0px;
+    border-right: none;
+    &:first-child {
+      font-size: 14px;
+      border-top-left-radius: 4px;
+      border-bottom-left-radius: 4px;
+    }
+    &:nth-child(2) {
+      font-size: 16px;
+    }
+    &:nth-child(4) {
+      font-size: 20px;
+    }
+    &:last-child {
+      font-size: 22px;
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      border-right: solid 1px;
+    }
+  }
+  .sample {
+    margin-bottom: 0;
+    padding-top: 8px;
+  }
+}
 
 .theme-slab {
   width: 15px;

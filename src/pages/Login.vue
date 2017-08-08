@@ -6,10 +6,10 @@
       <google-auth v-if="!isAuthenticated"></google-auth>
 
       <div v-if="isAuthenticated" class="text-center">
-        <p class="user-name">Hello {{ username }}!</p>
+        <p class="user-name font-large">Hello {{ username }}!</p>
         <img v-if="userimage" class="user-photo" :src="userimage" />
         <hr />
-        <p class="redirect-helper muted">If you are not automatically redirected <router-link to="Home">click here</router-link></p>
+        <p class="redirect-helper font-small muted">If you are not automatically redirected <router-link to="Home">click here</router-link></p>
       </div>
     </div>
   </div>
@@ -74,7 +74,6 @@ export default {
 
 .user-name {
   text-align: center;
-  font-size: 20px;
   margin-top: 40px;
 }
 .user-photo {
@@ -86,7 +85,6 @@ export default {
   transition: height 0.7s, width 0.7s, opacity 0.7s;
 }
 .redirect-helper {
-  font-size: 13px;
   margin-top: 40px;
   a {
     color: @color-highlight-blue;

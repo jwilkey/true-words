@@ -2,7 +2,7 @@
   <div class="section">
     <div class="section-title callout-bottom editing">
       <div class="section-item" @click="editSection($event.target)">
-        {{ prefix }}{{ section.title }} <span v-if="section.title" class="word-range">{{ section.rangeDescription() }}</span>
+        {{ prefix }}{{ section.title }} <span v-if="section.title" class="word-range font-small">{{ section.rangeDescription() }}</span>
       </div>
 
       <input class="section-edit" type="text" placeholder="title" :value="section.title" @blur="applySectionEdit(section, $event.target)" />
@@ -65,9 +65,6 @@ export default {
     }
   },
   mounted () {
-    if ($(this.$el).closest('.subsections').length === 0) {
-      $(this.$el).find('.section-title:first').addClass('root')
-    }
     if (this.section.title.length > 0) {
       $(this.$el).find('.section-title').removeClass('editing')
     }
@@ -94,11 +91,6 @@ export default {
       display: none;
     }
   }
-  .section-title.root {
-    font-family: "Sinkin";
-    font-size: 18px;
-    letter-spacing: 1px;
-  }
   .section-title.editing {
     .section-item {
       display: none;
@@ -119,7 +111,6 @@ export default {
   }
   .word-range {
     color: @color-deemphasize;
-    font-size: 13px;
   }
   .action {
     display: table-cell;

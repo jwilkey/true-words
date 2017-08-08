@@ -92,7 +92,6 @@ export default {
 @import '../../../static/less/flex.less';
 
 #buckets-reviewer-words {
-  font-size: 18px;
   padding-bottom: 20px;
 }
 .bucket-label {

@@ -8,19 +8,19 @@
             <div class="actions">
               <div v-for="action in data.collection.items" class="action clearfix">
                 <div v-if="action.actor" class="action-item list-item theme-mid">
-                  <p class="action-label muted">ACTOR</p>
+                  <p class="action-label font-smaller muted">ACTOR</p>
                   <div>{{action.actor ? action.actor.toString() : '?'}}</div>
                 </div>
                 <div class="action-item list-item theme-mid">
-                  <p class="action-label muted">ACTION</p>
+                  <p class="action-label font-smaller muted">ACTION</p>
                   <div class="blue">{{action.action ? action.action.toString() : '?'}}</div>
                 </div>
                 <div v-if="action.target" class="action-item list-item theme-mid">
-                  <p class="action-label muted">TARGET</p>
+                  <p class="action-label font-smaller muted">TARGET</p>
                   <div>{{action.target ? action.target.toString() : '?'}}</div>
                 </div>
                 <div v-if="action.result" class="action-item list-item theme-mid">
-                  <p class="action-label muted">RESULT</p>
+                  <p class="action-label font-smaller muted">RESULT</p>
                   <div>{{action.result ? action.result.toString() : '?'}}</div>
                 </div>
               </div>
@@ -101,7 +101,6 @@ export default {
   }
 }
 .action-label {
-  font-size: 12px;
   margin-bottom: 0px;
 }
 </style>

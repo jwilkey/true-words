@@ -10,7 +10,7 @@
         </drawer>
       </div>
 
-      <div class="adjective-words">
+      <div class="adjective-words font-large">
         <span :key="index" v-for="(word, index) in words" :class="wordClass(word)">{{ word.text }} </span>
       </div>
     </div>
@@ -116,6 +116,5 @@ export default {
 
 .adjective-words {
   padding: 10px 15px;
-  font-size: 18px;
 }
 </style>

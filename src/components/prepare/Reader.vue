@@ -10,7 +10,7 @@
       <div class="flex-one substance">
         <div class="container verses" :class="{inline: readingMode === 'inline'}">
           <div v-for="verse in getCurrentStudy.verses" class="verse theme-mid hover" :data-verse="verse.number">
-            <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
+            <span class="verse-number font-smaller"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
           </div>
         </div>
       </div>
@@ -84,7 +84,6 @@ export default {
 .verses {
   .verse {
     padding: 1px 20px;
-    font-size: 18px;
     margin-bottom: 2px;
     transition: background-color 0.3s;
   }
@@ -92,7 +91,6 @@ export default {
     color: #999;
     padding-right: 2px;
     vertical-align: super;
-    font-size: 12px !important;
   }
   &.inline {
     padding-left: 20px;

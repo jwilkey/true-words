@@ -14,7 +14,7 @@
     <div id="help" class="visible">
       <div class="help-container">
         <div class="help-box shadow-long">
-          <div class="help-title">{{ title.toUpperCase() }}: HOW TO <span @click="helpDismiss()" class="glyphicon glyphicon-remove"></span></div>
+          <div class="help-title brand-font">{{ title.toUpperCase() }}: HOW TO <span @click="helpDismiss()" class="glyphicon glyphicon-remove"></span></div>
           <component v-if="getCurrentActivity" :is="currentHelpView"></component>
           <button class="btn btn-block btn-help" @click="helpDismiss()">START</button>
         </div>
@@ -304,7 +304,6 @@ export default {
         color: @color-help-secondary;
       }
       .help-title {
-        font-family: serif;
         border-bottom: solid 1px @color-help;
         padding-bottom: 5px;
         margin-bottom: 10px;

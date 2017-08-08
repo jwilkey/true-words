@@ -5,7 +5,7 @@
     <div class="container substance" :class="{blur: videoId}">
       <div class="hymn-text">
         <div class="hymn-header theme-mid shadow-light">
-          <p class="title">{{ title }}</p>
+          <p class="title font-large">{{ title }}</p>
           <p class="author">{{ author}}</p>
         </div>
 
@@ -26,7 +26,7 @@
       <div class="video-results">
         <div v-for="video in videos" class="list-item theme-mid video-result clearfix" @click="videoId = video.id">
           <img :src="video.thumbnail" />
-          <p class="video-title">{{ video.title }}</p>
+          <p class="font-large">{{ video.title }}</p>
           <p class="video-description muted">{{ video.description }}</p>
           <p v-if="!video.description" class="muted">No description</p>
         </div>
@@ -138,9 +138,6 @@ export default {
       text-align: center;
       margin: 0px;
     }
-    .title {
-      font-size: 18px;
-    }
   }
 }
 
@@ -159,9 +156,6 @@ export default {
     margin-right: 8px;
     margin-bottom: 8px;
   }
-  .video-title {
-    font-size: 18px;
-  }
 }
 .video-embed {
   position: fixed;
@@ -173,7 +167,6 @@ export default {
   padding: calc(@titlebar-height + 20) 10px;
   .video-close {
     margin-bottom: 25px;
-    font-size: 18px;
     cursor: pointer;
     &:hover {
       color: @color-highlight-red;

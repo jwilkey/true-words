@@ -18,7 +18,7 @@
       <div class="container">
         <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number" @click="verseSelected($event.target)">
           <div class="verse theme-mid hover">
-            <span class="verse-number muted"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+            <span class="verse-number font-smaller muted"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
           </div>
           <div class="paraphrase muted">
           </div>
@@ -178,7 +178,6 @@ function determineParaphrasingRange (currentVerseContainer) {
       vertical-align: middle;
       width: 100%;
       margin-bottom: 0px;
-      font-size: 15px;
     }
     #paraphrase-done {
       display: table-cell;
@@ -211,7 +210,6 @@ function determineParaphrasingRange (currentVerseContainer) {
   }
   .verse-number {
     vertical-align: super;
-    font-size: 12px;
   }
   .paraphrase {
     padding: 5px;

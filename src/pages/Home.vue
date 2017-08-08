@@ -63,7 +63,7 @@
 
       <div class="bottombar clearfix flex-zero">
         <div class="pull-left">
-          <router-link class="settings" to="Settings"><i class="fa fa-gear muted"></i></router-link>
+          <router-link class="settings font-large" to="Settings"><i class="fa fa-gear muted"></i></router-link>
           <a v-if="version('1.0.1')" @click="share" class="callout-light alt text-right">SHARE <i class="fa fa-share"></i></a>
         </div>
         <a class="pull-right muted user" @click="userPressed">
@@ -245,7 +245,6 @@ export default {
   }
 }
 .settings {
-  font-size: 18px;
   padding: 0 10px;
 }
 .bottombar {

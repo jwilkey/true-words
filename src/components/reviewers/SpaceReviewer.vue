@@ -3,22 +3,22 @@
     <div class="flex-one substance">
       <div class="container">
         <div class="space-container">
-          <p class="space-title muted"><span class="acronym">S</span>INS TO CONFESS</p>
+          <p class="space-title muted"><span class="acronym font-larger">S</span>INS TO CONFESS</p>
           <p v-for="freeText in this.data.findContainer('S').items" class="space-item list-item">{{ freeText.text }}</p>
           <p v-if="this.data.findContainer('S').items.length === 0" class="space-item-empty muted">none identified</p>
         </div>
         <div class="space-container">
-          <p class="space-title muted"><span class="acronym">P</span>ROMISES TO CLAIM</p>
+          <p class="space-title muted"><span class="acronym font-larger">P</span>ROMISES TO CLAIM</p>
           <p v-for="freeText in this.data.findContainer('P').items" class="space-item list-item">{{ freeText.text }}</p>
           <p v-if="this.data.findContainer('P').items.length === 0" class="space-item-empty muted">none identified</p>
         </div>
         <div class="space-container">
-          <p class="space-title muted"><span class="acronym">A</span>CTIONS TO TAKE</p>
+          <p class="space-title muted"><span class="acronym font-larger">A</span>CTIONS TO TAKE</p>
           <p v-for="freeText in this.data.findContainer('A').items" class="space-item list-item">{{ freeText.text }}</p>
           <p v-if="this.data.findContainer('A').items.length === 0" class="space-item-empty muted">none identified</p>
         </div>
         <div class="space-container">
-          <p class="space-title muted"><span class="acronym">C</span>OMMANDS TO OBEY</p>
+          <p class="space-title muted"><span class="acronym font-larger">C</span>OMMANDS TO OBEY</p>
           <p v-for="freeText in this.data.findContainer('C').items" class="space-item list-item">{{ freeText.text }}</p>
           <p v-if="this.data.findContainer('C').items.length === 0" class="space-item-empty muted">none identified</p>
         </div>
@@ -69,7 +69,6 @@ export default {
   padding-bottom: 5px;
   margin-bottom: 0px;
   .acronym {
-    font-size: 20px;
     font-weight: bold;
   }
 }

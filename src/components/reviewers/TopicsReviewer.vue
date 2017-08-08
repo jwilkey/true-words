@@ -12,7 +12,7 @@
 
       <div class="container">
         <div v-for="verse in getCurrentStudy.verses" class="verse">
-          <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+          <span class="verse-number font-smaller"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
         </div>
       </div>
     </div>
@@ -67,11 +67,9 @@ export default {
 .verse {
   display: inline;
   padding: 5px;
-  font-size: 18px;
   .verse-number {
     color: #999;
     vertical-align: super;
-    font-size: 12px;
   }
 }
 </style>

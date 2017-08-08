@@ -18,7 +18,7 @@
           <p class="text-center muted" v-if="!verses"><i class="fa fa-circle-o-notch fa-2x fa-spin" /></p>
 
           <div v-for="verse in verses" class="verse theme-mid" :class="{ hover: !readOnly, selected: isSelected(verse) }" :data-verse="verse.number" @click="verseSelected($event.target)">
-            <span class="verse-number muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
+            <span class="verse-number font-smaller muted">{{ verse.number }}</span><span class="verse-text">{{ verse.text }}</span>
           </div>
         </div>
 
@@ -27,7 +27,7 @@
           <button @click="chapterForward()" class="btn btn-navigate callout-light alt hover">NEXT</button>
         </div>
 
-        <div class="copyright muted-more hi-top">
+        <div class="copyright muted-more font-small hi-top">
           {{ copyright }}
         </div>
       </div>
@@ -273,7 +273,6 @@ export default {
   }
   .verse {
     padding: 1px 15px 1px 15px;
-    font-size: 18px;
     margin-bottom: 2px;
     transition: background-color 0.3s;
   }
@@ -284,7 +283,6 @@ export default {
   .verse-number {
     padding-right: 2px;
     vertical-align: super;
-    font-size: 12px !important;
   }
   &.inline {
     padding-left: 20px;
@@ -300,13 +298,9 @@ export default {
         background-color: transparent;
       }
     }
-    .verse-number {
-      font-size: 14px;
-    }
   }
 }
 .copyright {
   padding: 20px;
-  font-size: 13px;
 }
 </style>

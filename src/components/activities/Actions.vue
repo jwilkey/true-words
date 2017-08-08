@@ -16,9 +16,9 @@
       <div v-if="isMode('detailing')" class="actions-detail">
 
         <div v-if="this.currentActionIndex !== undefined" class="action-header">
-          <i class="delete-action red hi-right fa fa-trash-o" @click="deleteAction()"></i>
-          <p class="action-title hi-right">{{ action.toString() }}</p>
-          <p class="step-value">{{ stepValue }}</p>
+          <i class="delete-action font-larger red hi-right fa fa-trash-o" @click="deleteAction()"></i>
+          <p class="action-title font-large brand-font hi-right">{{ action.toString() }}</p>
+          <p class="step-value font-large">{{ stepValue }}</p>
         </div>
 
         <div v-if="this.action" class="action-components hi-top hi-bottom flex-row">
@@ -28,7 +28,7 @@
           <button @click="currentStep = 'result'" class="btn theme-hi c-orange hover" :class="buttonClasses('result')">Result</button>
         </div>
 
-        <div class="action-instruction text-center">{{ instructionText }}</div>
+        <div class="action-instruction font-large text-center">{{ instructionText }}</div>
 
         <div class="step-actions">
           <div v-if="currentStep === 'tense'" id="tense-selector" class="flex-row">
@@ -258,14 +258,11 @@ export default {
     width: 40px;
     padding: 0 12px;
     margin-bottom: 0px;
-    font-size: 20px;
     cursor: pointer;
   }
   .action-title {
     display: table-cell;
     vertical-align: middle;
-    font-size: 18px;
-    font-family: 'Sinkin';
     padding: 8px;
     margin-bottom: 0px;
     white-space: nowrap;
@@ -275,13 +272,11 @@ export default {
     display: table-cell;
     vertical-align: middle;
     padding: 8px;
-    font-size: 18px;
     min-width: 30px;
     text-align: right;
   }
 }
 .action-instruction {
-  font-size: 19px;
   .flow {
     color: @color-highlight-orange;
     top: 4px;
@@ -347,12 +342,6 @@ export default {
   margin-top: 8px;
 }
 
-.step-selection {
-  padding: 10px;
-  p {
-    font-size: 18px;
-  }
-}
 #tense-selector {
   padding-bottom: 11px;
   button {

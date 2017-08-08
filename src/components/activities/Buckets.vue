@@ -2,11 +2,11 @@
   <div class="flex-column vfull">
     <div class="flex-one flex-column">
       <div class="flex-two flex-row">
-        <div data-index="0" class="flex-one flex-column flex-center bucket back-orange dropzone" @click="assignToBucket(0)">
-          <p><i class="fa fa-user-circle-o"></i> {{ container(0).name }} <span v-if="!container(0).isEmpty()" class="bubble">{{ container(0).items.length }}</span></p>
+        <div data-index="0" class="flex-one flex-column flex-center bucket font-larger back-orange" @click="assignToBucket(0)">
+          <p><i class="fa fa-user-circle-o"></i> {{ container(0).name }} <span v-if="!container(0).isEmpty()" class="bubble font-small">{{ container(0).items.length }}</span></p>
         </div>
-        <div data-index="1" class="flex-one flex-column flex-center bucket back-purple dropzone" @click="assignToBucket(1)">
-          <p><i class="fa fa-institution"></i> {{ container(1).name }} <span v-if="!container(1).isEmpty()" class="bubble">{{ container(1).items.length }}</span></p>
+        <div data-index="1" class="flex-one flex-column flex-center bucket font-larger back-purple" @click="assignToBucket(1)">
+          <p><i class="fa fa-institution"></i> {{ container(1).name }} <span v-if="!container(1).isEmpty()" class="bubble font-small">{{ container(1).items.length }}</span></p>
         </div>
       </div>
 
@@ -15,7 +15,7 @@
           <div class="flex-one flex-column">
             <div class="flex-one"></div>
             <div class="flex-zero join-container">
-              <div class="join-button theme-mid muted left" @click="joinLeft()">
+              <div class="join-button theme-mid font-small muted left" @click="joinLeft()">
                 <span class="glyphicon glyphicon-menu-left"></span> JOIN
               </div>
             </div>
@@ -29,14 +29,14 @@
           <div class="flex-one flex-column text-right">
             <div class="flex-one"></div>
             <div class="flex-zero join-container">
-              <div class="join-button theme-mid muted right" @click="joinRight()">
+              <div class="join-button theme-mid font-small muted right" @click="joinRight()">
                 JOIN <span class="glyphicon glyphicon-menu-right"></span>
               </div>
             </div>
           </div>
         </div>
 
-        <div class="text-view theme-mid shadow-long">
+        <div class="text-view font-larger theme-mid shadow-long">
           <p :key="word.index" v-for="(word, index) in words" class="bucket-word" :data-index="index" :data-word="word.verse + '-' + word.index">{{ word.text }}</p>
         </div>
 
@@ -52,8 +52,8 @@
       </div>
 
       <div class="flex-two flex-row">
-        <div data-index="2" class="flex-one flex-column flex-center bucket back-red dropzone" @click="assignToBucket(2)">
-          <p><i class="fa fa-tree"></i> {{ container(2).name }} <span v-if="!container(2).isEmpty()" class="bubble">{{ container(2).items.length }}</span></p>
+        <div data-index="2" class="flex-one flex-column flex-center bucket font-larger back-red" @click="assignToBucket(2)">
+          <p><i class="fa fa-tree"></i> {{ container(2).name }} <span v-if="!container(2).isEmpty()" class="bubble font-small">{{ container(2).items.length }}</span></p>
         </div>
       </div>
     </div>
@@ -326,24 +326,17 @@ export default {
 .bucket {
   text-align: center;
   letter-spacing: 2px;
-  font-size: 20px;
   font-weight: bold;
   user-select: none;
-  transition: all 0.2s;
+  transition: border 0.2s;
   p {
     margin-bottom: 0px;
   }
   &:hover {
-    font-size: 21px;
-    border: solid 1px @color-highlight-contrast;
+    border-bottom: solid 5px @color-highlight-contrast;
   }
   .bubble {
-    background-color: rgba(0, 0, 0, 0.2);
-    border-radius: 8px;
-    padding-bottom: 1px;
-    padding-left: 5px;
-    padding-right: 5px;
-    font-size: 13px;
+    vertical-align: super;
     letter-spacing: normal;
   }
 }
@@ -353,7 +346,6 @@ export default {
 }
 .text-view {
   position: relative;
-  font-size: 20px;
   overflow-x: scroll;
   padding: 15px;
   white-space: nowrap;
@@ -370,8 +362,6 @@ export default {
 .join-button {
   z-index: 11;
   padding: 8px;
-  font-size: 13px;
-  font-family: 'Arial';
   display: inline-block;
   &.left {
     border-top-right-radius: 6px;

@@ -3,7 +3,7 @@
     <div class="flex-row topic-input">
       <p class="flex-zero callout-light alt"><i class="fa fa-tag"></i></p>
       <form class="flex-one" @submit.prevent="addTopic">
-        <input v-model="topic" autofocus type="text" class="callout-bottom theme-back" placeholder="topic" />
+        <input v-model="topic" autofocus type="text" class="callout-bottom theme-back font-larger" placeholder="topic" />
       </form>
       <button :disabled="!topic" @click="addTopic"><i class="fa fa-plus-circle callout-light alt flex-zero"></i></button>
     </div>
@@ -13,7 +13,7 @@
       <div v-if="!showTopics" class="container passage">
         <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number">
           <div class="verse theme-mid hover">
-            <span class="verse-number muted"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span>
+            <span class="verse-number muted font-smaller"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span>
             <span class="verse-text">{{ verse.text }}</span>
           </div>
         </div>
@@ -111,12 +111,10 @@ export default {
     padding-left: 8px;
     padding-right: 2px;
     margin: 0px;
-    font-size: 12px;
   }
   input {
     width: 100%;
     min-height: 45px;
-    font-size: 20px;
     border: none;
     margin-right: 15px;
     outline: none;
@@ -147,7 +145,6 @@ export default {
   }
   .verse-number {
     vertical-align: super;
-    font-size: 12px;
   }
 }
 

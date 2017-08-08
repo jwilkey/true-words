@@ -1,19 +1,19 @@
 <template>
   <div class="share-view theme-mid shadow-top" :class="{show}">
-    <p class="share-label callout-light shadow">Share this app! <a @click="done" class="pull-right mid-left">cancel</a></p>
+    <p class="share-label font-larger callout-light shadow">Share this app! <a @click="done" class="pull-right mid-left">cancel</a></p>
     <social-sharing v-if="version('1.0.1')" url="https://truewordsapp.com" title="You can study the Bible. Here's how." inline-template>
       <div class="share-buttons">
         <network network="facebook">
-          <button class="btn btn-share theme-hi shadow"><i class="fa fa-facebook fa-2x"></i><span>Facebook</span></button>
+          <button class="btn btn-share theme-hi shadow"><i class="fa fa-facebook fa-2x"></i><span class="font-smaller">Facebook</span></button>
         </network>
         <network network="twitter">
-          <button class="btn btn-share theme-hi shadow"><i class="fa fa-twitter fa-2x"></i><span>Twitter</span></button>
+          <button class="btn btn-share theme-hi shadow"><i class="fa fa-twitter fa-2x"></i><span class="font-smaller">Twitter</span></button>
         </network>
         <network network="googleplus">
-          <button class="btn btn-share theme-hi shadow"><i class="fa fa-google-plus fa-2x"></i><span>Google +</span></button>
+          <button class="btn btn-share theme-hi shadow"><i class="fa fa-google-plus fa-2x"></i><span class="font-smaller">Google +</span></button>
         </network>
         <network network="reddit">
-          <button class="btn btn-share theme-hi shadow"><i class="fa fa-reddit fa-2x"></i><span>Reddit</span></button>
+          <button class="btn btn-share theme-hi shadow"><i class="fa fa-reddit fa-2x"></i><span class="font-smaller">Reddit</span></button>
         </network>
       </div>
     </social-sharing>
@@ -56,9 +56,6 @@ export default {
     display: block;
     margin-bottom: 5px;
   }
-  span {
-    font-size: 12px;
-  }
 }
 </style>
 
@@ -78,7 +75,6 @@ export default {
   }
   .share-label {
     padding: 15px;
-    font-size: 20px;
     a { padding-left: 10px; }
   }
 }

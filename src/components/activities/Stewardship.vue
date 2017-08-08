@@ -23,7 +23,7 @@
 
       <div v-if="mode === 'text'" class="container">
         <div v-for="verse in getCurrentStudy.verses" class="verse-container">
-          <span class="verse-number"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
+          <span class="verse-number muted font-smaller"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span> <span class="verse-text">{{ verse.text }}</span>
         </div>
       </div>
     </div>
@@ -36,8 +36,8 @@
       <div v-if="mode === 'text'">
         <div v-if="currentStep !== 'done'">
           <div class="proposition muted">In the next 3 days, how should this passage affect</div>
-          <div class="condition">{{ stepCondition }} <span class="condition-context muted">{{ stepConditionContext }}</span></div>
-          <div class="user-input input" contenteditable="true"></div>
+          <div class="condition font-large">{{ stepCondition }} <span class="condition-context muted">{{ stepConditionContext }}</span></div>
+          <div class="user-input font-large input" contenteditable="true"></div>
         </div>
         <transition name="fade">
           <button v-if="currentStep !== 'time'" class="btn btn-xs callout-light pull-left" @click="previousStep()">PREVIOUS</button>
@@ -221,18 +221,14 @@ export default {
   display: inline;
   padding: 0px;
   margin-left: 3px;
-  font-size: 18px;
 }
 .verse-number {
-  color: #999;
   vertical-align: super;
-  font-size: 14px;
 }
 .proposition {
   padding-left: 5px;
 }
 .condition {
-  font-size: 20px;
   margin-bottom: 8px;
   padding: 0px 10px 5px 10px;
   text-shadow: 1px 0px 1px @color-highlight-blue;
@@ -240,7 +236,6 @@ export default {
 }
 .condition-context {
   text-shadow: none;
-  font-size: 16px;
   margin-left: 5px;
   &:not(:empty):before {
     content: '( '
@@ -251,7 +246,6 @@ export default {
 }
 .user-input {
   padding: 5px;
-  font-size: 18px;
   border-radius: 3px;
   margin-bottom: 8px;
   &:focus {

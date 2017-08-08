@@ -3,8 +3,8 @@
     <titlebar :title="'HYMNS'" :left-items="['back']" :on-back="goBack"></titlebar>
 
     <div class="container substance">
-      <p class="inspired-by muted">Inspired by {{ passage }}</p>
-      <p v-if="isLoading" class="hymns-loading blue"><i class="fa fa-circle-o-notch fa-spin"/> Loading</p>
+      <p class="inspired-by font-large muted">Inspired by {{ passage }}</p>
+      <p v-if="isLoading" class="hymns-loading font-larger blue"><i class="fa fa-circle-o-notch fa-spin"/> Loading</p>
       <div v-if="error">
         Error loading hymns...
       </div>
@@ -70,13 +70,11 @@ export default {
 @import '../../../static/less/flex.less';
 
 .inspired-by {
-  font-size: 18px;
   text-align: center;
   padding-bottom: 10px;
 }
 .hymns-loading {
   text-align: center;
-  font-size: 20px;
   margin-top: 30px;
 }
 .hymns {

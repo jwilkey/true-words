@@ -14,23 +14,23 @@
         <div v-if="!selectedBook">
           <div id="ot-chooser" v-if="testament === 'OT'" class="clearfix">
             <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="(book, index) in otBooks">
-              <div :key="index" @click='bookSelected($event.target)' class='book-name shadow theme-mid hover' :data-book="book.identifier">{{ book.name }}</div>
+              <div :key="index" @click='bookSelected($event.target)' class='book-name font-large shadow theme-mid hover' :data-book="book.identifier">{{ book.name }}</div>
             </div>
           </div>
 
           <div id="nt-chooser" v-if="testament === 'NT'" class="clearfix">
             <div class="col-xs-6 col-sm-3 col-md-5c book" v-for="(book, index) in ntBooks">
-              <div :key="index" @click='bookSelected($event.target)' class='book-name shadow theme-mid hover' :data-book="book.identifier">{{ book.name }}</div>
+              <div :key="index" @click='bookSelected($event.target)' class='book-name font-large shadow theme-mid hover' :data-book="book.identifier">{{ book.name }}</div>
             </div>
           </div>
         </div>
 
         <div v-if="selectedBook" id="chapter-chooser" class="clearfix">
-          <p class="selected-book text-center theme-mid">{{ selectedBookName }}</p>
+          <p class="selected-book font-large text-center theme-mid">{{ selectedBookName }}</p>
           <div class="col-xs-2 col-md-1 chapter" v-for="(n, index) in chapterCount">
             <div class="chapter-sizer"></div>
             <div :key="index" @click='chapterSelected($event.target)' class='chapter-label-container' :data-chapter="n">
-              <p class="chapter-label shadow theme-mid hover">{{ n }}</p>
+              <p class="chapter-label font-large shadow theme-mid hover">{{ n }}</p>
             </div>
           </div>
         </div>
@@ -114,14 +114,11 @@ export default {
   padding: 7px 5px 7px 5px;
   text-align: center;
   border-radius: 2px;
-  font-size: 18px;
   cursor: pointer;
 }
 .selected-book {
-  font-size: 18px;
   padding: 7px 5px 7px 5px;
   border-radius: 1px;
-  letter-spacing: 2px;
 }
 .chapter {
   display: inline-block;
@@ -147,7 +144,6 @@ export default {
   flex-direction: column;
   border-radius: 1px;
   text-align: center;
-  font-size: 18px;
   cursor: pointer;
 }
 </style>
