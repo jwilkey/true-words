@@ -1,41 +1,10 @@
 @import "colors";
 @import "common";
 @import "bootstrap-overrides";
-
-@font-face {
-  font-family: 'Alegreya';
-  src: url('../fonts/AlegreyaSans-Regular.ttf'); /* IE9 Compat Modes */
-  src: url('../fonts/AlegreyaSans-Regular.ttf')  format('truetype'), /* Safari, Android, iOS */
-      //  url('webfont.woff2') format('woff2'), /* Super Modern Browsers */
-      //  url('webfont.woff') format('woff'), /* Pretty Modern Browsers */
-      //  url('webfont.svg#svgFontName') format('svg'); /* Legacy iOS */
-}
-
-@font-face {
-  font-family: 'SinkinThin';
-  src: url('/static/fonts/sinkin-sans/SinkinSans-100Thin.otf');
-}
-@font-face {
-  font-family: 'Sinkin';
-  src: url('/static/fonts/sinkin-sans/SinkinSans-200XLight.otf');
-}
-
-@font-face {
-  font-family: 'Homizio';
-  src: url('/static/fonts/HomizioRegular.otf');
-}
-@font-face {
-  font-family: 'HomizioLight';
-  src: url('/static/fonts/HomizioNova.otf');
-}
-
-.brand-font {
-  font-family: 'Sinkin';
-}
+@import "type";
 
 body {
-  font-family: 'Source Sans Pro', sans-serif;
-  font-size: 16px;
+  .app-font;
   height: 100%;
 }
 #app, #application {
@@ -48,16 +17,12 @@ a:hover {
   text-decoration: none;
   opacity: 0.85;
 }
-@media (max-width: 400px) {
-  p {
-    font-size: 15px;
-  }
-}
 
 .light {
   font-weight: lighter;
 }
 
+// SCROLLBAR
 ::-webkit-scrollbar
 {
   width: 2px;
@@ -128,25 +93,6 @@ a:hover {
 }
 .bottombar.nopad {
   padding: 0px;
-}
-
-.flex-v {
-  display: flex;
-  flex-direction: column;
-  height: 100%
-}
-.flex-1 {
-  flex: 1;
-  overflow-y: scroll;
-}
-.actionbar-flex {
-  flex: none;
-  z-index: 100;
-  width: 100%;
-  padding: 5px;
-  button {
-    letter-spacing: 1px;
-  }
 }
 
 .vfull {
