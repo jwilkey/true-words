@@ -74,6 +74,12 @@ export default {
       $('html').removeClass('light-theme dark-theme')
       $('html').addClass(theme)
     }
+  },
+  mounted () {
+    if ($('html').hasClass('font-2')) { this.font = -2 }
+    if ($('html').hasClass('font-1')) { this.font = -1 }
+    if ($('html').hasClass('font1')) { this.font = 1 }
+    if ($('html').hasClass('font2')) { this.font = 2 }
   }
 }
 </script>
