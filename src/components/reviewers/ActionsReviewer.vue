@@ -35,7 +35,7 @@
     </div>
 
     <div class="bottombar flex-zero">
-      <button @click="donePressed()" class="btn btn-lg callout-light btn-block">DONE</button>
+      <button @click="donePressed()" class="btn btn-lg btn-clear btn-block">DONE</button>
     </div>
   </div>
 </template>
