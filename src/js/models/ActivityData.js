@@ -210,9 +210,7 @@ WordSelection.prototype.compare = function (other) {
 }
 
 WordSelection.prototype.toString = function () {
-  return this.words.map(function (w) {
-    return w.text
-  }).join(' ')
+  return this.words.map(w => w.text).join(' ')
 }
 
 // FreeText

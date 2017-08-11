@@ -16,17 +16,17 @@
           <div slot="content" class="row">
             <div class="col-sm-4">
               <ul class="word-list">
-                <li class="orange list-item" v-for="selection in container(0).items">{{ selection.toString() }}</li>
+                <li class="orange list-item" v-for="(count, selection) in containerOne">{{ selection }} <span class="badge">{{ count | limit }}</span></li>
               </ul>
             </div>
             <div class="col-sm-4">
               <ul class="word-list">
-                <li class="purple list-item" v-for="selection in container(1).items">{{ selection.toString() }}</li>
+                <li class="purple list-item" v-for="(count, selection) in containerTwo">{{ selection }} <span class="badge">{{ count | limit }}</span></li>
               </ul>
             </div>
             <div class="col-sm-4">
               <ul class="word-list">
-                <li class="red list-item" v-for="selection in container(2).items">{{ selection.toString() }}</li>
+                <li class="red list-item" v-for="(count, selection) in containerThree">{{ selection }} <span class="badge">{{ count | limit }}</span></li>
               </ul>
             </div>
           </div>
@@ -52,6 +52,15 @@ import { mapGetters } from 'vuex'
 import activities from '../../js/activity'
 import Drawer from '../common/Drawer'
 
+function reduceContainer (container) {
+  var items = {}
+  container.forEach(selection => {
+    let word = selection.toString().replace(/[,."?;:]/g, '')
+    items[word] = items[word] ? items[word] + 1 : 1
+  }, {})
+  return items
+}
+
 export default {
   data () { return { } },
   computed: {
@@ -61,10 +70,24 @@ export default {
     }),
     title: function () {
       return activities.manager.titleForType(this.getCurrentActivity)
+    },
+    containerOne () {
+      return reduceContainer(this.data.containers[0].items)
+    },
+    containerTwo () {
+      return reduceContainer(this.data.containers[1].items)
+    },
+    containerThree () {
+      return reduceContainer(this.data.containers[2].items)
     }
   },
   props: ['data'],
   components: { Drawer },
+  filters: {
+    limit (val) {
+      return val > 1 ? val : ''
+    }
+  },
   methods: {
     container (index) {
       return this.data.containers[index]
@@ -110,6 +133,18 @@ export default {
   }
   li:last-child {
     border-right: none;
+  }
+  .badge {
+    vertical-align: super;
+  }
+  .orange > .badge {
+    background-color: darken(@color-highlight-orange, 20%);
+  }
+  .purple > .badge {
+    background-color: darken(@color-highlight-purple, 20%);
+  }
+  .red > .badge {
+    background-color: darken(@color-highlight-red, 20%);
   }
 }
 </style>
