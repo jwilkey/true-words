@@ -10,8 +10,10 @@
       <a v-for="title in customLeftButtons" class="titlebar-item theme-mid" @click="onSelect(title)">{{ title }}</a>
     </div>
     <div class="text-center title brand-font">
-      {{ title }}
-      <slot name="center"></slot>
+      <div class="title-content">
+        {{ title }}
+        <slot name="center"></slot>
+      </div>
     </div>
     <div class="titlebar-item-group right">
       <a v-if="showRight('close')" class="titlebar-item theme-mid" data-title="close" @click="onClose()"><span class="glyphicon glyphicon-remove"></span></a>
@@ -80,6 +82,13 @@ body {
   display: table-cell;
   text-align: center;
   vertical-align: middle;
+  .title-content {
+    max-width: 60%;
+    margin: auto;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
 }
 .titlebar {
   display: table;
