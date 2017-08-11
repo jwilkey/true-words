@@ -1,9 +1,9 @@
 <template>
   <div v-if="data !== undefined" class="flex-column vfull">
     <div class="flex-row shadow">
-      <div class="flex-one bucket-label back-orange"><i class="fa fa-user-circle-o"></i> {{ container(0).name }}</div>
-      <div class="flex-one bucket-label back-purple"><i class="fa fa-institution"></i> {{ container(1).name }}</div>
-      <div class="flex-one bucket-label back-red"><i class="fa fa-tree"></i> {{ container(2).name }}</div>
+      <div class="flex-one bucket-label back-orange" @click="toggle(0)"><i class="fa fa-user-circle-o"></i> {{ container(0).name }}</div>
+      <div class="flex-one bucket-label back-purple" @click="toggle(1)"><i class="fa fa-institution"></i> {{ container(1).name }}</div>
+      <div class="flex-one bucket-label back-red" @click="toggle(2)"><i class="fa fa-tree"></i> {{ container(2).name }}</div>
     </div>
 
     <div class="flex-one substance">
@@ -62,7 +62,11 @@ function reduceContainer (container) {
 }
 
 export default {
-  data () { return { } },
+  data () {
+    return {
+      active: [true, true, true]
+    }
+  },
   computed: {
     ...mapGetters({
       words: 'getCurrentWords',
@@ -92,18 +96,21 @@ export default {
     container (index) {
       return this.data.containers[index]
     },
-    wordClass: function (word) {
+    wordClass (word) {
       if (this.data !== undefined) {
         return {
-          orange: this.container(0).search(word),
-          purple: this.container(1).search(word),
-          red: this.container(2).search(word)
+          orange: this.active[0] && this.container(0).search(word),
+          purple: this.active[1] && this.container(1).search(word),
+          red: this.active[2] && this.container(2).search(word)
         }
       } else {
-        return {}
+        return { }
       }
     },
-    donePressed: function () {
+    toggle (container) {
+      this.active.splice(container, 1, !this.active[container])
+    },
+    donePressed () {
       this.$router.replace('/activities')
     }
   }
@@ -122,6 +129,7 @@ export default {
   float: left;
   letter-spacing: 2px;
   padding: 5px;
+  cursor: pointer;
 }
 .word-list {
   padding-left: 0px;
