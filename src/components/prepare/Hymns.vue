@@ -11,10 +11,10 @@
       <p v-if="hymns.length === 0" class="text-center">no hymns found for this passage</p>
 
       <div class="hymns">
-        <div v-for="hymn in hymns" @click="hymnSelected(hymn)" class="list-item shadow-light theme-mid">
-          <span class="badge pull-right">{{ hymn["scripture references"] }}</span>
-          <p class="title">{{ hymn.title }}</p>
-          <p class="muted">{{ hymn.author}}</p>
+        <div v-for="(hymn, title) in hymns" @click="hymnSelected(hymn, title)" class="list-item shadow-light theme-mid">
+          <p class="title">{{ hymn.title || title }}</p>
+          <p class="author muted hi-bottom">{{ hymn.author}}</p>
+          <p class="font-small callout-light alt text-right">{{ hymn["scripture references"] }}</p>
         </div>
       </div>
     </div>
@@ -43,8 +43,8 @@ export default {
     goBack () {
       this.$router.back()
     },
-    hymnSelected (hymn) {
-      this.$router.push({ name: 'Hymn', query: { title: hymn.title, author: hymn.author, textLink: hymn['text link'] } })
+    hymnSelected (hymn, title) {
+      this.$router.push({ name: 'Hymn', query: { title: hymn.title || title, author: hymn.author, textLink: hymn['text link'] } })
     }
   },
   mounted () {
@@ -80,6 +80,9 @@ export default {
 .hymns {
   .list-item {
     margin-bottom: 8px;
+  }
+  .author {
+    padding-bottom: 3px;
   }
 }
 </style>

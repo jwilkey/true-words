@@ -23,21 +23,24 @@
 
       <hr />
 
+      <p class="font-small muted">YouTube video results for this hymn:</p>
       <div class="video-results">
         <div v-for="video in videos" class="list-item theme-mid video-result clearfix" @click="videoId = video.id">
+          <p class="title hi-bottom">{{ video.title }}</p>
           <img :src="video.thumbnail" />
-          <p class="font-large">{{ video.title }}</p>
-          <p class="video-description muted">{{ video.description }}</p>
+          <p class="video-description muted font-small">{{ video.description }}</p>
           <p v-if="!video.description" class="muted">No description</p>
         </div>
       </div>
+      <br />
+      <p class="font-small muted">The above videos are the result of searching YouTube for the title of this hymn. True Words in no way endorses the results or content of these videos, though reasonable measures are taken to ensure their appropriateness.</p>
     </div>
 
     <div class="video-embed" v-if="videoId">
       <div class="video-close red" @click="videoId = undefined">
         <i class="fa fa-close"></i> CLOSE
       </div>
-      <youtube-player :video-id="videoId" class="shadow"></youtube-player>
+      <youtube-player :video-id="videoId" class="video"></youtube-player>
     </div>
   </div>
 </template>
@@ -97,7 +100,7 @@ export default {
     fetchVideos (hymnTitle) {
       const self = this
       this.isLoadingVideos = true
-      $.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${hymnTitle}&safeSearch=strict&type=video&key=AIzaSyCTgUetspdVufPqikWDBuhR6j9zvPeYdTg`)
+      $.get(`https://www.googleapis.com/youtube/v3/search?part=snippet&q=${hymnTitle}&safeSearch=strict&type=video&key=AIzaSyCTgUetspdVufPqikWDBuhR6j9zvPeYdTg&topicId=/m/02mscn`)
       .done(data => {
         self.videos = data.items.map(v => {
           return {
@@ -116,7 +119,9 @@ export default {
   },
   mounted () {
     this.loadHymn()
-    this.fetchVideos(this.title)
+    if (this.title) {
+      this.fetchVideos(this.title)
+    }
   }
 }
 </script>
@@ -150,9 +155,13 @@ export default {
     margin-bottom: 8px;
     padding: 5px;
     cursor: pointer;
+    .title {
+      margin-bottom: 5px;
+    }
   }
   img {
     float: left;
+    margin-top: 6px;
     margin-right: 8px;
     margin-bottom: 8px;
   }
@@ -163,10 +172,15 @@ export default {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0,0,0,0.8);
-  padding: calc(@titlebar-height + 20) 10px;
+  background-color: rgba(0,0,0,0.9);
+  padding: 30px 5px;
+  z-index: 1001;
+  .video {
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.7);
+  }
   .video-close {
     margin-bottom: 25px;
+    padding-left: 8px;
     cursor: pointer;
     &:hover {
       color: @color-highlight-red;
