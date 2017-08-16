@@ -12,6 +12,7 @@ export default {
       case activities.types.Topics: return topicsData(study)
       case activities.types.Outline: return outlineData(study)
       case activities.types.Paraphrase: return paraphraseData()
+      case activities.types.Acta: return actaData()
       case activities.types.Space: return spaceData()
       case activities.types.Stewardship: return stewardshipData(study)
       default: throw new Error('No ActivityData for this activity type')
@@ -63,6 +64,15 @@ function paraphraseData () {
 }
 
 // Apply
+function actaData () {
+  var data = ActivityData.new()
+  data.addContainer('Adore', 'free-text')
+  data.addContainer('Confess', 'free-text')
+  data.addContainer('Thank', 'free-text')
+  data.addContainer('Ask', 'free-text')
+  return data
+}
+
 function spaceData () {
   var data = ActivityData.new()
   data.addContainer('S', 'free-text')

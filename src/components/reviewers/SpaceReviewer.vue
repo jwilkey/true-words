@@ -65,7 +65,6 @@ export default {
   margin-bottom: 20px;
 }
 .space-title {
-  letter-spacing: 2px;
   padding-bottom: 5px;
   margin-bottom: 0px;
   .acronym {

@@ -1,10 +1,10 @@
 <template>
   <div class="flex-column vfull">
-    <div class="flex-one substance">
-      <div class="overlay theme-mid shadow-long">
-        <text-input ref="textInput" :title="textInputTitle" :done="textInputDone"></text-input>
-      </div>
+    <div class="input-entry theme-mid shadow-long" :class="{expand: input, contract: !input}">
+      <text-input ref="textInput" :title="textInputTitle" :done="textInputDone"></text-input>
+    </div>
 
+    <div class="flex-one substance">
       <div class="container">
         <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number" @click="verseSelected($event.target)">
           <div class="verse theme-mid hover">
@@ -14,12 +14,12 @@
 
         <hr />
 
-        <div v-if="data" class="space-progress">
+        <div v-if="data" class="acta-progress">
           <div v-for="container in data.containers" v-if="container.items.length > 0">
-            <p class="space-title muted">{{ containerLabels[container.name] }}</p>
-            <div v-for="(item, index) in container.items" class="flex-row">
-              <p class="flex-one space-entry input" @click="editEntry(item, container)">{{ item.text }}</p>
-              <img class="flex-zero" src="/static/images/close.svg" @click="deleteEntry(index, container)" />
+            <p class="acta-title muted">{{ containerLabels[container.name] }}</p>
+            <div v-for="(item, index) in container.items" class="flex-row acta-entry">
+              <p class="flex-one input" @click="editEntry(item, container)">{{ item.text }}</p>
+              <img src="/static/images/close.svg" @click="deleteEntry(index, container)" />
             </div>
           </div>
         </div>
@@ -27,13 +27,18 @@
     </div>
 
     <div class="flex-zero bottombar">
-      <button v-if="showDoneButton" class="btn callout-light btn-block space-done-button" @click="finished()">FINISHED</button>
-      <div class="flex-row space-buttons">
-        <button class="callout-light shadow flex-one" @click="actionSelected('S')">S</button>
-        <button class="callout-light shadow flex-one" @click="actionSelected('P')">P</button>
-        <button class="callout-light shadow flex-one" @click="actionSelected('A')">A</button>
-        <button class="callout-light shadow flex-one" @click="actionSelected('C')">C</button>
-        <button class="callout-light shadow flex-one" @click="actionSelected('E')">E</button>
+      <button v-if="showDoneButton" class="btn callout-light btn-block acta-done-button" @click="finished()">FINISHED</button>
+      <div class="flex-row acta-buttons">
+        <button class="flex-one shadow back-purple" @click="actionSelected('Adore')">A</button>
+        <button class="flex-one shadow back-red" @click="actionSelected('Confess')">C</button>
+        <button class="flex-one shadow back-blue" @click="actionSelected('Thank')">T</button>
+        <button class="flex-one shadow back-green" @click="actionSelected('Ask')">A</button>
+      </div>
+      <div class="flex-row acta-labels">
+        <p class="flex-one font-smaller muted text-center">ADORE</p>
+        <p class="flex-one font-smaller muted text-center">CONFESS</p>
+        <p class="flex-one font-smaller muted text-center">THANK</p>
+        <p class="flex-one font-smaller muted text-center">ASK</p>
       </div>
     </div>
 
@@ -41,27 +46,25 @@
 </template>
 
 <script>
-import $ from 'jquery'
 import { mapGetters } from 'vuex'
 import activities from '../../js/activity'
 import TextInput from '../TextInput'
 import { FreeText } from '../../js/models/ActivityData'
-// import { Bible, Verse } from '../../js/bible'
 
 export default {
   data () {
     return {
-      activityType: activities.types.Space,
+      activityType: activities.types.Acta,
+      input: false,
       currentVerse: undefined,
-      textInputTitle: 'Sin to confess',
-      currentSpaceContainer: undefined,
+      textInputTitle: 'ADORE - praise God',
+      currentactaContainer: undefined,
       editingEntry: undefined,
       containerLabels: {
-        S: 'SIN TO CONFESS',
-        P: 'PROMISE TO CLAIM',
-        A: 'ACTION TO TAKE',
-        C: 'COMMAND TO OBEY',
-        E: 'EXAMPLE TO FOLLOW'
+        Adore: 'ADORE - God, I adore you for...',
+        Confess: 'CONFESS - God, I have sinned by...',
+        Thank: 'THANK - God, thank you for...',
+        Ask: 'ASK - God, would you please...'
       }
     }
   },
@@ -71,38 +74,34 @@ export default {
       return !this.data.containers[0].isEmpty() ||
       !this.data.containers[1].isEmpty() ||
       !this.data.containers[2].isEmpty() ||
-      !this.data.containers[3].isEmpty() ||
-      !this.data.containers[4].isEmpty()
+      !this.data.containers[3].isEmpty()
     }
   },
   components: { TextInput },
   props: ['finish', 'data'],
   methods: {
     verseSelected (targetNode) {
-      $('.verse-container.selected').removeClass('selected')
-      var verseContainer = $(targetNode).closest('.verse-container')
-      verseContainer.addClass('selected')
     },
     actionSelected (action) {
       this.textInputTitle = this.containerLabels[action]
-      this.currentSpaceContainer = action
-      $('.overlay').show()
+      this.currentactaContainer = action
+      this.input = true
       this.$refs.textInput.focus()
     },
     editEntry (entry, container) {
       this.textInputTitle = this.containerLabels[container.name]
-      this.currentSpaceContainer = container.name
+      this.currentactaContainer = container.name
       this.editingEntry = entry
-      $('.overlay').show()
+      this.input = true
       this.$refs.textInput.focus(entry.text)
     },
     deleteEntry (index, container) {
       container.items.splice(index, 1)
     },
     textInputDone (text) {
-      $('.overlay').hide()
+      this.input = false
       if (text.length > 0) {
-        var container = this.data.findContainer(this.currentSpaceContainer)
+        var container = this.data.findContainer(this.currentactaContainer)
         if (this.editingEntry) {
           this.editingEntry.text = text
           this.editingEntry = undefined
@@ -125,19 +124,15 @@ export default {
 @import '../../../static/less/app';
 @import '../../../static/less/flex';
 
-.overlay {
-  display: none;
-  position: absolute;
-  width: 100%;
+.input-entry {
+  max-height: 0px;
+  overflow: hidden;
   z-index: 100;
-  margin-top: -15px;
 }
 
 .verse-container {
   padding: 0px;
   margin-bottom: 2px !important;
-  &.selected {
-  }
 }
 .verse {
   padding: 5px;
@@ -146,17 +141,20 @@ export default {
   color: #999;
   vertical-align: super;
 }
-.space-progress {
-  .space-title {
+.acta-progress {
+  .acta-title {
     margin-top: 8px;
-    margin-bottom: 0px;
+    margin-bottom: 3px;
   }
-  .space-entry {
-    margin-bottom: 0px;
-    padding: 5px;
-    border-radius: 3px;
-    margin-bottom: 5px;
-    cursor: pointer;
+  .acta-entry {
+    margin-bottom: 7px;
+    align-items: center;
+    .input {
+      margin-bottom: 0px;
+      padding: 5px;
+      border-radius: 3px;
+      cursor: pointer;
+    }
   }
   img {
     max-height: 30px;
@@ -164,23 +162,27 @@ export default {
     cursor: pointer;
   }
 }
-.space-done-button {
+.acta-done-button {
   padding-left: 10px;
   padding-right: 10px;
   margin-bottom: 10px;
-  @media (max-width: 767px) {
-    padding-left: 5px;
-    padding-right: 5px;
-  }
 }
-.space-buttons {
+.acta-buttons {
   button {
     border: none;
-    padding: 8px 2px;
+    padding: 8px 5px;
     margin-left: 5px;
+    text-shadow: 0px 0px 8px black;
+    outline: none;
   }
   button:first-child {
     margin-left: 0;
+  }
+}
+.acta-labels {
+  p {
+    margin: 0;
+    padding-top: 3px;
   }
 }
 </style>

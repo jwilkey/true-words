@@ -18,3 +18,20 @@
   50%   { opacity: 0.3; }
   100%   { opacity: 1; }
 }
+
+.expand {
+  animation: expand 1.8s forwards;
+}
+@keyframes expand {
+  0%   { max-height: 0px; }
+  90%   { max-height: 1000px; }
+  100%   { max-height: none; }
+}
+.contract {
+  animation: contract .8s forwards;
+}
+@keyframes contract {
+  0%   { max-height: 1000px; }
+  20%   { max-height: 300px; }
+  100%   { max-height: 0px; }
+}

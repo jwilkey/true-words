@@ -10,6 +10,7 @@ var ActivityType = {
   Idioms: 'IDIOMS',
   Paraphrase: 'PARAPHRASE',
 
+  Acta: 'ACTA',
   Space: 'SPACE',
   Stewardship: 'STEWARDSHIP'
 }
@@ -25,7 +26,7 @@ function Activity (id, category, title, subtitle, enabled) {
 function ActivityManager () {
   this.observationActivities = [ActivityType.PeoplePlacesThings, ActivityType.Actions, ActivityType.Adjectives] // , ActivityType.CauseEffect
   this.interpretationActivities = [ActivityType.Topics, ActivityType.Outline, ActivityType.Paraphrase] // [ActivityType.Keywords, ActivityType.Idioms]
-  this.applicationActivities = [ActivityType.Space, ActivityType.Stewardship]
+  this.applicationActivities = [ActivityType.Space, ActivityType.Stewardship, ActivityType.Acta]
   this.activities = [
     new Activity('PPT', 'observation', 'People, Places, Things', 'People-Places-Things', true),
     new Activity('ACTIONS', 'observation', 'Actions', 'Actions', true),
@@ -38,6 +39,7 @@ function ActivityManager () {
     new Activity('OUTLINE', 'interpretation', 'Outline', 'Outline', true),
     new Activity('PARAPHRASE', 'interpretation', 'Paraphrase', 'Paraphrase', true),
 
+    new Activity('ACTA', 'application', 'ACTA', 'ACTA', true),
     new Activity('SPACE', 'application', 'SPACE', 'SPACE', true),
     new Activity('STEWARDSHIP', 'application', 'Stewardship', 'Stewardship', true)
   ]
