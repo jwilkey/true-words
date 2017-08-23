@@ -6,9 +6,12 @@ import actions from './actions'
 import Persistence from '../src/js/helpers/Persistor'
 import Studies from '../src/js/models/Study'
 import { Bible } from '../src/js/bible'
+import john3 from '../src/js/fixtures/john3_study.json'
 
 // Make vue aware of Vuex
 Vue.use(Vuex)
+
+var defaultStudy = Studies.fromJson(john3)
 
 // Create an object to hold the initial state when the app starts up
 export const state = {
@@ -18,7 +21,7 @@ export const state = {
   isAuthenticated: false,
   user: {},
   currentBible: 'ESV',
-  studies: [],
+  studies: [defaultStudy],
   currentStudy: undefined,
   currentActivity: activities.types.PeoplePlacesThings,
   currentPassage: undefined,

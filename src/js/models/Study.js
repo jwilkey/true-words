@@ -1,7 +1,18 @@
 import ActivityAchievement from './ActivityAchievement'
+import { Bible, Verse } from '../bible'
+
 export default {
   createStudy (id, date, passage, verses, bible) {
     return new Study(id, date, passage, verses, bible)
+  },
+  fromJson (json) {
+    var start = json.passage.start
+    var end = json.passage.end
+    var endVerse = new Verse(end.book, end.chapter, end.number)
+    var passage = Bible.buildPassage(new Verse(start.book, start.chapter, start.number), endVerse)
+    var study = this.createStudy(json.id, json.createdDate, passage, undefined, json.bible)
+    study.apply(json)
+    return study
   }
 }
 

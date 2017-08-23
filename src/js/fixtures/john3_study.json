@@ -1,0 +1,53 @@
+{
+  "version": "0.5",
+  "id": "SAMPLE",
+  "date": "2017-08-23T17:44:11.147Z",
+  "passage": {
+    "start": {
+      "book": "JOHN",
+      "chapter": 3,
+      "number": 16
+    },
+    "end": {
+      "book": "JOHN",
+      "chapter": 3,
+      "number": 18
+    }
+  },
+  "verses": [
+    {
+      "book": "JOHN",
+      "chapter": 3,
+      "number": 16,
+      "text": "\"For God so loved the world, that he gave his only Son, that whoever believes in him should not perish but have eternal life.",
+      "heading": "For God So Loved the World",
+      "subheading": null,
+      "footnotes": [
+        {
+          "key": "9",
+          "text": "Or \"For this is how God loved the world\""
+        }
+      ]
+    },
+    {
+      "book": "JOHN",
+      "chapter": 3,
+      "number": 17,
+      "text": "For God did not send his Son into the world to condemn the world, but in order that the world might be saved through him.",
+      "heading": null,
+      "subheading": null,
+      "footnotes": []
+    },
+    {
+      "book": "JOHN",
+      "chapter": 3,
+      "number": 18,
+      "text": "Whoever believes in him is not condemned, but whoever does not believe is condemned already, because he has not believed in the name of the only Son of God.",
+      "heading": null,
+      "subheading": null,
+      "footnotes": []
+    }
+  ],
+  "bible": "ESV",
+  "activities": []
+}

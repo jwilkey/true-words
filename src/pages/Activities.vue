@@ -8,7 +8,7 @@
       </div>
 
       <div v-if="!getPersistor.isLoggedIn()" class="text-center">
-        <button class="btn callout-light" @click="login()">Login to save your work</button>
+        <button class="btn callout-light" @click="login()">Sign in to save your work</button>
         <hr />
       </div>
 

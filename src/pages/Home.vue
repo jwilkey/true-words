@@ -26,17 +26,19 @@
           </div>
 
           <card title="CONTINUE" subtitle="Choose a study">
+
             <div v-if="isAuthenticated && isLoadingData" class="callout-light alt">
               <p class="text-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></p>
             </div>
-            <div v-if="isAuthenticated === true && !isLoadingData">
+
+            <div v-if="!isLoadingData">
               <p v-if="manyStudies" class="muted">RECENT STUDIES <span class="callout-light alt">| {{ getStudies.length }} TOTAL</span></p>
               <div v-for="study in recentStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
                 <div class="list-item col-xs-12">
                   <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
                   <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEditLabel() }} <span class="bible">{{ study.bible }}</span></p>
                   <div class="col-sm-12 visible-xs nopad-left nopad-right">
-                    <p >{{ study.passage.description() }},&nbsp;&nbsp;<span class="muted">{{ study.lastEditLabel() }} ({{ study.bible }})</span></p>
+                    <p >{{ study.passage.description() }}<span v-if="study.lastEdit">,</span>&nbsp;&nbsp;<span class="muted">{{ study.lastEditLabel() }} ({{ study.bible }})</span></p>
                   </div>
                 </div>
               </div>
@@ -50,11 +52,12 @@
                 </div>
               </div>
             </div>
-            <div v-if="isAuthenticated === false" class="sign-in-view">
-              <p class="muted">You are not signed in.</p>
-              <p class="muted">Sign in to save your studies.</p>
-              <router-link to="Login?referrer=Home" class="btn theme-hi btn-lg">SIGN IN</router-link>
+
+            <div v-if="isAuthenticated === false" class="sign-in-view hi-top">
+              <p>Sign in to save your studies.</p>
+              <router-link to="Login?referrer=Home" class="btn callout-light btn-lg">SIGN IN <i class="fa fa-arrow-right"></i></router-link>
             </div>
+
           </card>
 
           <share :done="doneSharing" :show="sharing"></share>
@@ -234,13 +237,16 @@ export default {
 }
 .sign-in-view {
   text-align: center;
+  margin-top: 20px;
+  padding: 8px;
+  border-radius: 4px;
   a {
     min-width: 300px;
     max-width: 400px;
     margin-top: 10px;;
   }
   p {
-    margin-bottom: 3px;
+    margin-bottom: 1px;
     text-align: center;
   }
 }
