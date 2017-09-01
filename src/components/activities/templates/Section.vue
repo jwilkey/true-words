@@ -1,6 +1,6 @@
 <template>
   <div class="section">
-    <div class="section-title callout-bottom editing">
+    <div class="section-title editing">
       <div class="section-item" @click="editSection($event.target)">
         {{ prefix }}{{ section.title }} <span v-if="section.title" class="word-range font-small">{{ section.rangeDescription() }}</span>
       </div>
@@ -16,7 +16,7 @@
 
     <div class="subsections">
       <div v-if="allowsSubSections" v-for="subsection in section.subSections.items">
-        <subsection-vue :section="subsection" :allows-sub-sections="false" :delete="deleteSubsection" :prefix="'• '"></subsection-vue>
+        <subsection-vue class="subsection" :section="subsection" :allows-sub-sections="false" :delete="deleteSubsection" :prefix="'• '"></subsection-vue>
       </div>
       <div v-if="allowsSubSections" class="temp">
         <input type="text" placeholder="supporting idea (optional)..." @change="addSubSection(section, $event.target)"  />
@@ -82,6 +82,7 @@ export default {
     width: 100%;
     padding-top: 5px;
     padding-bottom: 8px;
+    font-weight: bold;
     .section-item {
       display: table-cell;
       vertical-align: middle;
@@ -89,6 +90,11 @@ export default {
     }
     .section-edit {
       display: none;
+    }
+  }
+  .subsection {
+    .section-title {
+      font-weight: normal;
     }
   }
   .section-title.editing {
