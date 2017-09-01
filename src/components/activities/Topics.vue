@@ -10,12 +10,18 @@
 
     <div class="flex-one substance">
 
-      <div v-if="!showTopics" class="container passage">
-        <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number">
-          <div class="verse theme-mid hover">
-            <span class="verse-number muted font-smaller"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span>
-            <span class="verse-text">{{ verse.text }}</span>
+      <div v-if="!showTopics" class="container-fluid passage">
+        <div class="col-xs-12 col-sm-9">
+          <div v-for="verse in getCurrentStudy.verses" class="verse-container" :data-verse="verse.number">
+            <div class="verse theme-mid hover">
+              <span class="verse-number muted font-smaller"><span v-if="verse.number === 1">{{verse.chapter}}:</span>{{ verse.number }}</span>
+              <span class="verse-text">{{ verse.text }}</span>
+            </div>
           </div>
+        </div>
+        <div class="hidden-xs col-sm-3 theme-mid shadow-light">
+          <p class="callout-light alt">Topics</p>
+          <p v-for="topic in topics"><i class="fa fa-tag"></i> {{ topic.text }}</p>
         </div>
       </div>
 
