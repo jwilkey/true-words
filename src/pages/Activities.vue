@@ -144,6 +144,7 @@ function daysAgo (date) {
   margin-bottom: 20px;
   .prepare-label {
     padding: 5px;
+    border-radius: 4px;
   }
   .list-item {
     margin: 0 5px;

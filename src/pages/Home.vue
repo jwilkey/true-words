@@ -4,6 +4,11 @@
 
     <div class="flex-column vfull theme-back">
       <div class="flex-one home-root">
+        <div class="banner">
+          <h1 class="font-large">You can study the Bible. Here's how.</h1>
+          <div class="banner-image"> </div>
+        </div>
+
         <div class="container">
           <card title="BEGIN" subtitle="Choose a Bible text to study" class="nopad">
             <div class="flex-row clearfix theme-back">
@@ -12,10 +17,13 @@
             </div>
           </card>
 
-          <div class="theme-mid shadow" @click="toggleAbout($event.target)">
-            <div class="about-tw">
-              <p><i class="fa fa-play callout-light"></i> <span class="about-title callout-light alt">ABOUT</span> <span>Read the Bible intentionally</span></p>
-              <i class="fa fa-chevron-right muted"></i>
+          <div class="" @click="toggleAbout($event.target)">
+            <div class="about-tw theme-mid shadow">
+              <div class="flex-row align-center">
+                <img class="icon" src="/static/favicon.png" />
+                <p class="flex-one callout-light alt">About True Words</p>
+                <i class="fa fa-chevron-right muted"></i>
+              </div>
               <div class="shrinkable shrunk">
                 <div class="video-intro embed-responsive embed-responsive-16by9">
                   <iframe src="https://www.youtube.com/embed/OXpqHXBHPnk?rel=0" frameborder="0" allowfullscreen></iframe>
@@ -26,19 +34,18 @@
           </div>
 
           <card title="CONTINUE" subtitle="Choose a study">
-
             <div v-if="isAuthenticated && isLoadingData" class="callout-light alt">
               <p class="text-center"><i class="fa fa-circle-o-notch fa-2x fa-spin"></i></p>
             </div>
 
             <div v-if="!isLoadingData">
-              <p v-if="manyStudies" class="muted">RECENT STUDIES <span class="callout-light alt">| {{ getStudies.length }} TOTAL</span></p>
+              <p v-if="manyStudies" class="muted">RECENT STUDIES <span class="bubble callout-light">{{ getStudies.length }} TOTAL</span></p>
               <div v-for="study in recentStudies" :key="study.id" class="row study" @click="continueStudy(study.id)">
                 <div class="list-item col-xs-12">
                   <p class="col-sm-6 hidden-xs">{{ study.passage.description() }}</p>
                   <p class="col-sm-6 hidden-xs text-right muted">{{ study.lastEditLabel() }} <span class="bible">{{ study.bible }}</span></p>
                   <div class="col-sm-12 visible-xs nopad-left nopad-right">
-                    <p >{{ study.passage.description() }}<span v-if="study.lastEdit">,</span>&nbsp;&nbsp;<span class="muted">{{ study.lastEditLabel() }} ({{ study.bible }})</span></p>
+                    <p >{{ study.passage.description() }}<span v-if="study.lastEdit">,</span>&nbsp;&nbsp;<span class="muted">{{ study.lastEditLabel() }} <span class="bubble callout-light">{{ study.bible }}</span></span></p>
                   </div>
                 </div>
               </div>
@@ -64,7 +71,7 @@
         </div>
       </div>
 
-      <div class="bottombar clearfix flex-zero">
+      <div class="bottombar clearfix">
         <div class="pull-left">
           <router-link class="settings font-large" to="Settings"><i class="fa fa-gear muted"></i></router-link>
           <a v-if="version('1.0.1')" @click="share" class="callout-light alt text-right">SHARE <i class="fa fa-share"></i></a>
@@ -157,9 +164,33 @@ export default {
 @import '../../static/less/colors';
 @import '../../static/less/flex';
 
+.banner {
+  position: relative;
+  padding: 30px 0;
+  margin-bottom: 15px;
+  .banner-image {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-image: url('/static/images/forest_banner.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+  }
+  h1 {
+    position: relative;
+    text-align: center;
+    color: white;
+    margin: 0;
+    text-shadow: 1px 0px 4px rgba(0, 0, 0, 0.7);
+    white-space: nowrap;
+    z-index: 100;
+  }
+}
 .home-root {
   .scrolly;
-  padding-top: 15px;
   padding-bottom: 20px;
 }
 .testament-button {
@@ -176,18 +207,16 @@ export default {
 .about-tw {
   padding: 8px;
   margin-bottom: 20px;
+  border-radius: 4px;
   position: relative;
   cursor: pointer;
   p { margin: 0; }
-  .fa-play {
-    padding: 4px 8px;
+  .icon {
+    height: 30px;
     border-radius: 4px;
-    margin-right: 8px;
+    margin-right: 10px;
   }
   .fa-chevron-right {
-    position: absolute;
-    right: 10px;
-    top: 12px;
     transition: transform 0.3s;
   }
   .video-intro {
