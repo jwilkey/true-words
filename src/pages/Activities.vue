@@ -12,10 +12,13 @@
         <hr />
       </div>
 
-      <card title="PREPARE">
-        <div @click="goToReaderView()" class="list-item theme-mid">Read the text</div>
-        <div @click="goToHymnView()" class="list-item theme-mid">Hymns</div>
-      </card>
+      <div class="prepare">
+        <p class="prepare-label theme-mid shadow">PREPARE</p>
+        <div class="flex-row">
+          <div @click="goToReaderView()" class="flex-one list-item">Read the text</div>
+          <div @click="goToHymnView()" class="flex-one list-item">Hymns</div>
+        </div>
+      </div>
 
       <card title="OBSERVE" subtitle="What does it say?">
         <div v-for="type in activities.manager.observationActivities" class="list-item flex-row theme-mid" @click="activitySelected(type)">
@@ -136,6 +139,15 @@ function daysAgo (date) {
   text-align: center;
   margin-bottom: 10px;
   letter-spacing: 1px;
+}
+.prepare {
+  margin-bottom: 20px;
+  .prepare-label {
+    padding: 5px;
+  }
+  .list-item {
+    margin: 0 5px;
+  }
 }
 .delete-view {
   float: right;
