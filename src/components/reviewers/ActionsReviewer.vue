@@ -5,22 +5,27 @@
         <drawer :expanded="true">
           <div slot="title">{{ data.collection.items.length }} ACTIONS</div>
           <div slot="content">
-            <div class="actions">
-              <div v-for="action in data.collection.items" class="action clearfix">
+
+            <div class="simple-actions clearfix hi-bottom">
+              <div v-for="action in simpleActions" class="col-sm-3 col-xs-6 item">{{action.action.toString()}}</div>
+            </div>
+
+            <div class="detailed-actions">
+              <div v-for="action in detailedActions" class="action clearfix">
                 <div v-if="action.actor" class="action-item list-item theme-mid">
-                  <p class="action-label font-smaller muted">ACTOR</p>
+                  <p class="action-label font-smaller muted-more">ACTOR</p>
                   <div>{{action.actor ? action.actor.toString() : '?'}}</div>
                 </div>
                 <div class="action-item list-item theme-mid">
-                  <p class="action-label font-smaller muted">ACTION</p>
+                  <p class="action-label font-smaller muted-more">ACTION</p>
                   <div class="blue">{{action.action ? action.action.toString() : '?'}}</div>
                 </div>
                 <div v-if="action.target" class="action-item list-item theme-mid">
-                  <p class="action-label font-smaller muted">TARGET</p>
+                  <p class="action-label font-smaller muted-more">TARGET</p>
                   <div>{{action.target ? action.target.toString() : '?'}}</div>
                 </div>
                 <div v-if="action.result" class="action-item list-item theme-mid">
-                  <p class="action-label font-smaller muted">RESULT</p>
+                  <p class="action-label font-smaller muted-more">RESULT</p>
                   <div>{{action.result ? action.result.toString() : '?'}}</div>
                 </div>
               </div>
@@ -58,6 +63,12 @@ export default {
     }),
     title: function () {
       return activities.manager.titleForType(this.getCurrentActivity)
+    },
+    simpleActions () {
+      return this.data.collection.items.filter(a => !a.actor && !a.target && !a.result)
+    },
+    detailedActions () {
+      return this.data.collection.items.filter(a => a.actor || a.target || a.result)
     }
   },
   props: ['data'],
@@ -82,25 +93,31 @@ export default {
 @import '../../../static/less/colors';
 @import '../../../static/less/flex';
 
-.actions {
+.simple-actions {
+  flex-wrap: wrap;
+  .item {
+    padding: 1px;
+  }
+}
+.detailed-actions {
   display: table;
   margin-left: auto;
   margin-right: auto;
-  padding: 0px 10px;
+  margin-bottom: 10px;
+  padding: 0px;
+  padding-top: 8px;
   .action {
-    padding-bottom: 12px;
-    .action-item:first-child {
-      padding-left: 15px;
-    }
+    padding-bottom: 6px;
   }
   .action-item {
-    padding: 5px 8px 5px 8px;
+    padding: 0px 5px;
     float: left;
     border-top-left-radius: 2px;
     border-bottom-left-radius: 2px;
+    text-shadow: 1px 0px 3px rgba(0, 0, 0, 0.5);
   }
 }
 .action-label {
-  margin-bottom: 0px;
+  margin-bottom: -4px;
 }
 </style>
